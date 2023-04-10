@@ -54,7 +54,7 @@ export const Mybots = () => {
   }, []);
 
   const getData = async () => {
-    fetch("http://localhost:3001/getData", {
+    fetch("https://botsgpt.adriangutierr26.repl.co/getData", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
