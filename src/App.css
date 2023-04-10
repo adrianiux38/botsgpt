@@ -1,5 +1,22 @@
 .App {
   text-align: center;
+  background-image: url("./img/black.svg");
+  background-size: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color:white !important;
+  color:white !important;
+}
+
+#outlined-multiline-flexible-label{
+  color: white;
+}
+
+.MuiInputBase-input{
+  color: white !important;
 }
 
 .App-logo {
