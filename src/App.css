@@ -2,7 +2,7 @@
   text-align: center;
   background-image: url("./img/black.svg");
   background-size: 100vw;
-  overflow: hidden;
+  padding-bottom: 5%;
 }
 
 .MuiOutlinedInput-notchedOutline {
