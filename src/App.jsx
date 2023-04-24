@@ -1,6 +1,5 @@
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import { Header } from './components/Header';
 import { Mybots } from './components/Mybots';
 import { PromptForm } from './components/PromptForm';
 import {React, useState} from 'react';

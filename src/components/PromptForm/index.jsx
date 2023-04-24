@@ -3,9 +3,12 @@ import Box from '@mui/material/Box';
 import { Header } from '../Header';
 import TextField from '@mui/material/TextField';
 import { NavBar } from '../NavBar';
+import './PromptForm.css';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+
+
 
 export const PromptForm = ({showBot}) => { 
     const [botGoal, setBotGoal] = useState("");
@@ -77,6 +80,7 @@ export const PromptForm = ({showBot}) => {
     >
         <div>
         <TextField
+            className="inputCreate"
             id="outlined-multiline-flexible"
             label="Describe what your AI has to do"
             type="text"
@@ -84,8 +88,10 @@ export const PromptForm = ({showBot}) => {
             onChange={changeBotGoal}
             multiline
             maxRows={4}
+            style={{color: "red !important"}}
         />
         <TextField
+            className="inputCreate"
             id="outlined-multiline-flexible"
             label="Input your telegram API Key"
             type="text"
@@ -95,6 +101,7 @@ export const PromptForm = ({showBot}) => {
             maxRows={4}
         />
         <TextField
+            className="inputCreate" 
             id="outlined-multiline-flexible"
             label="Training user query 1"
             type="text"
@@ -104,6 +111,7 @@ export const PromptForm = ({showBot}) => {
             maxRows={4}
         />
         <TextField
+            className="inputCreate"
             id="outlined-multiline-flexible"
             label="Training agent response 1"
             type="text"
@@ -113,6 +121,7 @@ export const PromptForm = ({showBot}) => {
             maxRows={4}
         />
         <TextField
+            className="inputCreate"
             id="outlined-multiline-flexible"
             label="Training user query 2"
             type="text"
@@ -122,6 +131,7 @@ export const PromptForm = ({showBot}) => {
             maxRows={4}
         />
         <TextField
+            className="inputCreate"
             id="outlined-multiline-flexible"
             label="Training agent response 2"
             type="text"
@@ -131,6 +141,7 @@ export const PromptForm = ({showBot}) => {
             maxRows={4}
         />
         <TextField
+            className="inputCreate" 
             id="outlined-multiline-flexible"
             label="Training user query 3"
             type="text"
@@ -140,6 +151,7 @@ export const PromptForm = ({showBot}) => {
             maxRows={4}
         />
         <TextField
+            className="inputCreate"
             id="outlined-multiline-flexible"
             label="Training agent response 3"
             type="text"

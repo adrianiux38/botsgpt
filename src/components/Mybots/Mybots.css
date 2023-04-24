@@ -1,0 +1,17 @@
+.whatsappApiKey MuiOutlinedInput-notchedOutline {
+    border-color:rgb(8, 0, 0) !important;
+    color:rgb(8, 0, 0) !important;
+}
+
+.whatsappApiKey #outlined-multiline-flexible-label{
+    color: rgb(4, 0, 0) !important;
+}
+
+.whatsappApiKey .MuiOutlinedInput-notchedOutline {
+    border-color:black !important;
+    color:black !important;
+}
+.whatsappApiKey .MuiInputBase-input {
+    color: rgb(7, 0, 0) !important;
+}
+

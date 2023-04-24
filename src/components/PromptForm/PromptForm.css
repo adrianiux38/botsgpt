@@ -1,0 +1,16 @@
+.inputCreate .MuiOutlinedInput-notchedOutline {
+    border-color:white;
+    color:white;
+}
+
+.inputCreate #outlined-multiline-flexible-label{
+    color: white;
+}
+
+.inputCreate .MuiOutlinedInput-notchedOutline {
+    border-color:white;
+    color:white;
+}
+.inputCreate .MuiInputBase-input .MuiOutlinedInput-input{
+    color: white;
+}
