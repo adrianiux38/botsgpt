@@ -88,7 +88,7 @@ const Container = styled(Box)(({ theme }) => ({
           if (response.ok) {
             const data = await response.json();
             //console.log(data.token);
-            console.log(data);
+            //console.log(data);
             localStorage.setItem('token', data.token);
             localStorage.setItem('email', data.email);
             alert("Successfully logged in!");
