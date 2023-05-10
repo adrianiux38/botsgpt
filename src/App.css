@@ -3,9 +3,10 @@
   background-image: url("./img/black.svg");
   background-size: 100vw;
   padding-bottom: 5%;
+  min-height: 100vh;
 }
 
-.MuiOutlinedInput-notchedOutline {
+/*.MuiOutlinedInput-notchedOutline {
   border-color:white !important;
   color:white !important;
 }
@@ -16,7 +17,7 @@
 
 .MuiInputBase-input{
   color: white !important;
-}
+}*/
 
 .App-logo {
   height: 40vmin;

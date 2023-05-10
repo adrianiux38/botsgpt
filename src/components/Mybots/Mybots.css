@@ -14,4 +14,10 @@
 .whatsappApiKey .MuiInputBase-input {
     color: rgb(7, 0, 0) !important;
 }
+.mybots .MuiInputBase-input .MuiOutlinedInput-notchedOutline{
+    color: black;
+    border-color: black;
+}
+
+
 

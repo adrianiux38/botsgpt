@@ -14,3 +14,8 @@
 .inputCreate .MuiInputBase-input .MuiOutlinedInput-input{
     color: white;
 }
+
+.inputCreate textarea{
+    color: white;
+    border-color: whiteblack;
+}

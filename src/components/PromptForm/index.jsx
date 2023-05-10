@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Header } from '../Header';
 import TextField from '@mui/material/TextField';
 import { NavBar } from '../NavBar';
 import './PromptForm.css';
+import { useNavigate } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+
+import { isLoggedIn } from '../../utils/auth'
 
 
 
 export const PromptForm = ({showBot}) => { 
     const [botGoal, setBotGoal] = useState("");
-    const [telegramApiKey, setTelegramApiKey] = useState("");
     const [userContent1, setUserContent1] = useState("");
     const [userContent2, setUserContent2] = useState("");
     const [userContent3, setUserContent3] = useState("");
     const [assistantContent1, setAssistantContent1] = useState("");
     const [assistantContent2, setAssistantContent2] = useState("");
     const [assistantContent3, setAssistantContent3] = useState("");
+    const navigate = useNavigate();
+
 
     const changeBotGoal = (e) => setBotGoal(e.target.value);
-    const changeApiKey = (e) => setTelegramApiKey(e.target.value);
     const changeUserContent1 = (e) => setUserContent1(e.target.value);
     const changeUserContent2 = (e) => setUserContent2(e.target.value);
     const changeUserContent3 = (e) => setUserContent3(e.target.value);
@@ -29,16 +32,44 @@ export const PromptForm = ({showBot}) => {
     const changeAssistantContent2 = (e) => setAssistantContent2(e.target.value);
     const changeAssistantContent3 = (e) => setAssistantContent3(e.target.value);
 
+    const validateFields = () => {
+      const fields = [
+        botGoal,
+        userContent1,
+        userContent2,
+        userContent3,
+        assistantContent1,
+        assistantContent2,
+        assistantContent3,
+      ];
+      //console.log("los campos son: " + fields)
+    
+      return fields.every((field) => field && field.trim() !== "" && field !== null);
+    };
+
+    useEffect(() => {
+      if (!isLoggedIn()) {
+        // Redirect user to the login page if not logged in
+        navigate('/');
+      }
+    }, []);
+
+    if (!isLoggedIn()) {
+      return null;
+    }
+  
 
     const handleSendButton = () => {
-        fetch('https://botsgpt.adriangutierr26.repl.co/createBot', {
+      const loggedInUserEmail = localStorage.getItem('email');
+      if (validateFields() && loggedInUserEmail) {
+        fetch('http://localhost:3001/createBot', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
+            userEmail: loggedInUserEmail,
             botGoal: botGoal,
-            telegramApiKey: telegramApiKey,
             userContent1: userContent1,
             userContent2: userContent2,
             userContent3: userContent3,
@@ -50,7 +81,8 @@ export const PromptForm = ({showBot}) => {
         .then(res => res.json())
         .then(async (data) => {
             try{
-              console.log(data)
+              alert(data)
+              navigate('/my-bots');
               //Ahora si mostramos que su bot ya se pudo crear
               showBot()
             }
@@ -60,7 +92,9 @@ export const PromptForm = ({showBot}) => {
             
         })
         .catch(err => console.log(err))
-        
+      } else {
+        alert("All the fields must be filled to create your bot");
+      }
       }
 
     return(
@@ -90,6 +124,7 @@ export const PromptForm = ({showBot}) => {
             maxRows={4}
             style={{color: "red !important"}}
         />
+        {/*
         <TextField
             className="inputCreate"
             id="outlined-multiline-flexible"
@@ -100,6 +135,7 @@ export const PromptForm = ({showBot}) => {
             multiline
             maxRows={4}
         />
+      */}
         <TextField
             className="inputCreate" 
             id="outlined-multiline-flexible"
