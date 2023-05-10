@@ -69,7 +69,7 @@ export const Mybots = () => {
   const handleEditButtonClick = (botId) => {
     setBotId(botId);
     //consultar en la base de datos los datos de ese bot 
-    fetch("http://localhost:3001/getBotData", {
+    fetch("https://botpanelserver.adriangutierr26.repl.co/getBotData", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -140,7 +140,7 @@ export const Mybots = () => {
   }
 
   const getData = async (userEmail) => {
-    fetch(`http://localhost:3001/getData?email=${encodeURIComponent(userEmail)}`, {
+    fetch(`https://botpanelserver.adriangutierr26.repl.co/getData?email=${encodeURIComponent(userEmail)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -155,7 +155,7 @@ export const Mybots = () => {
   };
 
   const updateWhatsappEnable = async (whatsapp_enable, botId, callback) => {
-    await fetch("http://localhost:3001/updateWhatsappEnable", {
+    await fetch("https://botpanelserver.adriangutierr26.repl.co/updateWhatsappEnable", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -171,7 +171,7 @@ export const Mybots = () => {
   }
 
   const sendWhatsappNew = async (phoneNumberId, whatsappApiKey) => {
-    await fetch('http://localhost:3001/whatsappNew', {
+    await fetch('https://botpanelserver.adriangutierr26.repl.co/whatsappNew', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ export const Mybots = () => {
   };
 
   const updateTelegramEnable = async (telegram_enable, botId, callback) => {
-    await fetch("http://localhost:3001/updateTelegramEnable", {
+    await fetch("https://botpanelserver.adriangutierr26.repl.co/updateTelegramEnable", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -239,7 +239,7 @@ export const Mybots = () => {
   };
 
   const updateBotInfo = async (botId) => {
-    await fetch("http://localhost:3001/updateBotInfo", {
+    await fetch("https://botpanelserver.adriangutierr26.repl.co/updateBotInfo", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

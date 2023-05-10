@@ -40,7 +40,7 @@ const Container = styled(Box)(({ theme }) => ({
     const login = useGoogleLogin({
         onSuccess: tokenResponse => {
           const accessToken = tokenResponse.access_token;
-          fetch('http://localhost:3001/google-login', {
+          fetch('https://botpanelserver.adriangutierr26.repl.co/google-login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const Container = styled(Box)(({ theme }) => ({
   
     const handleLogin = async () => {
         try {
-          const response = await fetch('http://localhost:3001/login', {
+          const response = await fetch('https://botpanelserver.adriangutierr26.repl.co/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
