@@ -62,7 +62,7 @@ export const PromptForm = ({showBot}) => {
     const handleSendButton = () => {
       const loggedInUserEmail = localStorage.getItem('email');
       if (validateFields() && loggedInUserEmail) {
-        fetch('http://localhost:3001/createBot', {
+        fetch('https://botpanelserver.adriangutierr26.repl.co/createBot', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json'
