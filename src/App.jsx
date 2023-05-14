@@ -4,6 +4,7 @@ import { Mybots } from './components/Mybots';
 import { PromptForm } from './components/PromptForm';
 import {React, useState} from 'react';
 import LoginComponent from './components/Login';
+import RegisterComponent from './components/Register';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginComponent/>}/>
           <Route path="/my-bots" element={<Mybots />}/>
+          <Route path="/set-password" element={<RegisterComponent />}/>
           <Route path="/create-bot" element={<PromptForm showBot={showBot}/>}/>
         </Routes>
       </Router>

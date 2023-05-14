@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 
 
 
-import './Login.css';
+import './Register.css';
 
 const Container = styled(Box)(({ theme }) => ({
     display:'flex',
@@ -31,13 +30,13 @@ const Container = styled(Box)(({ theme }) => ({
     marginBottom: '1rem',
   });
 
-  const LoginComponent = () => {
-    const [email, setEmail] = useState('');
+  const RegisterComponent = () => {
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const navigate = useNavigate();
 
 
-    const login = useGoogleLogin({
+    const registerGoogle = useGoogleLogin({
         onSuccess: tokenResponse => {
           const accessToken = tokenResponse.access_token;
           fetch('http://localhost:3001/google-login', {
@@ -61,8 +60,7 @@ const Container = styled(Box)(({ theme }) => ({
           .then(data => {
             //console.log(data.message);
             localStorage.setItem('token', data.token);
-            localStorage.setItem('email', data.email);
-            alert("Successfully logged in with Google!");
+            alert("Successfully registered with Google!");
             navigate('/create-bot');
           })
           .catch(error => {
@@ -71,30 +69,28 @@ const Container = styled(Box)(({ theme }) => ({
           });
         }
       });
-  
-    const handleLogin = async () => {
+
+
+      const handleRegister = async () => {
         try {
-          const response = await fetch('http://localhost:3001/login', {
+          const response = await fetch('http://localhost:3001/set-password', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               email: email,
-              password: password,
+              newPassword: password,
             }),
           });
       
+          const data = await response.json();
           if (response.ok) {
-            const data = await response.json();
-            //console.log(data.token);
-            //console.log(data);
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('email', data.email);
-            alert("Successfully logged in!");
+            alert(data.message);
+            // Redirect the user to the login page or log them in automatically
             navigate('/create-bot');
           } else {
-            errorMessage("Invalid email or password");
+            errorMessage(data.error);
           }
         } catch (error) {
           console.log('Error:', error);
@@ -110,7 +106,7 @@ const Container = styled(Box)(({ theme }) => ({
         <div class="centerDiv">
       <Container>
         <Typography variant="h4" gutterBottom style={{marginTop: '5%', marginBottom: '3%'}}>
-          Login
+          Register Now
         </Typography>
         <StyledInput
           label="Email"
@@ -127,30 +123,18 @@ const Container = styled(Box)(({ theme }) => ({
           variant="outlined"
           style={{width:'40%'}}
         />
-        <StyledButton variant="contained" onClick={handleLogin} style={{width:'40%'}}>
-          Login with Email
+        <StyledButton variant="contained" onClick={handleRegister} style={{width:'40%'}}>
+          Sign up
         </StyledButton>
-        <StyledButton onClick={() => login()}>
-            Sign in with Google 🚀{' '}
+        <StyledButton onClick={() => registerGoogle()} >
+            Sign up with Google 🚀{' '}
         </StyledButton>
-        <StyledButton onClick={() => navigate('/set-password')} style={{marginTop: '-1%'}}>
-          Register
-        </StyledButton>
-        {/*  <GoogleLogin
-          clientId="51182961207-9bpvnf0jtua36lq9ue20lqkld0u2tpja.apps.googleusercontent.com"
-          buttonText="Login with Google"
-          onFailure={errorMessage}
-          cookiePolicy={'single_host_origin'}
-          responseType="id_token" // Add this line
-          onSuccess={credentialResponse => {
-            console.log(credentialResponse);
-          }}
-        />*/}
-       
-        
+        <StyledButton onClick={() => navigate('/')} style={{marginTop: '-1%'}}>
+          Login
+        </StyledButton>        
       </Container>
       </div>
     );
   };
 
-export default LoginComponent;
+export default RegisterComponent;
