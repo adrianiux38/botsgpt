@@ -39,7 +39,7 @@ const Container = styled(Box)(({ theme }) => ({
     const registerGoogle = useGoogleLogin({
         onSuccess: tokenResponse => {
           const accessToken = tokenResponse.access_token;
-          fetch('http://localhost:3001/google-login', {
+          fetch('https://botpanelserver.adriangutierr26.repl.co/google-login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Container = styled(Box)(({ theme }) => ({
 
       const handleRegister = async () => {
         try {
-          const response = await fetch('http://localhost:3001/set-password', {
+          const response = await fetch('https://botpanelserver.adriangutierr26.repl.co/set-password', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
