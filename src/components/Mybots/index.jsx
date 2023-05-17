@@ -220,13 +220,13 @@ export const Mybots = () => {
   const handleChangeWhatsapp = (botId) => {
     const targetBot = bots.find((bot) => bot.id === botId);
     if (targetBot) {
-      updateWhatsappEnable(targetBot.whatsapp_enable === 1 ? 0 : 1, targetBot.id, (result) => {
+      updateWhatsappEnable(targetBot.whatsapp_enable == 1 ? 0 : 1, targetBot.id, (result) => {
         let returnValue = result;
         if (returnValue.toLowerCase().includes("successfully")) {
           const updatedBots = bots.map((bot) => {
             if (bot.id === botId) {
               // Update the whatsapp_enable value
-              bot.whatsapp_enable = bot.whatsapp_enable === 1 ? 0 : 1;
+              bot.whatsapp_enable = bot.whatsapp_enable == 1 ? 0 : 1;
             }
             return bot;
           });
