@@ -19,6 +19,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Mybots />}/>
+          <Route path="/login" element={<LoginComponent />}/>
           <Route path="/my-bots" element={<Mybots />}/>
           <Route path="/set-password" element={<RegisterComponent />}/>
           <Route path="/create-bot" element={<PromptForm showBot={showBot}/>}/>

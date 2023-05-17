@@ -50,7 +50,7 @@ export const PromptForm = ({showBot}) => {
     useEffect(() => {
       if (!isLoggedIn()) {
         // Redirect user to the login page if not logged in
-        navigate('/');
+        navigate('/login');
       }
     }, []);
 
@@ -62,7 +62,7 @@ export const PromptForm = ({showBot}) => {
     const handleSendButton = () => {
       const loggedInUserEmail = localStorage.getItem('email');
       if (validateFields() && loggedInUserEmail) {
-        fetch('https://botpanelserver.adriangutierr26.repl.co/createBot', {
+        fetch('https://bot-panel-server-AdrianGutierr26.replit.app/createBot', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json'
