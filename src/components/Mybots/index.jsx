@@ -218,7 +218,7 @@ export const Mybots = () => {
   };
 
   const handleChangeWhatsapp = (botId) => {
-    const targetBot = bots.find((bot) => bot.id === botId);
+    const targetBot = bots.find((bot) => bot.id == botId);
     if (targetBot) {
       updateWhatsappEnable(targetBot.whatsapp_enable == 1 ? 0 : 1, targetBot.id, (result) => {
         let returnValue = result;
