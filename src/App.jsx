@@ -18,7 +18,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<LoginComponent/>}/>
+          <Route path="/" element={<Mybots />}/>
           <Route path="/my-bots" element={<Mybots />}/>
           <Route path="/set-password" element={<RegisterComponent />}/>
           <Route path="/create-bot" element={<PromptForm showBot={showBot}/>}/>
