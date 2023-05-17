@@ -125,20 +125,6 @@ export const Mybots = () => {
     },
   }));
   
-
-  useEffect(() => {
-    if (!isLoggedIn()) {
-      // Redirect user to the login page if not logged in
-      navigate('/login');
-    }
-    const loggedInUserEmail = localStorage.getItem('email');
-    getData(loggedInUserEmail);
-  }, []);
-
-  if (!isLoggedIn()) {
-    return null;
-  }
-
   const getData = async (userEmail) => {
     fetch(`https://bot-panel-server-AdrianGutierr26.replit.app/getData?email=${encodeURIComponent(userEmail)}`, {
       method: "GET",
@@ -153,6 +139,19 @@ export const Mybots = () => {
       })
       .catch(err => console.log(err));
   };
+
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      // Redirect user to the login page if not logged in
+      navigate('/login');
+    } 
+    const loggedInUserEmail = localStorage.getItem('email');
+    getData(loggedInUserEmail);
+  }, []);
+
+  if (!isLoggedIn()) {
+    return null;
+  }
 
   const updateWhatsappEnable = async (whatsapp_enable, botId, callback) => {
     await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/updateWhatsappEnable", {
