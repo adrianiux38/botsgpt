@@ -6,16 +6,24 @@ import {React, useState} from 'react';
 import LoginComponent from './components/Login';
 import RegisterComponent from './components/Register';
 
+import { isMobileDevice } from './utils/checkdevice';
+
 
 function App() {
   const [botCreated, setBotCreated] = useState(false);
-
   function showBot(){
     setBotCreated(true)
   }
   
-  return (
-    <div className="App">
+  const mobileWarning = isMobileDevice() ? (
+    <div className="mobile-warning">
+    Please access using your computer/laptop
+  </div>
+  ) : null;
+
+return (
+  <div className="App">
+    {mobileWarning}
       <Router>
         <Routes>
           <Route path="/" element={<LoginComponent/>}/>
@@ -27,7 +35,7 @@ function App() {
       
       {/*{botCreated && <p>Your own Gpt has been created!</p>}*/}
     </div>
-  );
-}
+);
 
+}
 export default App;
