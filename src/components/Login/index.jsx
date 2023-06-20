@@ -18,7 +18,7 @@ const Container = styled(Box)(({ theme }) => ({
     width: '50vw',
     justifyContent: 'center',
     borderRadius: '16px',
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    background: 'white',
   }));
   
   const StyledInput = styled(TextField)({
