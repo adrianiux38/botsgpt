@@ -1,18 +1,10 @@
+import { Row, Col, Card, CardHeader, CardBody, CardFooter, Input } from "reactstrap";
+import { useMediaQuery, useTheme } from '@material-ui/core';
 import React, { useState, useEffect } from "react";
-import { NavBar } from '../NavBar'
-import './Mybots.css'
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Input,
-
-} from "reactstrap";
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import { NavBar } from '../NavBar'
+import './Mybots.css'
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -35,11 +27,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { useNavigate } from 'react-router-dom';
 
 import { isLoggedIn } from '../../utils/auth'
+
+import { BACKEND_URL } from '../../config.js';
 
 export const Mybots = () => {
   const [bots, setBots] = useState([]);
@@ -63,13 +57,16 @@ export const Mybots = () => {
   const [currentAssistantTraining3, setCurrentAssistantTraining3] = useState('');
   const [currentSystemPrompt, setCurrentSystemPrompt ] = useState('');
 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   const navigate = useNavigate();
 
   //funcion para abrir el form para hacer edit del bot
   const handleEditButtonClick = (botId) => {
     setBotId(botId);
     //consultar en la base de datos los datos de ese bot 
-    fetch("https://bot-panel-server-AdrianGutierr26.replit.app/getBotData", {
+    fetch(`${BACKEND_URL}/getBotData`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -126,7 +123,7 @@ export const Mybots = () => {
   }));
   
   const getData = async (userEmail) => {
-    fetch(`https://bot-panel-server-AdrianGutierr26.replit.app/getData?email=${encodeURIComponent(userEmail)}`, {
+    fetch(`${BACKEND_URL}/getData?email=${encodeURIComponent(userEmail)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +151,7 @@ export const Mybots = () => {
   }
 
   const updateWhatsappEnable = async (whatsapp_enable, botId, callback) => {
-    await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/updateWhatsappEnable", {
+    await fetch(`${BACKEND_URL}/updateWhatsappEnable`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -170,7 +167,7 @@ export const Mybots = () => {
   }
 
   const sendWhatsappNew = async (phoneNumberId, whatsappApiKey) => {
-    await fetch('https://bot-panel-server-AdrianGutierr26.replit.app/whatsappNew', {
+    await fetch(`${BACKEND_URL}/whatsappNew`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -180,7 +177,7 @@ export const Mybots = () => {
   };
 
   const updateTelegramEnable = async (telegram_enable, botId, callback) => {
-    await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/updateTelegramEnable", {
+    await fetch(`${BACKEND_URL}/updateTelegramEnable`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -237,8 +234,12 @@ export const Mybots = () => {
     }
   };
 
+  const handleDeleteButtonClick = (botId) => {
+
+  }
+
   const updateBotInfo = async (botId) => {
-    await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/updateBotInfo", {
+    await fetch(`${BACKEND_URL}/updateBotInfo`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -257,8 +258,12 @@ export const Mybots = () => {
   return (
     
     <div className="mybots">
-    <NavBar/>
-    <h2>Mys bots</h2>
+    <NavBar/> 
+    
+    <div className="container">
+    <div className="title">
+    <h2>My bots</h2>
+    </div>
     <TableContainer component={Paper}>
         <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Enter Whatsapp Phone number Id and Api Key</DialogTitle>
@@ -461,6 +466,7 @@ export const Mybots = () => {
                 <StyledTableCell align="center">WhatsappEnable&nbsp;</StyledTableCell>
                 <StyledTableCell align="center">TelegramEnable&nbsp;</StyledTableCell>
                 <StyledTableCell align="center">Edit&nbsp;</StyledTableCell>
+                <StyledTableCell align="center">Delete&nbsp;</StyledTableCell>
                 {/*
                 <StyledTableCell align="center">Creation Status&nbsp;</StyledTableCell>
                 */}
@@ -514,12 +520,21 @@ export const Mybots = () => {
                   <FontAwesomeIcon icon={faEdit} />
                 </Button>
                 </StyledTableCell>
+
+                <StyledTableCell align="center">
+                <Button onClick={() => {
+                  handleDeleteButtonClick(bot.id)
+                }}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
+                </StyledTableCell>
                 {/* <StyledTableCell align='center'>{bot.bot_runnning}</StyledTableCell>*/}
               </StyledTableRow>
                 ))}
         </TableBody>
       </Table>
       </TableContainer>
+      </div>
       </div>
   );
 };

@@ -14,23 +14,7 @@ function App() {
     setBotCreated(true);
   }
 
-  if (isMobileDevice()) {
-    return (
-      <Container maxWidth="sm" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-          boxShadow={2}
-          borderRadius={4}
-          p={3}
-        >
-          <Typography variant="h5">Please access using a desktop computer or laptop</Typography>
-        </Box>
-      </Container>
-    );
-  }
+ 
 
   return (
     <div className="App">

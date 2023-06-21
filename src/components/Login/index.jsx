@@ -1,24 +1,30 @@
 import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, Alert, Snackbar } from '@mui/material';
+import { Grid,  useMediaQuery, useTheme } from '@material-ui/core';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-
-
-
+import { BACKEND_URL } from '../../config.js';
 
 import './Login.css';
+
 
 const Container = styled(Box)(({ theme }) => ({
     display:'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height:'50vh',
-    width: '50vw',
+    height:'500px',
+    width: '40vw',
     justifyContent: 'center',
     borderRadius: '16px',
     background: 'white',
+    [theme.breakpoints.down('md')]: {
+      width: '80vw',
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '90vw',
+    },
   }));
   
   const StyledInput = styled(TextField)({
@@ -29,18 +35,30 @@ const Container = styled(Box)(({ theme }) => ({
   const StyledButton = styled(Button)({
     borderRadius: '16px',
     marginBottom: '1rem',
+    marginTop: '1rem'
   });
 
   const LoginComponent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const theme = useTheme();   
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    
 
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen(false);
+    };
 
     const login = useGoogleLogin({
         onSuccess: tokenResponse => {
           const accessToken = tokenResponse.access_token;
-          fetch('https://bot-panel-server-AdrianGutierr26.replit.app/google-login', {
+          fetch(`${BACKEND_URL}/google-login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -62,7 +80,6 @@ const Container = styled(Box)(({ theme }) => ({
             //console.log(data.message);
             localStorage.setItem('token', data.token);
             localStorage.setItem('email', data.email);
-            alert("Successfully logged in with Google!");
             navigate('/create-bot');
           })
           .catch(error => {
@@ -71,10 +88,15 @@ const Container = styled(Box)(({ theme }) => ({
           });
         }
       });
+
+    const isInputValid = () => {
+      return (email !== '' && password !== '');
+    }
   
     const handleLogin = async () => {
+      if(isInputValid()){
         try {
-          const response = await fetch('https://bot-panel-server-AdrianGutierr26.replit.app/login', {
+          const response = await fetch(`${BACKEND_URL}/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -100,24 +122,34 @@ const Container = styled(Box)(({ theme }) => ({
           console.log('Error:', error);
           errorMessage(error.message);
         }
-      };
+      }
+      else{
+        setOpen(true);
+      }
+    };
 
     const errorMessage = (error) => {
         alert(error)
     };
   
     return (
-        <div class="centerDiv">
+      <div className="centerDiv">
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning" sx={{ width: '90%' }}>
+          Missing email or password
+        </Alert>
+      </Snackbar>
       <Container>
         <Typography variant="h4" gutterBottom style={{marginTop: '5%', marginBottom: '3%'}}>
           Login
         </Typography>
         <StyledInput
+          focused={true}
           label="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           variant="outlined"
-          style={{width:'40%'}}
+          style={{width: isSmallScreen ? '90%' : '50%'}}
         />
         <StyledInput
           label="Password"
@@ -125,13 +157,13 @@ const Container = styled(Box)(({ theme }) => ({
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           variant="outlined"
-          style={{width:'40%'}}
+          style={{width: isSmallScreen ? '90%' : '50%'}}
         />
-        <StyledButton variant="contained" onClick={handleLogin} style={{width:'40%'}}>
+        <StyledButton variant="contained" onClick={handleLogin} style={{width: isSmallScreen ? '80%' : '40%'}}>
           Login with Email
         </StyledButton>
         <StyledButton onClick={() => login()}>
-            Sign in with Google 🚀{' '}
+          Sign in with Google 🚀{' '}
         </StyledButton>
         <StyledButton onClick={() => navigate('/set-password')} style={{marginTop: '-1%'}}>
           Register
@@ -146,10 +178,8 @@ const Container = styled(Box)(({ theme }) => ({
             console.log(credentialResponse);
           }}
         />*/}
-       
-        
       </Container>
-      </div>
+    </div>
     );
   };
 

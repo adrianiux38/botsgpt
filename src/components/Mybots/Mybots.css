@@ -8,16 +8,25 @@
 }
 
 .whatsappApiKey .MuiOutlinedInput-notchedOutline {
-    border-color:black !important;
-    color:black !important;
+    border-color:white !important;
+    color:white !important;
 }
 .whatsappApiKey .MuiInputBase-input {
     color: rgb(7, 0, 0) !important;
 }
 .mybots .MuiInputBase-input .MuiOutlinedInput-notchedOutline{
-    color: black;
-    border-color: black;
+    color: white;
+    border-color: white;
+    
 }
+.container{
+    margin-top: 100px;
+}
+ .title{
+    background: white;
+    margin-top: 30px;
+ }
 
-
-
+.topMargin {
+    height: 100px;
+}
