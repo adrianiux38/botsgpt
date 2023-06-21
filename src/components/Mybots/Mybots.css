@@ -68,3 +68,51 @@
     border-bottom-right-radius: 40px;
 }
 
+/*------------- editBots----------- */
+
+.closeBtn{
+    display: flex;
+    justify-content: flex-end;
+    align-content: right;
+    align-items: right;
+    justify-content: right;
+    justify-items: right;
+    font-size: large;
+    margin-right: 10px;
+    color: red;
+
+}
+
+.myDialog .MuiDialog-paper {
+    border-radius: 25px;
+    background: white;
+    padding: 20px;
+}
+
+.myDialogTitle {
+    
+    color: #42A5F6;
+    font-size: 30px;
+    text-align: center;
+    font-weight: 900;
+  }
+
+  .myTextField .MuiOutlinedInput-root {
+    border-radius: 20px;
+  }
+  
+  .myTextField .MuiOutlinedInput-root fieldset {
+    font-size: 18px;
+    border-color: #42A5F6;
+  }
+  
+  .myTextField .MuiOutlinedInput-root input {
+    font-size: 18px;
+  }
+  
+  .myTextField .MuiInputLabel-root {
+    font-size: 18px;
+  }
+
+
+  

@@ -1,10 +1,11 @@
-import { Row, Col, Card, CardHeader, CardBody, CardFooter, Input } from "reactstrap";
+import { Row, Col, Card, CardHeader, CardBody, CardFooter, Input, CloseButton } from "reactstrap";
 import { useMediaQuery, useTheme } from '@material-ui/core';
 import React, { useState, useEffect } from "react";
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { NavBar } from '../NavBar'
 import './Mybots.css'
+import CloseIcon from '@mui/icons-material/Close';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,7 +18,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import { BottomNavigation } from "@mui/material";
+import { BottomNavigation, Icon, IconButton } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
 
 import Dialog from '@mui/material/Dialog';
@@ -136,6 +137,7 @@ export const Mybots = () => {
       borderBottomLeftRadius: '20px',
       borderBottomRightRadius: '20px',
     },
+  
   }));
   
   const getData = async (userEmail) => {
@@ -334,26 +336,32 @@ export const Mybots = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
-        <DialogTitle>Edit Bot</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Please enter the required information.</DialogContentText>
-          <TextField
+      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}  className="myDialog">
+        <div className="closeBtn">
+          <IconButton edge="end" color="inherit" onClick={() => setEditDialogOpen(false)}>
+            <CloseIcon></CloseIcon>
+          </IconButton>
+        </div>
+        <DialogTitle fontWeight={"700"} fontSize={"1.5em"} className="myDialogTitle">Edit My Bot</DialogTitle>
+        <DialogContent color="black">
+          <DialogContentText color={"black"} paddingY={"10px"}>Please enter the required information.</DialogContentText>
+          <TextField className="myTextField"
             margin="dense"
             id="sytemPrompt"
-            label="System prompt"
+            label="ID"
             type="text"
             fullWidth
             value={currentSystemPrompt || ''}
-            onChange={(e) => setCurrentSystemPrompt(e.target.value)}
+            onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
-          />   
-          <TextField
+          /> 
+           
+          <TextField className="myTextField"
             margin="dense"
             id="whatsappApiKey"
-            label="Whatsapp Api Key"
+            label="Business Name"
             type="text"
             fullWidth
             value={currentWhatsappApiKey || ''}
@@ -362,10 +370,10 @@ export const Mybots = () => {
               shrink: true,
             }}
           />          
-          <TextField
+          <TextField className="myTextField"
           margin="dense" 
           id="whatsappPhoneNumberId" 
-          label="Whatsapp Phone Number ID"
+          label="Busines URL"
           type="text" 
           fullWidth 
           value={currentPhoneNumberId}
@@ -374,9 +382,9 @@ export const Mybots = () => {
             shrink: true,
           }}
           />
-          <TextField 
+          <TextField className="myTextField"
           margin="dense" 
-          id="telegramApiKey" 
+          id="Bussines description" 
           label="Telegram Api Key" 
           type="text" 
           fullWidth 
@@ -386,10 +394,10 @@ export const Mybots = () => {
             shrink: true,
           }}
           />
-          <TextField 
+          <TextField className="myTextField"
           margin="dense" 
           id="userTraining1" 
-          label="User training 1" 
+          label="Bot Name" 
           type="text" 
           fullWidth 
           value={currentUserTraining1}
@@ -398,69 +406,11 @@ export const Mybots = () => {
             shrink: true,
           }}
           />
-          <TextField 
-          margin="dense" 
-          id="assistantTraining1" 
-          label="Assistant training 1" 
-          type="text" 
-          fullWidth 
-          value ={currentAssistantTraining1}
-          onChange={(e) => {setCurrentAssistantTraining1(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField 
-          margin="dense" 
-          id="userTraining2" 
-          label="User training 2" 
-          type="text" 
-          fullWidth 
-          value={currentUserTraining2}
-          onChange={(e) => {setCurrentUserTraining2(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField 
-          margin="dense" 
-          id="assistantTraining2" 
-          label="Assistant training 2" 
-          type="text" 
-          fullWidth 
-          value ={currentAssistantTraining2}
-          onChange={(e) => {setCurrentAssistantTraining2(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField 
-          margin="dense" 
-          id="userTraining3" 
-          label="User training 3" 
-          type="text" 
-          fullWidth 
-          value={currentUserTraining3}
-          onChange={(e) => {setCurrentUserTraining3(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField 
-          margin="dense" 
-          id="assistantTraining3" 
-          label="Assistant training 3" 
-          type="text" 
-          fullWidth 
-          value ={currentAssistantTraining3}
-          onChange={(e) => {setCurrentAssistantTraining3(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
+          
+          
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+          <Button onClick={() => setEditDialogOpen(false)}>Delete</Button>
           <Button
             onClick={() => {
               // Call your fetch function here to save the edited data
@@ -472,26 +422,47 @@ export const Mybots = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Table sx={{ minWidth: 650 }} className="table" aria-label="simple table">
+      <Table sx={{ minWidth: 400 }} className="table" aria-label="simple table">
         <TableHead className="tableHead" sx={{backgroundColor: 'white'}}>
             <StyledTableRow >
                 <StyledTableCell align="center">Id</StyledTableCell>
-                <StyledTableCell align="center">Bot Name&nbsp;</StyledTableCell>
-                <StyledTableCell align="center">Business Name&nbsp;</StyledTableCell>
-                <StyledTableCell align="center">WhatsappEnable&nbsp;</StyledTableCell>
-                <StyledTableCell align="center">TelegramEnable&nbsp;</StyledTableCell>
+                <StyledTableCell align="center"> Name&nbsp;</StyledTableCell>
+                {
+                  (!isSmallScreen)?
+                  <>
+                  <StyledTableCell align="center">Business Name&nbsp;</StyledTableCell>
+                  
+                  </>
+                  :
+                  <></>
+                }
+                <StyledTableCell align="center">Whatsapp&nbsp;</StyledTableCell>
+                <StyledTableCell align="center">Telegram&nbsp;</StyledTableCell>
+                {
+                  (!isSmallScreen)?
+                  <>
                 <StyledTableCell align="center">Edit&nbsp;</StyledTableCell>
                 <StyledTableCell align="center">Delete&nbsp;</StyledTableCell>
+                </>
+                  :
+                  <></>
+                }
             </StyledTableRow>
         </TableHead>
         <TableBody>
         {bots.map(bot => (
-              <StyledTableRow key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 },'&:last-child': {
-                borderBottomLeftRadius: '10px',
-                borderBottomRightRadius: '10px',
-              }, }}>
-                <StyledTableCell component="th" scope='row'>{bot.id}</StyledTableCell>
-                <StyledTableCell align='center'>{bot.prompt}</StyledTableCell>
+              <StyledTableRow onClick={() => handleEditButtonClick(bot.id)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
+                <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>
+                <StyledTableCell align='center'>{"Name"}</StyledTableCell>
+                {
+                  (!isSmallScreen)?
+                  <>
+                <StyledTableCell align='center'>{"Business Name"}</StyledTableCell>
+                </>
+                  :
+                  <></>
+                }
+                
                 {/*
                 <StyledTableCell align='center'>{bot.telegramApiKey}</StyledTableCell>
                 <StyledTableCell align='center'>
@@ -527,7 +498,10 @@ export const Mybots = () => {
                     handleChangeTelegram(bot.id);
                     }}/>
                 </StyledTableCell>
-                
+
+                {
+                  (!isSmallScreen)?
+                  <>
                 <StyledTableCell align="center">
                 <Button onClick={() => {
                   handleEditButtonClick(bot.id)
@@ -543,6 +517,13 @@ export const Mybots = () => {
                   <FontAwesomeIcon icon={faTrash} />
                 </Button>
                 </StyledTableCell>
+                </>
+                
+                  :
+                  <></>
+                }
+                
+                
                 {/* <StyledTableCell align='center'>{bot.bot_runnning}</StyledTableCell>*/}
               </StyledTableRow>
                 ))}
