@@ -104,21 +104,37 @@ export const Mybots = () => {
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
+      backgroundColor: 'white',
+      color: '#059CF1',
+      fontSize: 20,
+      fontWeight: 'bold',
+      
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: 14,
     },
+    
+  }));
+
+  const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+    borderBottomLeftRadius: '30px',
+    borderBottomRightRadius: '30px'
+    
   }));
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: '#DAEDFD',
+      
     },
     // hide last border
     '&:last-child td, &:last-child th': {
       border: 0,
+      
+    },
+    '&:last-child': {
+      borderBottomLeftRadius: '20px',
+      borderBottomRightRadius: '20px',
     },
   }));
   
@@ -259,12 +275,12 @@ export const Mybots = () => {
     
     <div className="mybots">
     <NavBar/> 
-    
+    <div className="marginTop"></div>
     <div className="container">
-    <div className="title">
+    <div className="title2">
     <h2>My bots</h2>
     </div>
-    <TableContainer component={Paper}>
+    <StyledTableContainer className="tableContainer" component={Paper}>
         <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Enter Whatsapp Phone number Id and Api Key</DialogTitle>
         <DialogContent>
@@ -456,25 +472,24 @@ export const Mybots = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-            <StyledTableRow>
+      <Table sx={{ minWidth: 650 }} className="table" aria-label="simple table">
+        <TableHead className="tableHead" sx={{backgroundColor: 'white'}}>
+            <StyledTableRow >
                 <StyledTableCell align="center">Id</StyledTableCell>
-                <StyledTableCell align="center">Prompt&nbsp;</StyledTableCell>
-                {/*<StyledTableCell align="center">TelegramApiKey&nbsp;</StyledTableCell>
-                <StyledTableCell align="center">WhatsappApiKey&nbsp;</StyledTableCell> */}
+                <StyledTableCell align="center">Bot Name&nbsp;</StyledTableCell>
+                <StyledTableCell align="center">Business Name&nbsp;</StyledTableCell>
                 <StyledTableCell align="center">WhatsappEnable&nbsp;</StyledTableCell>
                 <StyledTableCell align="center">TelegramEnable&nbsp;</StyledTableCell>
                 <StyledTableCell align="center">Edit&nbsp;</StyledTableCell>
                 <StyledTableCell align="center">Delete&nbsp;</StyledTableCell>
-                {/*
-                <StyledTableCell align="center">Creation Status&nbsp;</StyledTableCell>
-                */}
             </StyledTableRow>
         </TableHead>
         <TableBody>
         {bots.map(bot => (
-              <StyledTableRow key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <StyledTableRow key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 },'&:last-child': {
+                borderBottomLeftRadius: '10px',
+                borderBottomRightRadius: '10px',
+              }, }}>
                 <StyledTableCell component="th" scope='row'>{bot.id}</StyledTableCell>
                 <StyledTableCell align='center'>{bot.prompt}</StyledTableCell>
                 {/*
@@ -533,7 +548,7 @@ export const Mybots = () => {
                 ))}
         </TableBody>
       </Table>
-      </TableContainer>
+      </StyledTableContainer>
       </div>
       </div>
   );
