@@ -4,8 +4,6 @@
     display:flex;
     flex-direction: row;
     width: 100%;
-    padding-top:10px;
-    padding-bottom:10px;
     position: fixed;
     top: 0;
     z-index: 1000;
@@ -18,20 +16,20 @@
     align-content:center;
     font-Weight:bold;
     align-Items:center;
-    font-Family:Roboto, Helvetica, sans-serif;
+    font-Family: Roboto, Helvetica, sans-serif;
     color:black;
-    font-size: 30px;
+    font-size: 36px;
 }    
 
 .menu{
     display:flex;
-    
     flex:0.3;
     margin-Left:2%;
     justify-Content:space-around;
     align-Items:center;
     text-Decoration:none;
     color:black;
+    margin-right: 20px;
 }
 
 .menuItem{
@@ -40,11 +38,25 @@
     font-size: 20px;
     transition: color 0.3s ease;
     cursor: pointer;
-    margin-inline: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font: 'Roboto';
+    margin-inline: 16px;
+    white-space: nowrap;
+    font: Roboto;
     font-weight: 600;
+}
+
+.footer {
+    background: white;
+    justify-Content: space-around;
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    padding-top:10px;
+    padding-bottom:10px;
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 .addBtn{
@@ -53,15 +65,25 @@
     transition: color 0.8s ease;
 }
 
+.footerBtn{
+    transition: color 0.8s ease;
+}
+
 .addBtn:hover{
     background: linear-gradient(45deg,  rgb(252, 182, 248) 1% , #ac4eff 99%   );
     border-radius: 15px;
 }
 
+.footerIcon:hover{
+    color: #ac4eff;
+}
+
 .addIcon{
     color: white;
-    
+}
 
+.footerIcon{
+    color: #42A5F6;
 }
 
 .menuItem:hover{
@@ -71,7 +93,6 @@
 
 .menuBtn{
     font-Size: 50px;
-    margin: 20px ;
     color:black;
     transition: color 0.3s ease;
 }

@@ -113,7 +113,6 @@ const Container = styled(Box)(({ theme }) => ({
             //console.log(data);
             localStorage.setItem('token', data.token);
             localStorage.setItem('email', data.email);
-            alert("Successfully logged in!");
             navigate('/create-bot');
           } else {
             errorMessage("Invalid email or password");
