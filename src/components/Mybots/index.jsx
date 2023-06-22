@@ -7,12 +7,7 @@ import { NavBar } from '../NavBar'
 import './Mybots.css'
 import CloseIcon from '@mui/icons-material/Close';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Table, TableBody, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 import Box from '@mui/material/Box';
@@ -21,17 +16,12 @@ import TextField from '@mui/material/TextField';
 import { BottomNavigation, Icon, IconButton } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, } from '@mui/material';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { useNavigate } from 'react-router-dom';
-
 import { isLoggedIn } from '../../utils/auth'
 
 import { BACKEND_URL } from '../../config.js';

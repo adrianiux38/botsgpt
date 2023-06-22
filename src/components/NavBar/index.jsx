@@ -11,6 +11,8 @@ export const NavBar = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const tutorialUrl = "https://www.youtube.com/watch?v=j61cdiPP_8s&t=2209s";
+
   const logout = () => {
     localStorage.clear();
     navigate('/login');
@@ -25,7 +27,7 @@ export const NavBar = () => {
         (!isSmallScreen) ?
         <div className='menu'>
             <Link className='menuItem' to="/my-bots">My Bots</Link>
-            <Link className='menuItem' to="https://www.youtube.com/watch?v=8TS7pFMpk4s&ab_channel=ElGera">Tutorial</Link>
+            <Link className='menuItem' to={tutorialUrl}>Tutorial</Link>
             <Link className='menuItem' to="/login" onClick={logout}>Logout</Link>
           <div className='addBtn'>
             <IconButton onClick={() => navigate('/create-bot')}>
@@ -40,11 +42,6 @@ export const NavBar = () => {
     {
     (isSmallScreen) ?
       <div className='footer'>
-        <div className='addBtn'>
-          <IconButton onClick={() => navigate('/create-bot')}>
-            <AddCircleOutlineIcon className='addIcon' fontSize="large" color='inherit' />
-          </IconButton>
-        </div>
         <div className='footerBtn'>
           <IconButton onClick={() => navigate('/my-bots')}>
             <FontAwesomeIcon icon={faRobot} className='footerIcon' size='lg' color='inherit' />
@@ -55,9 +52,9 @@ export const NavBar = () => {
             <FontAwesomeIcon icon={faUser} className='footerIcon' size='lg' color='inherit' />
           </IconButton>
         </div>
-        <div className='footerBtn'>
-          <IconButton onClick={() => navigate('/login')}>
-            <FontAwesomeIcon icon={faArrowRightFromBracket} className='footerIcon' size='lg' color='inherit' />
+        <div className='addBtn'>
+          <IconButton onClick={() => navigate('/create-bot')}>
+            <AddCircleOutlineIcon className='addIcon' fontSize="large" color='inherit' />
           </IconButton>
         </div>
       </div>

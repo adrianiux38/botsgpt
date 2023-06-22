@@ -21,14 +21,13 @@
 }
 
 .mybots{
-    display: flex;
+  height: 100vh;
+  background: linear-gradient(246.62deg, #42A5F6 7.3%, #6B1A9B 97.22%);
+  display: flex;
   flex: 1;
   align-content: center;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  justify-items: center;
-  justify-self: center;
 }
 .container{
     width: 90%;

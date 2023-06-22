@@ -6,12 +6,17 @@ import {
   Typography,
   Alert,
   Snackbar,
+  ThemeProvider,
+  Grid,
+  Stack,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { BACKEND_URL } from "../../config.js";
 import { useMediaQuery, useTheme } from "@material-ui/core";
+import { userSignTheme } from '../../utils/userSignTheme.js';
+import GoogleIcon from '@mui/icons-material/Google';
 
 import "./Register.css";
 
@@ -133,53 +138,66 @@ const RegisterComponent = () => {
   };
 
   return (
-    <div class="centerDiv">
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="warning" sx={{ width: "90%" }}>
-          Missing email or password
-        </Alert>
-      </Snackbar>
-      <Container >
-        <Typography
-          variant="h4"
-          gutterBottom
-          style={{ marginTop: "5%", marginBottom: "3%" }}
-        >
-          Register Now
-        </Typography>
-        <StyledInput
-          label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          variant="outlined"
-          style={{ width: isSmallScreen ? "90%" : "50%" }}
-        />
-        <StyledInput
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          variant="outlined"
-          style={{ width: isSmallScreen ? "90%" : "50%" }}
-        />
-        <StyledButton
-          variant="contained"
-          onClick={handleRegister}
-          style={{ width: isSmallScreen ? "80%" : "40%" }}
-        >
-          Sign up
-        </StyledButton>
-        <StyledButton onClick={() => registerGoogle()}>
-          Sign up with Google 🚀{" "}
-        </StyledButton>
-        <StyledButton
-          onClick={() => navigate("/")}
-          style={{ marginTop: "-1%" }}
-        >
-          Login
-        </StyledButton>
-      </Container>
-    </div>
+    <ThemeProvider theme={userSignTheme}>
+        <Grid container sx={{ minHeight: '100vh' }}>
+          <Grid item xs={6} sx={{ background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}></Grid>
+          <Grid item xs={6}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+              }}
+            >
+              <Typography variant='h4' component='div'>
+                Register
+              </Typography>
+              <Stack spacing={2} mt={2}>
+                <TextField
+                  fullWidth
+                  id='email'
+                  label='Email'
+                  variant='outlined'
+                  type='email'
+                  onChange={(e) => setEmail(e.target.value)}
+                  sx={{ width: '400px' }}
+                />
+                <TextField
+                  fullWidth
+                  id='password'
+                  label='Password'
+                  variant='outlined'
+                  type='password'
+                  onChange={(e) => setPassword(e.target.value)}
+                  sx={{ width: '400px' }}
+                />
+                <Button fullWidth variant='contained' color='primary' onClick={handleRegister}>
+                  Register
+                </Button>
+                <Button
+                  fullWidth
+                  variant='contained'
+                  color='default'
+                  startIcon={<GoogleIcon />}
+                  onClick={() => registerGoogle()}
+                >
+                  Sign up with Google
+                </Button>
+                <Button  onClick={() => navigate('/')} style={{marginTop: '3%'}}>
+                  Login
+                </Button>
+              </Stack>
+            </Box>
+          </Grid>
+        </Grid>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="warning" sx={{ width: "90%" }}>
+            Missing email or password
+          </Alert>
+        </Snackbar>
+      </ThemeProvider>
   );
 };
 
