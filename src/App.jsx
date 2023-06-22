@@ -2,17 +2,29 @@ import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { Mybots } from './components/Mybots';
 import { PromptForm } from './components/PromptForm';
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import LoginComponent from './components/Login';
 import RegisterComponent from './components/Register';
-import { isMobileDevice } from './utils/checkdevice';
 import { Container, Box, Typography } from '@mui/material';
+
+import CreateBot from './components/CreateBot';
+
+import { isMobileDevice } from './utils/checkdevice';
 
 function App() {
   const [botCreated, setBotCreated] = useState(false);
-  function showBot() {
-    setBotCreated(true);
+
+
+
+  function showBot(){
+    setBotCreated(true)
   }
+
+  const mobileWarning = isMobileDevice() ? (
+    <div className="mobile-warning">
+    Please access using your computer/laptop
+  </div>
+  ) : null;
 
   if (isMobileDevice()) {
     return (
@@ -40,7 +52,7 @@ function App() {
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/my-bots" element={<Mybots />} />
           <Route path="/set-password" element={<RegisterComponent />} />
-          <Route path="/create-bot" element={<PromptForm showBot={showBot} />} />
+          <Route path="/create-bot" element={<CreateBot/>} />
         </Routes>
       </Router>
 

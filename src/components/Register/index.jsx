@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-
-
-
-
+import { Button, TextField, Typography, Stack, Box, ThemeProvider, Grid } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
+import { userSignTheme } from '../../utils/userSignTheme.js'
+import { isLoggedIn } from '../../utils/auth'
 import './Register.css';
+
 
 const Container = styled(Box)(({ theme }) => ({
     display:'flex',
@@ -38,37 +38,37 @@ const Container = styled(Box)(({ theme }) => ({
 
     const registerGoogle = useGoogleLogin({
         onSuccess: tokenResponse => {
-          const accessToken = tokenResponse.access_token;
-          fetch('https://bot-panel-server-AdrianGutierr26.replit.app/google-login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              accessToken: accessToken,
-            }),
-          })
-          .then(backendResponse => {
-            if (backendResponse.ok) {
-              return backendResponse.json();
-            } else {
-              return backendResponse.json().then(errorData => {
-                throw new Error(errorData.error);
-              });
-            }
-          })
-          .then(data => {
-            //console.log(data.message);
-            localStorage.setItem('token', data.token);
-            alert("Successfully registered with Google!");
-            navigate('/create-bot');
-          })
-          .catch(error => {
-            console.log(error.message);
-            errorMessage(error.message);
-          });
-        }
-      });
+        const accessToken = tokenResponse.access_token;
+        fetch('https://bot-panel-server-AdrianGutierr26.replit.app/google-login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            accessToken: accessToken,
+          }),
+        })
+        .then(backendResponse => {
+          if (backendResponse.ok) {
+            return backendResponse.json();
+          } else {
+            return backendResponse.json().then(errorData => {
+              throw new Error(errorData.error);
+            });
+          }
+        })
+        .then(data => {
+          //console.log(data.message);
+          localStorage.setItem('token', data.token);
+          alert("Successfully registered with Google!");
+          navigate('/create-bot');
+        })
+        .catch(error => {
+          console.log(error.message);
+          errorMessage(error.message);
+        });
+      }
+    })
 
 
       const handleRegister = async () => {
@@ -98,43 +98,79 @@ const Container = styled(Box)(({ theme }) => ({
         }
       };
 
-    const errorMessage = (error) => {
-        alert(error)
-    };
-  
+      const errorMessage = (error) => {
+          alert(error)
+      };
+
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      // Redirect user to the login page if not logged in
+      navigate('/create-bot');
+    }
+  }, []);
+
+  if (!isLoggedIn()) {
+    return null;
+  }
+
     return (
-        <div class="centerDiv">
-      <Container>
-        <Typography variant="h4" gutterBottom style={{marginTop: '5%', marginBottom: '3%'}}>
-          Register Now
-        </Typography>
-        <StyledInput
-          label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          variant="outlined"
-          style={{width:'40%'}}
-        />
-        <StyledInput
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          variant="outlined"
-          style={{width:'40%'}}
-        />
-        <StyledButton variant="contained" onClick={handleRegister} style={{width:'40%'}}>
-          Sign up
-        </StyledButton>
-        <StyledButton onClick={() => registerGoogle()} >
-            Sign up with Google 🚀{' '}
-        </StyledButton>
-        <StyledButton onClick={() => navigate('/')} style={{marginTop: '-1%'}}>
-          Login
-        </StyledButton>        
-      </Container>
-      </div>
+      <ThemeProvider theme={userSignTheme}>
+        <Grid container sx={{ minHeight: '100vh' }}>
+          <Grid item xs={6} sx={{ background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}></Grid>
+          <Grid item xs={6}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+              }}
+            >
+              <Typography variant='h4' component='div'>
+                Register
+              </Typography>
+              <Stack spacing={2} mt={2}>
+                <TextField
+                  fullWidth
+                  id='email'
+                  label='Email'
+                  variant='outlined'
+                  type='email'
+                  onChange={(e) => setEmail(e.target.value)}
+                  sx={{ width: '400px' }}
+                />
+                <TextField
+                  fullWidth
+                  id='password'
+                  label='Password'
+                  variant='outlined'
+                  type='password'
+                  onChange={(e) => setPassword(e.target.value)}
+                  sx={{ width: '400px' }}
+                />
+                <Button fullWidth variant='contained' color='primary' onClick={handleRegister}>
+                  Register
+                </Button>
+                <Button
+                  fullWidth
+                  variant='contained'
+                  color='default'
+                  startIcon={<GoogleIcon />}
+                  onClick={() => registerGoogle()}
+                >
+                  Sign up with Google
+                </Button>
+                <Button  onClick={() => navigate('/')} style={{marginTop: '3%'}}>
+                  Login
+                </Button>
+              </Stack>
+            </Box>
+          </Grid>
+        </Grid>
+      </ThemeProvider>
     );
   };
-
-export default RegisterComponent;
+  
+  export default RegisterComponent;

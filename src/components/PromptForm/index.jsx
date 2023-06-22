@@ -98,12 +98,11 @@ export const PromptForm = ({showBot}) => {
       }
 
     return(
-    <div>
+    <div className='promptForm'>
         <NavBar/>
         <Header/>
         <Box id="box" sx={{width: '100%', display: "flex", paddingTop:"5%", alignContent:"center", flexDirection:"column", alignItems:"center", justifyContent:"center", justifyItems:"center", justifySelf:"center"}}>
         <h1 style={{maxWidth:'70%', color:'white'}}>Create your own ChatGPT for your business</h1>
-
         <Box
         component="form"
         sx={{display:'flex', alignSelf:'center', alignContent:'center',maxWidth:'100%', justifyContent:'center', color:'white',
