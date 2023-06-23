@@ -37,16 +37,11 @@ export const Mybots = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   /* CONSTANTES QUE SE MUESTRAN EN EL FORM DE EDIT */
-  const [currentWhatsappApiKey, setCurrentWhatsappApiKey] = useState('');
+  const [currentId, setCurrentId] = useState('');
+  const [currentBusinessName, setCurrentBusinessName] = useState('');
+  const [currentBusinessUrl, setCurrentBusinessUrl] = useState('');
   const [currentTelegramApiKey, setCurrentTelegramApiKey] = useState('');
-  const [currentPhoneNumberId, setCurrentPhoneNumberId] = useState('');
-  const [currentUserTraining1, setCurrentUserTraining1] = useState('');
-  const [currentUserTraining2, setCurrentUserTraining2] = useState('');
-  const [currentUserTraining3, setCurrentUserTraining3] = useState('');
-  const [currentAssistantTraining1, setCurrentAssistantTraining1] = useState('');
-  const [currentAssistantTraining2, setCurrentAssistantTraining2] = useState('');
-  const [currentAssistantTraining3, setCurrentAssistantTraining3] = useState('');
-  const [currentSystemPrompt, setCurrentSystemPrompt ] = useState('');
+  const [currentBotName, setCurrentBotName] = useState('');
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -57,7 +52,7 @@ export const Mybots = () => {
   const handleEditButtonClick = (botId) => {
     setBotId(botId);
     //consultar en la base de datos los datos de ese bot 
-    fetch(`${BACKEND_URL}/getBotData`, {
+    fetch(`${BACKEND_URL}/getBotData2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,17 +61,12 @@ export const Mybots = () => {
     })
     .then((res) => res.json())
     .then((data) => {
-      //console.log(data);
-      setCurrentSystemPrompt(data[0].prompt);
-      setCurrentTelegramApiKey(data[0].telegramApiKey);
-      setCurrentPhoneNumberId(data[0].phone_number_id);
-      setCurrentWhatsappApiKey(data[0].whatsappApiKey);
-      setCurrentUserTraining1(data[0].user_content1);
-      setCurrentUserTraining2(data[0].user_content2);
-      setCurrentUserTraining3(data[0].user_content3);
-      setCurrentAssistantTraining1(data[0].assistant_content1);
-      setCurrentAssistantTraining2(data[0].assistant_content2);
-      setCurrentAssistantTraining3(data[0].assistant_content3);
+      console.log(data);
+      setCurrentId(data[0].currentId);
+      setCurrentBusinessName(data[0].business_name);
+      setCurrentBusinessUrl(data[0].business_url);
+      setCurrentTelegramApiKey(data[0].telegram_api_key);
+      setCurrentBotName(data[0].bot_name);
     })
     .catch(err => console.log(err))
     
@@ -131,7 +121,7 @@ export const Mybots = () => {
   }));
   
   const getData = async (userEmail) => {
-    fetch(`${BACKEND_URL}/getData?email=${encodeURIComponent(userEmail)}`, {
+    fetch(`${BACKEND_URL}/getData2?email=${encodeURIComponent(userEmail)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +129,7 @@ export const Mybots = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        //console.log(data);
+        console.log(data);
         setBots(data);
       })
       .catch(err => console.log(err));
@@ -185,7 +175,7 @@ export const Mybots = () => {
   };
 
   const updateTelegramEnable = async (telegram_enable, botId, callback) => {
-    await fetch(`${BACKEND_URL}/updateTelegramEnable`, {
+    await fetch(`${BACKEND_URL}/updateTelegramEnable2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -247,12 +237,19 @@ export const Mybots = () => {
   }
 
   const updateBotInfo = async (botId) => {
-    await fetch(`${BACKEND_URL}/updateBotInfo`, {
+    await fetch(`${BACKEND_URL}/updateBotInfo2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({botId, currentSystemPrompt, currentWhatsappApiKey, currentTelegramApiKey, currentPhoneNumberId, currentUserTraining1, currentUserTraining2, currentUserTraining3, currentAssistantTraining1, currentAssistantTraining2, currentAssistantTraining3}),
+      body: JSON.stringify({
+        botId,
+        currentId,
+        currentBusinessName,
+        currentBusinessUrl,
+        currentTelegramApiKey,
+        currentBotName,
+      }),
     })
     .then((res) => res.json())
       .then((data) => {
@@ -326,10 +323,10 @@ export const Mybots = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}  className="myDialog">
+      <Dialog open={editDialogOpen} className="myDialog">
         <div className="closeBtn">
           <IconButton edge="end" color="inherit" onClick={() => setEditDialogOpen(false)}>
-            <CloseIcon></CloseIcon>
+            <CloseIcon />
           </IconButton>
         </div>
         <DialogTitle fontWeight={"700"} fontSize={"1.5em"} className="myDialogTitle">Edit My Bot</DialogTitle>
@@ -341,8 +338,8 @@ export const Mybots = () => {
             label="ID"
             type="text"
             fullWidth
-            value={currentSystemPrompt || ''}
-            onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
+            value={currentId}
+            onChange={(e) => setCurrentId(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
@@ -354,8 +351,8 @@ export const Mybots = () => {
             label="Business Name"
             type="text"
             fullWidth
-            value={currentWhatsappApiKey || ''}
-            onChange={(e) => setCurrentWhatsappApiKey(e.target.value)}
+            value={currentBusinessName}
+            onChange={(e) => setCurrentBusinessName(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
@@ -366,8 +363,8 @@ export const Mybots = () => {
           label="Busines URL"
           type="text" 
           fullWidth 
-          value={currentPhoneNumberId}
-          onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
+          value={currentBusinessUrl}
+          onChange={(e) => setCurrentBusinessUrl(e.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
@@ -390,8 +387,8 @@ export const Mybots = () => {
           label="Bot Name" 
           type="text" 
           fullWidth 
-          value={currentUserTraining1}
-          onChange={(e) => {setCurrentUserTraining1(e.target.value)}}
+          value={currentBotName}
+          onChange={(e) => {setCurrentBotName(e.target.value)}}
           InputLabelProps={{
             shrink: true,
           }}
@@ -443,36 +440,15 @@ export const Mybots = () => {
         {bots.map(bot => (
               <StyledTableRow onClick={() => handleEditButtonClick(bot.id)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
                 <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>
-                <StyledTableCell align='center'>{"Name"}</StyledTableCell>
+                <StyledTableCell align='center'>{bot.bot_name}</StyledTableCell>
                 {
                   (!isSmallScreen)?
                   <>
-                <StyledTableCell align='center'>{"Business Name"}</StyledTableCell>
+                <StyledTableCell align='center'>{bot.business_name}</StyledTableCell>
                 </>
                   :
                   <></>
                 }
-                
-                {/*
-                <StyledTableCell align='center'>{bot.telegramApiKey}</StyledTableCell>
-                <StyledTableCell align='center'>
-                  <Box
-                    component="form"
-                    sx={{
-                      '& > :not(style)': { m: 1, width: '25ch'},
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField
-                      className="whatsappApiKey"
-                      name="whatsappApikey"
-                      type="text"
-                      id={`${bot.id}`}
-                    />
-                  </Box>
-                </StyledTableCell>
-                */}
                 <StyledTableCell align='center'>
                   <Switch {...label} 
                   checked={bot.whatsapp_enable == 1 ? true : false}
@@ -493,19 +469,19 @@ export const Mybots = () => {
                   (!isSmallScreen)?
                   <>
                 <StyledTableCell align="center">
-                <Button onClick={() => {
-                  handleEditButtonClick(bot.id)
-                }}>
-                  <FontAwesomeIcon icon={faEdit} />
-                </Button>
+                  <Button onClick={() => {
+                    handleEditButtonClick(bot.id)
+                  }}>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </Button>
                 </StyledTableCell>
 
                 <StyledTableCell align="center">
-                <Button onClick={() => {
-                  handleDeleteButtonClick(bot.id)
-                }}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </Button>
+                  <Button onClick={() => {
+                    handleDeleteButtonClick(bot.id)
+                  }}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Button>
                 </StyledTableCell>
                 </>
                 
