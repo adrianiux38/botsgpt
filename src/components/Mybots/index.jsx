@@ -265,7 +265,7 @@ export const Mybots = () => {
     <div className="mybots">
     <NavBar/> 
     <div className="marginTop"></div>
-    <div className="container">
+    <div className="container2">
     <div className="title2">
     <h2>My bots</h2>
     </div>

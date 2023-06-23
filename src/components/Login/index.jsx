@@ -111,8 +111,66 @@ import { isLoggedIn } from '../../utils/auth'
     return (
       <ThemeProvider theme={userSignTheme}>
         <Grid container sx={{ minHeight: '100vh' }}>
+          {
+          (!isSmallScreen)?
+          <>
           <Grid item xs={6} sx={{ background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}></Grid>
           <Grid item xs={6}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+              }}
+            >
+              <Typography variant='h4' component='div'>
+                Login
+              </Typography>
+              <Stack spacing={2} mt={2}>
+                <TextField
+                  fullWidth
+                  
+                  id='email'
+                  label='Email'
+                  variant='outlined'
+                  onChange={(e) => setEmail(e.target.value)}
+                  type='email'
+                  sx={{ width: '400px' }}
+                />
+                <TextField
+                  fullWidth
+                  id='password'
+                  label='Password'
+                  variant='outlined'
+                  type='password'
+                  onChange={(e) => setPassword(e.target.value)}
+                  sx={{ width: '400px' }}
+                />
+                <Button fullWidth variant='contained' color='primary' onClick={handleLogin}>
+                  Login
+                </Button>
+                <Button
+                  fullWidth
+                  variant='contained'
+                  color='default'
+                  onClick={() => login()}
+                  startIcon={<GoogleIcon />}
+                >
+                  Sign in with Google
+                </Button>
+                <Button onClick={() => navigate('/set-password')} style={{marginTop: '3%'}}>
+                  Register
+                </Button>
+              </Stack>
+            </Box>
+          </Grid>
+          </>
+          :
+          <>
+          <Grid item xs={0} sx={{ background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}></Grid>
+          <Grid item xs={12}>
             <Box
               sx={{
                 display: 'flex',
@@ -162,6 +220,8 @@ import { isLoggedIn } from '../../utils/auth'
               </Stack>
             </Box>
           </Grid>
+          </>
+  }
         </Grid>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="warning" sx={{ width: '90%' }}>

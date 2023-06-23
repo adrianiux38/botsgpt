@@ -1,15 +1,4 @@
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Input,
-  CloseButton,
-  
-} from "reactstrap";
-
+import './Account.css'
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 
@@ -39,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 
 
 import { BACKEND_URL } from "../../config.js";
+import { BorderAllRounded, Logout, LogoutRounded } from '@mui/icons-material';
 
 const Account = () => {
  
@@ -71,12 +61,52 @@ const Account = () => {
     <div className="account">
         
       <NavBar />
-        <Box id="box" className="boxContainer">
+        
         <div className="topMargin"></div>
         <div className="container">
-            <h1 className="title">My Account</h1>
+            <h1 className="title3">My Account</h1>
+            <div className='row'>
+                <div class="column">
+                    <img class="round-image" src="https://i.imgur.com/WFCuRfz_d.webp?maxwidth=760&fidelity=grand" alt="Descripción de la imagen"/>
+                </div>
+                <div class="column">
+                
+                <TextField className='myTextField2'
+                fullWidth
+                
+                id='custom-input'
+                label='User Name'
+                variant='outlined'
+                sx={{marginTop : "10px"}}
+                />
+
+                <TextField className='myTextField2'
+                fullWidth
+                id='custom-input'
+                label='Email'
+                variant='outlined'
+                />
+                <TextField className='myTextField2'
+                fullWidth
+                id='custom-input'
+                label='New Password'
+                variant='outlined'
+                />
+                </div>                
+            </div>
+
+            <div className='buttons'>
+                    <Button className='logout'>
+                        <Logout></Logout><p> LogOut</p>
+                    </Button>
+                    <div className='cancelSave'>
+                        <Button  sx={{ color: "red" ,margin: "5px" }} className='cancelBtn'>Cancel</Button>
+                        <Button  className='saveBtn'>Save</Button>
+                    </div>
+                </div>
+            
         </div>
-        </Box>
+        
       
     </div>
   );
