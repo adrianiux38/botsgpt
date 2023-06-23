@@ -39,23 +39,10 @@ const Account = () => {
   const navigate = useNavigate();
 
   
-    fetch(`${BACKEND_URL}/getBotData`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({  }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
-        //setCurrentSystemPrompt(data[0].prompt);
-        
-      })
-      .catch((err) => console.log(err));
-
-    
-  
+  const logout = () => {
+    localStorage.clear();
+    navigate('/login');
+  }
 
   return (
     <div className="account">
@@ -96,8 +83,8 @@ const Account = () => {
             </div>
 
             <div className='buttons'>
-                    <Button className='logout'>
-                        <Logout></Logout><p> LogOut</p>
+                    <Button className='logout' onClick={logout}>
+                        LogOut
                     </Button>
                     <div className='cancelSave'>
                         <Button  sx={{ color: "red" ,margin: "5px" }} className='cancelBtn'>Cancel</Button>
