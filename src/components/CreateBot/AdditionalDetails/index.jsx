@@ -31,7 +31,12 @@ return (
                 borderRadius: '20px',
                 bgcolor: 'white',
                 position: 'relative',
-                width: '50%',
+                width: {
+                    xs: '80%', // en pantallas extra pequeñas (menos de 600px) el ancho será del 90%
+                    sm: '75%', // en pantallas pequeñas (600px o más) el ancho será del 75%
+                    md: '60%', // en pantallas medianas (960px o más) el ancho será del 60%
+                    lg: '50%', // en pantallas grandes (1280px o más) el ancho será del 50%
+                  },
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -53,9 +58,9 @@ return (
                 <TextField
                 fullWidth
                 id='custom-input'
-                label='e.g. if the client asks for the top selling products, send him the following url: www.topsellingproducts.com'
+                label='Additional Details'
                 variant='outlined'
-                placeholder={ textFieldValue1 ? '' : 'Additional Details'}
+                placeholder={ textFieldValue1 ? '' : 'e.g. if the client asks for the top selling products, send him the following url: www.topsellingproducts.com'}
                 value={ textFieldValue1 }
                 onChange={handleChange1}
                 InputLabelProps={{

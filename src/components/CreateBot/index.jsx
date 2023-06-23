@@ -306,7 +306,10 @@ useEffect(() => {
 
     
     const handleCancel = () => {
-        // Implement your cancel logic here - for example, navigate back
+        setStepData({});
+        // Navigate back to the initial step
+        changeCurrentStep(1);
+        navigate('/my-bots');
     };
 
     const handleBack = async () => {
@@ -402,4 +405,4 @@ useEffect(() => {
       return <div><NavBar/>{stepComponent}</div>;
 };
 
-export default CreateBot;
+export default CreateBot; 

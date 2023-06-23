@@ -31,7 +31,9 @@ const useTextFieldData = (botId, step) => {
                   if (data.success) {
                       console.log(data);
                       if (data.textFieldData1 !== undefined){
+                        
                         setTextFieldValue1(data.textFieldData1);
+                        console.log(textFieldValue1+"HOLA")
                       }
                       if (data.textFieldData2 !== undefined) { 
                         setTextFieldValue2(data.textFieldData2);

@@ -28,7 +28,7 @@ export const NavBar = () => {
         <div className='menu'>
             <Link className='menuItem' to="/my-bots">My Bots</Link>
             <Link className='menuItem' to={tutorialUrl}>Tutorial</Link>
-            <Link className='menuItem' to="/login" onClick={logout}>Logout</Link>
+            <Link className='menuItem' to="/account" onClick={logout}>Account</Link>
           <div className='addBtn'>
             <IconButton onClick={() => navigate('/create-bot')}>
               <AddCircleOutlineIcon className='addIcon' fontSize="large" color='inherit' />
