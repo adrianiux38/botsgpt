@@ -48,7 +48,7 @@ import { isLoggedIn } from '../../utils/auth'
           }
         })
         .then(data => {
-          //console.log(data.message);
+          console.log(data);
           localStorage.setItem('token', data.token);
           localStorage.setItem('email', data.email);
           navigate('/create-bot');

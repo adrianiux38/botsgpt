@@ -42,26 +42,25 @@ const Account = () => {
   const [eMail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
+
+  
   const logout = () => {
     localStorage.clear();
     navigate('/login');
   }
 
   const getUserData= async ()  =>{
-    const mail = await localStorage.getItem('email')
-    console.log(mail)
+    const mail =  localStorage.getItem('email');
+    
+    console.log(mail + "holas");
     await fetch(`${BACKEND_URL}/getUser`,{
       method: 'POST',
       headers:{"Content-Type": "application/json",},
-      body: JSON.stringify({mail})
+      body: JSON.stringify({email:mail})
     })
     .then((response) => response.json())
    .then((data) => {
-    console.log(data);
-      if(!data){
-          alert("User not found")
-      }    
-    setEmail(data.email);
+    setEmail(data[0].email);
    })
   }
 
@@ -79,7 +78,7 @@ const Account = () => {
             <h1 className="title3">My Account</h1>
             <div className='row'>
                 <div class="column">
-                    <img class="round-image" src="https://i.imgur.com/WFCuRfz_d.webp?maxwidth=760&fidelity=grand" alt="Descripción de la imagen"/>
+                    <img class="round-image" src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="Descripción de la imagen"/>
                 </div>
                 <div class="column">
                 
