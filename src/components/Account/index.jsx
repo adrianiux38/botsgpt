@@ -38,11 +38,36 @@ const Account = () => {
 
   const navigate = useNavigate();
 
+  const [userName, setUserName] = useState("");
+  const [eMail, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   
   const logout = () => {
     localStorage.clear();
     navigate('/login');
   }
+
+  const getUserData= async ()  =>{
+    const mail = await localStorage.getItem('email')
+    console.log(mail)
+    await fetch(`${BACKEND_URL}/getUser`,{
+      method: 'POST',
+      headers:{"Content-Type": "application/json",},
+      body: JSON.stringify({mail})
+    })
+    .then((response) => response.json())
+   .then((data) => {
+    console.log(data);
+      if(!data){
+          alert("User not found")
+      }    
+    setEmail(data.email);
+   })
+  }
+
+  useEffect (()=>{getUserData();}, [] );
+
+
 
   return (
     <div className="account">
@@ -64,27 +89,44 @@ const Account = () => {
                 id='custom-input'
                 label='User Name'
                 variant='outlined'
+                value={userName}
+                onChange={(event) => setUserName(event.target.value)}
                 sx={{marginTop : "10px"}}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 />
 
                 <TextField className='myTextField2'
                 fullWidth
                 id='custom-input'
                 label='Email'
+                value={eMail}
+                onChange={(event) => setEmail(event.target.value)}
                 variant='outlined'
+                sx={{marginTop : "10px"}}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 />
                 <TextField className='myTextField2'
                 fullWidth
                 id='custom-input'
                 label='New Password'
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 variant='outlined'
+                sx={{marginTop : "10px"}}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 />
                 </div>                
             </div>
 
             <div className='buttons'>
                     <Button className='logout' onClick={logout}>
-                        LogOut
+                        LogOut<Logout sx={{paddingLeft:'5px'}}></Logout>
                     </Button>
                     <div className='cancelSave'>
                         <Button  sx={{ color: "red" ,margin: "5px" }} className='cancelBtn'>Cancel</Button>
