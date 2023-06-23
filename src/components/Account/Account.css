@@ -1,6 +1,6 @@
 .account{
-    height: 300px;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     background: linear-gradient(246.62deg, #42A5F6 7.3%, #6B1A9B 97.22%);
     display: flex;
     flex: 1;
@@ -10,11 +10,153 @@
 }
 
 .topMargin{
-    height: 300px;
+    height: 150px;
 }
 
+
 .container{
-    height: 300px;
-    width: 300px;
-    background: red;
+    display: flex;
+    padding: 20px;    
+    background: white;
+    border-radius: 30px;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    
+    
+
 }
+ @media  (min-width: 400px){
+    .container{
+        width: 80%; 
+    }      
+ }
+ @media  (min-width: 600px){
+    .container{
+        width: 70%; 
+    }      
+ }
+ @media  (min-width: 900px){
+    .container{
+        width: 60%; 
+    }      
+ }
+
+ .title3{
+    text-align: center;
+    align-content: center;
+    flex: 1;
+    color:#42A5F6
+ }
+
+ .round-image{
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+ }
+
+ .row{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: auto;
+
+ }
+ @media  (min-width: 400px){
+    .row{
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        height: auto;
+    
+     }   
+ }
+
+ @media  (min-width: 600px){
+    .row{
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        height: auto;
+    
+     }   
+ }
+ @media  (min-width: 900px){
+    .row{
+        display: flex;
+        flex-wrap: nowrap;
+        width: 100%;
+        height: auto;
+        padding-right: 40px;
+        padding-bottom: 50px;
+    
+     }   
+ }
+
+
+ .column{
+    margin-top: 20px;
+    flex: 50%;
+ }
+
+ @media  (min-width: 900px){
+    .column{
+        margin-top: 20px;
+        flex: 50%;
+    }      
+ }
+
+ @media  (min-width: 600px){
+    .column{
+        margin-top: 20px;
+        flex: 50%;
+    }      
+ }
+ @media  (min-width: 400px){
+    .column{
+        margin-top: 20px;
+        flex: 100%;
+    }      
+ }
+
+
+
+ .myTextField2 .MuiOutlinedInput-root {
+    border-radius: 20px;
+    
+  }
+
+.myTextField2 .MuiOutlinedInput-root fieldset {
+    font-size: 18px;
+    border-color: #42A5F6;
+    
+}
+  
+.myTextField2 .MuiOutlinedInput-root input {
+    font-size: 18px;
+  }
+  
+.myTextField2 .MuiInputLabel-root {
+    font-size: 18px;
+}
+
+.myTextField2 {
+    margin-top: 21px;
+}
+.buttons{
+    width: 100%;
+    align-items: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .cancelSave{
+    width: 40%;
+    justify-content: space-between;
+  }
+  .cancel{
+    background-color: red;
+    border-radius: 10px;
+  }
