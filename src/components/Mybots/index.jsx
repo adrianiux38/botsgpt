@@ -265,9 +265,10 @@ export const Mybots = () => {
       },
       body: JSON.stringify({
         botId,
-        currentId,
         currentBusinessName,
         currentBusinessUrl,
+        currentPhoneNumberId,
+        currentWhatsappApiKey,
         currentTelegramApiKey,
         currentBotName,
       }),
