@@ -13,7 +13,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import { BottomNavigation, Icon, IconButton } from "@mui/material";
+import { BottomNavigation, Icon, IconButton, Snackbar, Alert } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
 
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, } from '@mui/material';
@@ -40,12 +40,15 @@ export const Mybots = () => {
   const [currentId, setCurrentId] = useState('');
   const [currentBusinessName, setCurrentBusinessName] = useState('');
   const [currentBusinessUrl, setCurrentBusinessUrl] = useState('');
+  const [currentPhoneNumberId, setCurrentPhoneNumberId] = useState('');
+  const [currentWhatsappApiKey, setCurrentWhatsappApiKey] = useState('');
   const [currentTelegramApiKey, setCurrentTelegramApiKey] = useState('');
   const [currentBotName, setCurrentBotName] = useState('');
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const [alertOpen, setAlertOpen] = useState(false);
   const navigate = useNavigate();
 
   //funcion para abrir el form para hacer edit del bot
@@ -232,8 +235,26 @@ export const Mybots = () => {
     }
   };
 
-  const handleDeleteButtonClick = (botId) => {
-
+  const handleDeleteButtonClick = async (botId) => {
+    console.log(botId)
+    await fetch(`${BACKEND_URL}/deleteBot`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ botId }),
+    })
+    .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        if(data.success){
+          setAlertOpen(true);
+          let newList = bots.filter(bot => bot.id !== botId);
+          console.log("new:",newList);
+          setBots(newList);
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   const updateBotInfo = async (botId) => {
@@ -323,92 +344,6 @@ export const Mybots = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={editDialogOpen} className="myDialog">
-        <div className="closeBtn">
-          <IconButton edge="end" color="inherit" onClick={() => setEditDialogOpen(false)}>
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <DialogTitle fontWeight={"700"} fontSize={"1.5em"} className="myDialogTitle">Edit My Bot</DialogTitle>
-        <DialogContent color="black">
-          <DialogContentText color={"black"} paddingY={"10px"}>Please enter the required information.</DialogContentText>
-          <TextField className="myTextField"
-            margin="dense"
-            id="sytemPrompt"
-            label="ID"
-            type="text"
-            fullWidth
-            value={currentId}
-            onChange={(e) => setCurrentId(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          /> 
-           
-          <TextField className="myTextField"
-            margin="dense"
-            id="whatsappApiKey"
-            label="Business Name"
-            type="text"
-            fullWidth
-            value={currentBusinessName}
-            onChange={(e) => setCurrentBusinessName(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />          
-          <TextField className="myTextField"
-          margin="dense" 
-          id="whatsappPhoneNumberId" 
-          label="Busines URL"
-          type="text" 
-          fullWidth 
-          value={currentBusinessUrl}
-          onChange={(e) => setCurrentBusinessUrl(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField className="myTextField"
-          margin="dense" 
-          id="Bussines description" 
-          label="Telegram Api Key" 
-          type="text" 
-          fullWidth 
-          value={currentTelegramApiKey}
-          onChange={(e) => {setCurrentTelegramApiKey(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField className="myTextField"
-          margin="dense" 
-          id="userTraining1" 
-          label="Bot Name" 
-          type="text" 
-          fullWidth 
-          value={currentBotName}
-          onChange={(e) => {setCurrentBotName(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          
-          
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setEditDialogOpen(false)}>Delete</Button>
-          <Button
-            onClick={() => {
-              // Call your fetch function here to save the edited data
-              updateBotInfo(botId)
-              setEditDialogOpen(false);
-            }}
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
       <Table sx={{ minWidth: 400 }} className="table" aria-label="simple table">
         <TableHead className="tableHead" sx={{backgroundColor: 'white'}}>
             <StyledTableRow >
@@ -452,7 +387,8 @@ export const Mybots = () => {
                 <StyledTableCell align='center'>
                   <Switch {...label} 
                   checked={bot.whatsapp_enable == 1 ? true : false}
-                  onChange={() => {
+                  onChange={(e) => {
+                    e.stopPropagation();
                     handleChangeWhatsapp(bot.id);
                     //handleClickOpen(bot.id);
                   }}/>
@@ -460,7 +396,8 @@ export const Mybots = () => {
                 <StyledTableCell align='center'>
                   <Switch {...label} 
                   checked={bot.telegram_enable == 1 ? true : false}
-                  onChange={()=> {
+                  onChange={(e)=> {
+                    e.stopPropagation();
                     handleChangeTelegram(bot.id);
                     }}/>
                 </StyledTableCell>
@@ -469,15 +406,17 @@ export const Mybots = () => {
                   (!isSmallScreen)?
                   <>
                 <StyledTableCell align="center">
-                  <Button onClick={() => {
-                    handleEditButtonClick(bot.id)
+                  <Button onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditButtonClick(bot.id);
                   }}>
                     <FontAwesomeIcon icon={faEdit} />
                   </Button>
                 </StyledTableCell>
 
                 <StyledTableCell align="center">
-                  <Button onClick={() => {
+                  <Button onClick={(e) => {
+                    e.stopPropagation();
                     handleDeleteButtonClick(bot.id)
                   }}>
                     <FontAwesomeIcon icon={faTrash} />
@@ -497,6 +436,114 @@ export const Mybots = () => {
       </Table>
       </StyledTableContainer>
       </div>
+
+      <Snackbar open={alertOpen} autoHideDuration={2500} onClose={() => setAlertOpen(false)}>
+        <Alert onClose={() => setAlertOpen(false)} severity="success" sx={{ width: '90%' }}>
+          Bot deleted
+        </Alert>
+      </Snackbar>
+
+      <Dialog open={editDialogOpen} className="myDialog">
+        <div className="closeBtn">
+          <IconButton edge="end" color="inherit" onClick={() => setEditDialogOpen(false)}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <DialogTitle fontWeight={"700"} fontSize={"1.5em"} className="myDialogTitle">Edit My Bot</DialogTitle>
+        <DialogContent color="black">
+          <DialogContentText color={"black"} paddingY={"10px"}>Please enter the required information.</DialogContentText>
+          <TextField className="myTextField"
+            margin="dense"
+            id="whatsappApiKey"
+            label="Business Name"
+            type="text"
+            fullWidth
+            value={currentBusinessName}
+            onChange={(e) => setCurrentBusinessName(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />          
+          <TextField className="myTextField"
+          margin="dense" 
+          id="whatsappPhoneNumberId" 
+          label="Busines URL"
+          type="text" 
+          fullWidth 
+          value={currentBusinessUrl}
+          onChange={(e) => setCurrentBusinessUrl(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          />
+          <TextField className="myTextField"
+            
+            margin="dense"
+            id="phoneNumberId"
+            label="Phone Number Id"
+            type="text"
+            fullWidth
+            value={currentPhoneNumberId}
+            onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField className="myTextField"
+            margin="dense"
+            id="whatsappApiKey"
+            label="Whatsapp Api Key"
+            type="text"
+            fullWidth
+            value={currentWhatsappApiKey}
+            onChange={(e) => setCurrentWhatsappApiKey(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField className="myTextField"
+          margin="dense" 
+          id="Bussines description" 
+          label="Telegram Api Key" 
+          type="text" 
+          fullWidth 
+          value={currentTelegramApiKey}
+          onChange={(e) => {setCurrentTelegramApiKey(e.target.value)}}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          />
+          <TextField className="myTextField"
+          margin="dense" 
+          id="userTraining1" 
+          label="Bot Name" 
+          type="text" 
+          fullWidth 
+          value={currentBotName}
+          onChange={(e) => {setCurrentBotName(e.target.value)}}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          />
+          
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => {
+            handleDeleteButtonClick(currentId);
+            setEditDialogOpen(false);
+          }}>Delete</Button>
+          <Button
+            onClick={() => {
+              // Call your fetch function here to save the edited data
+              updateBotInfo(botId)
+              setEditDialogOpen(false);
+            }}
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
       </div>
   );
 };
