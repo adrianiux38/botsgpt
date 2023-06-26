@@ -41,6 +41,7 @@ const Account = () => {
   const [userName, setUserName] = useState("");
   const [eMail, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   
 
   
@@ -108,12 +109,25 @@ const Account = () => {
                   shrink: true,
                 }}
                 />
+
+                <TextField className='myTextField2'
+                fullWidth
+                id='currentPassword'
+                label='Current Password'
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                variant='outlined'
+                sx={{marginTop : "10px"}}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                />
                 <TextField className='myTextField2'
                 fullWidth
                 id='custom-input'
                 label='New Password'
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                value={newPassword}
+                onChange={(event) => setNewPassword(event.target.value)}
                 variant='outlined'
                 sx={{marginTop : "10px"}}
                 InputLabelProps={{

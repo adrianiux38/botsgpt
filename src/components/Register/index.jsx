@@ -17,6 +17,8 @@ import { BACKEND_URL } from "../../config.js";
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import { userSignTheme } from '../../utils/userSignTheme.js';
 import GoogleIcon from '@mui/icons-material/Google';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 
 import "./Register.css";
 
@@ -158,14 +160,15 @@ const RegisterComponent = () => {
                 Register
               </Typography>
               <Stack spacing={2} mt={2}>
+              <FormControl error={open}>
                 <TextField
                   fullWidth
                   id='email'
                   label='Email'
                   variant='outlined'
-                  type='email'
                   onChange={(e) => setEmail(e.target.value)}
-                  sx={{ width: '400px' }}
+                  type='email'
+                  sx={{ width: '400px', paddingBottom: "10px"}}
                 />
                 <TextField
                   fullWidth
@@ -176,6 +179,8 @@ const RegisterComponent = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   sx={{ width: '400px' }}
                 />
+                {open && <FormHelperText>Missing Email Or Password</FormHelperText>}
+              </FormControl>
                 <Button fullWidth variant='contained' color='primary' onClick={handleRegister}>
                   Register
                 </Button>

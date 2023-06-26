@@ -8,6 +8,8 @@ import { BACKEND_URL } from '../../config.js';
 import GoogleIcon from '@mui/icons-material/Google';
 import { userSignTheme } from '../../utils/userSignTheme'
 import { isLoggedIn } from '../../utils/auth'
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 
   const LoginComponent = () => {
     const [email, setEmail] = useState('');
@@ -48,7 +50,7 @@ import { isLoggedIn } from '../../utils/auth'
           }
         })
         .then(data => {
-          console.log(data);
+          //console.log(data);
           localStorage.setItem('token', data.token);
           localStorage.setItem('email', data.email);
           navigate('/create-bot');
@@ -129,15 +131,17 @@ import { isLoggedIn } from '../../utils/auth'
                 Login
               </Typography>
               <Stack spacing={2} mt={2}>
+
+                
+              <FormControl error={open}>
                 <TextField
                   fullWidth
-                  
                   id='email'
                   label='Email'
                   variant='outlined'
                   onChange={(e) => setEmail(e.target.value)}
                   type='email'
-                  sx={{ width: '400px' }}
+                  sx={{ width: '400px', paddingBottom: "10px"}}
                 />
                 <TextField
                   fullWidth
@@ -148,6 +152,9 @@ import { isLoggedIn } from '../../utils/auth'
                   onChange={(e) => setPassword(e.target.value)}
                   sx={{ width: '400px' }}
                 />
+                {open && <FormHelperText>Missing Email Or Password</FormHelperText>}
+              </FormControl>
+
                 <Button fullWidth variant='contained' color='primary' onClick={handleLogin}>
                   Login
                 </Button>
@@ -184,6 +191,10 @@ import { isLoggedIn } from '../../utils/auth'
                 Login
               </Typography>
               <Stack spacing={2} mt={2}>
+              
+
+             
+              
                 <TextField
                   fullWidth
                   id='email'
@@ -202,6 +213,8 @@ import { isLoggedIn } from '../../utils/auth'
                   onChange={(e) => setPassword(e.target.value)}
                   sx={{ width: '400px' }}
                 />
+                 
+                
                 <Button fullWidth variant='contained' color='primary' onClick={handleLogin}>
                   Login
                 </Button>
@@ -217,14 +230,19 @@ import { isLoggedIn } from '../../utils/auth'
                 <Button onClick={() => navigate('/set-password')} style={{marginTop: '3%'}}>
                   Register
                 </Button>
+                
               </Stack>
+              
             </Box>
+            
           </Grid>
           </>
+
   }
         </Grid>
+        
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="warning" sx={{ width: '90%' }}>
+          <Alert onClose={handleClose} severity="warning" sx={{ width: "90%" }}>
             Missing email or password
           </Alert>
         </Snackbar>
@@ -232,4 +250,4 @@ import { isLoggedIn } from '../../utils/auth'
     );
   };
 
-export default LoginComponent;
+export default LoginComponent;  

@@ -276,39 +276,7 @@ export const Mybots = () => {
           <DialogContentText>
             Please enter your Whatsapp Phone Number Id and Api Key.
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="phoneNumberId"
-            label="Phone Number Id"
-            type="text"
-            fullWidth
-            value={phoneNumberId}
-            onChange={(e) => setPhoneNumberId(e.target.value)}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderColor: 'black',
-              },
-              '& .MuiOutlinedInput-input': {
-                color: 'black',
-              },
-              '& .MuiInputLabel-outlined': {
-                color: 'black',
-              },
-              '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'black',
-              },
-            }}
-          />
-          <TextField
-            margin="dense"
-            id="whatsappApiKey"
-            label="Whatsapp Api Key"
-            type="text"
-            fullWidth
-            value={whatsappApiKey}
-            onChange={(e) => setWhatsappApiKey(e.target.value)}
-          />
+          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -332,18 +300,7 @@ export const Mybots = () => {
         <DialogTitle fontWeight={"700"} fontSize={"1.5em"} className="myDialogTitle">Edit My Bot</DialogTitle>
         <DialogContent color="black">
           <DialogContentText color={"black"} paddingY={"10px"}>Please enter the required information.</DialogContentText>
-          <TextField className="myTextField"
-            margin="dense"
-            id="sytemPrompt"
-            label="ID"
-            type="text"
-            fullWidth
-            value={currentId}
-            onChange={(e) => setCurrentId(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          /> 
+          
            
           <TextField className="myTextField"
             margin="dense"
@@ -369,6 +326,27 @@ export const Mybots = () => {
             shrink: true,
           }}
           />
+          <TextField className="myTextField"
+            
+            margin="dense"
+            id="phoneNumberId"
+            label="Phone Number Id"
+            type="text"
+            fullWidth
+            value={phoneNumberId}
+            onChange={(e) => setPhoneNumberId(e.target.value)}
+            
+          />
+          <TextField className="myTextField"
+            margin="dense"
+            id="whatsappApiKey"
+            label="Whatsapp Api Key"
+            type="text"
+            fullWidth
+            value={whatsappApiKey}
+            onChange={(e) => setWhatsappApiKey(e.target.value)}
+          />
+
           <TextField className="myTextField"
           margin="dense" 
           id="Bussines description" 
