@@ -43,7 +43,39 @@ const Account = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   
-
+  const handleLogin = async () => {
+    if(isInputValid()){
+      try {
+        const response = await fetch(`${BACKEND_URL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          //console.log(data.token);
+          //console.log(data);
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('email', data.email);
+          navigate('/create-bot');
+        } else {
+          errorMessage("Invalid email or password");
+        }
+      } catch (error) {
+        console.log('Error:', error);
+        errorMessage(error.message);
+      }
+    }
+    else{
+      setOpen(true);
+    }
+  };
   
   const logout = () => {
     localStorage.clear();
