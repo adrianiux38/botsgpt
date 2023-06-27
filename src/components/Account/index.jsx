@@ -52,8 +52,6 @@ const Account = () => {
 
   const getUserData= async ()  =>{
     const mail =  localStorage.getItem('email');
-    
-    console.log(mail + "holas");
     await fetch(`${BACKEND_URL}/getUser`,{
       method: 'POST',
       headers:{"Content-Type": "application/json",},
