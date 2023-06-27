@@ -343,7 +343,7 @@ useEffect(() => {
                             <TelegramKeys handleCancel={handleCancel} handleContinue={handleContinue} handleBack={handleBack} updateStepData={updateStepData} botId={botId}/>
                           );
                           
-                    } else if (currentStep === 8 && platforms.whatsappSelected ==1){
+                    } else if (currentStep === 8 && platforms.whatsappSelected == 1){
                         setStepComponent(
                             <WhatsappKeys handleCancel={handleCancel} handleContinue={handleContinue} handleBack={handleBack} updateStepData={updateStepData} botId={botId}/>
                           );

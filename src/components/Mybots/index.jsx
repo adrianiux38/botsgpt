@@ -49,6 +49,7 @@ export const Mybots = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [alertOpen, setAlertOpen] = useState(false);
+  const [messageAlert, setMessageAlert] = useState('');
   const navigate = useNavigate();
 
   //funcion para abrir el form para hacer edit del bot
@@ -68,6 +69,8 @@ export const Mybots = () => {
       setCurrentId(data[0].currentId);
       setCurrentBusinessName(data[0].business_name);
       setCurrentBusinessUrl(data[0].business_url);
+      setCurrentPhoneNumberId(data[0].whatsapp_phone_id);
+      setCurrentWhatsappApiKey(data[0].whatsapp_api_key);
       setCurrentTelegramApiKey(data[0].telegram_api_key);
       setCurrentBotName(data[0].bot_name);
     })
@@ -152,7 +155,8 @@ export const Mybots = () => {
   }
 
   const updateWhatsappEnable = async (whatsapp_enable, botId, callback) => {
-    await fetch(`${BACKEND_URL}/updateWhatsappEnable`, {
+    console.log(botId);
+    await fetch(`${BACKEND_URL}/updateWhatsappEnable2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -162,7 +166,11 @@ export const Mybots = () => {
     .then((res) => res.json())
       .then((data) => {
         callback(data);
-        alert(data);
+        if(whatsapp_enable == 1){
+          showMesage('Whatsapp Enabled')
+        } else {
+          showMesage('Whatsapp Disabled')
+        };
       })
       .catch(err => console.log(err));
   }
@@ -188,7 +196,11 @@ export const Mybots = () => {
     .then((res) => res.json())
       .then((data) => {
         callback(data);
-        alert(data);
+        if(telegram_enable == 1) {
+          showMesage('Telegram Enabled');
+        } else {
+          showMesage('Telegram Disabled');
+        }
       })
       .catch(err => console.log(err));
   }
@@ -248,10 +260,9 @@ export const Mybots = () => {
       .then((data) => {
         console.log(data)
         if(data.success){
-          setAlertOpen(true);
           let newList = bots.filter(bot => bot.id !== botId);
-          console.log("new:",newList);
           setBots(newList);
+          showMesage('Bot deleted');
         }
       })
       .catch(err => console.log(err));
@@ -265,9 +276,10 @@ export const Mybots = () => {
       },
       body: JSON.stringify({
         botId,
-        currentId,
         currentBusinessName,
         currentBusinessUrl,
+        currentPhoneNumberId,
+        currentWhatsappApiKey,
         currentTelegramApiKey,
         currentBotName,
       }),
@@ -280,6 +292,10 @@ export const Mybots = () => {
 
   }
 
+  const showMesage = (message) => {
+    setMessageAlert(message)
+    setAlertOpen(true);
+  }
 
   return (
     
@@ -357,6 +373,8 @@ export const Mybots = () => {
                   checked={bot.whatsapp_enable == 1 ? true : false}
                   onChange={(e) => {
                     e.stopPropagation();
+                    e.preventDefault();
+                    setEditDialogOpen(false);
                     handleChangeWhatsapp(bot.id);
                     //handleClickOpen(bot.id);
                   }}/>
@@ -366,6 +384,8 @@ export const Mybots = () => {
                   checked={bot.telegram_enable == 1 ? true : false}
                   onChange={(e)=> {
                     e.stopPropagation();
+                    e.preventDefault();
+                    setEditDialogOpen(false);
                     handleChangeTelegram(bot.id);
                     }}/>
                 </StyledTableCell>
@@ -407,7 +427,7 @@ export const Mybots = () => {
 
       <Snackbar open={alertOpen} autoHideDuration={2500} onClose={() => setAlertOpen(false)}>
         <Alert onClose={() => setAlertOpen(false)} severity="success" sx={{ width: '90%' }}>
-          Bot deleted
+          {messageAlert}
         </Alert>
       </Snackbar>
 
