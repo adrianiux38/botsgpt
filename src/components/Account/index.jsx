@@ -43,27 +43,30 @@ const Account = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   
-  const handleLogin = async () => {
+  const isInputValid = () => {
+    return (eMail !== '' && password !== '' && newPassword !== '' && password !== newPassword );
+  }
+
+  const errorMessage = (error) => {
+    alert(error)
+};
+  const changePassword= async () => {
     if(isInputValid()){
       try {
-        const response = await fetch(`${BACKEND_URL}/login`, {
+        const response = await fetch(`${BACKEND_URL}/set-password`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: email,
-            password: password,
+            email: eMail,
+            newPassword: newPassword,
+            currentPassword: password
           }),
         });
     
         if (response.ok) {
-          const data = await response.json();
-          //console.log(data.token);
-          //console.log(data);
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('email', data.email);
-          navigate('/create-bot');
+          alert("contraseña actualizada")
         } else {
           errorMessage("Invalid email or password");
         }
@@ -73,7 +76,7 @@ const Account = () => {
       }
     }
     else{
-      setOpen(true);
+      errorMessage("Ingrese contraseñas nuevas y confirmación de la misma.");
     }
   };
   
@@ -113,7 +116,7 @@ const Account = () => {
                 </div>
                 <div class="column">
                 
-                <TextField className='myTextField2'
+                {/* <TextField className='myTextField2'
                 fullWidth
                 
                 id='custom-input'
@@ -125,7 +128,7 @@ const Account = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                />
+                /> */}
 
                 <TextField className='myTextField2'
                 fullWidth
@@ -144,6 +147,7 @@ const Account = () => {
                 fullWidth
                 id='currentPassword'
                 label='Current Password'
+                type='password'
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 variant='outlined'
@@ -151,9 +155,11 @@ const Account = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                
                 />
                 <TextField className='myTextField2'
                 fullWidth
+                type='password'
                 id='custom-input'
                 label='New Password'
                 value={newPassword}
@@ -173,7 +179,7 @@ const Account = () => {
                     </Button>
                     <div className='cancelSave'>
                         <Button  sx={{ color: "red" ,margin: "5px" }} className='cancelBtn'>Cancel</Button>
-                        <Button  className='saveBtn'>Save</Button>
+                        <Button  onClick={changePassword} className='saveBtn'>Save</Button>
                     </div>
                 </div>
             
