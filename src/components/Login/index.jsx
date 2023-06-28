@@ -10,6 +10,8 @@ import { userSignTheme } from '../../utils/userSignTheme'
 import { isLoggedIn } from '../../utils/auth'
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
+import logo from "../../img/logoB.png"
+import logo2 from "../../img/LOGO.png"
 
   const LoginComponent = () => {
     const [email, setEmail] = useState('');
@@ -112,11 +114,24 @@ import FormHelperText from '@mui/material/FormHelperText';
   
     return (
       <ThemeProvider theme={userSignTheme}>
-        <Grid container sx={{ minHeight: '100vh' }}>
+        <Grid container sx={{ minHeight: '100vh'}}>
           {
           (!isSmallScreen)?
           <>
-          <Grid item xs={6} sx={{ background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}></Grid>
+          <Grid item xs={6} sx={{ 
+              background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)', 
+              display:'flex', 
+              flexDirection:"column", 
+              alignItems: "center", 
+              justifyContent: "center" 
+              }}>
+              <div>
+                  <img src={logo} alt="logo" style={{width: "40%"}}/>
+                  <h1 style={{color:"white", fontSize: "40px"}} >BOTS GPT</h1>
+                  <p style={{fontSize: "18px", color:"#fff", fontWeight:"600"}}>Create chatbots in a matter of minutes</p>
+              </div>
+           </Grid>
+
           <Grid item xs={6}>
             <Box
               sx={{
@@ -187,6 +202,9 @@ import FormHelperText from '@mui/material/FormHelperText';
                 minHeight: '100vh',
               }}
             >
+              
+              <div><img src={logo2} alt="logo" style={{width: "30%", paddingBottom:"10px"}}/></div>
+              <div><h1 style={{ fontSize: "40px",paddingBottom:"50px"}} >BOTS GPT</h1></div>
               <Typography variant='h4' component='div'>
                 Login
               </Typography>
@@ -194,7 +212,7 @@ import FormHelperText from '@mui/material/FormHelperText';
               
 
              
-              
+                
                 <TextField
                   fullWidth
                   id='email'

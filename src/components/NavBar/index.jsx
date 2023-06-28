@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './navBar.css';
 
+import logo2 from "../../img/LOGO.png"
+
 export const NavBar = () => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -18,8 +20,10 @@ export const NavBar = () => {
   return (
     <>
       <div className='navBar'>
+        <div className='logoName'>
+        <img className= 'imgNav' src={logo2} alt="logo" />
         <h1 className='title'>GPTBOTS</h1>
-
+        </div>
         {
         (!isSmallScreen) ?
         <div className='menu'>

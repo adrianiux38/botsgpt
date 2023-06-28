@@ -9,10 +9,21 @@
     z-index: 1000;
 }
 
+.imgNav{
+    width: 60px;
+    height: 60px;
+    margin-left: 40px;
+    padding-bottom: 20px;
+}
+.logoName{
+    display: flex;
+    align-items: center;
+}
+
 .title{
     display:flex;
     flex:0.3;
-    margin-left:40px;
+    margin-left:10px;
     align-content:center;
     font-Weight:bold;
     align-Items:center;
