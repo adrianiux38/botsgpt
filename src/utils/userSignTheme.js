@@ -1,4 +1,4 @@
-import { green, purple, yellow } from '@mui/material/colors';
+import { green, purple } from '@mui/material/colors';
 import { createTheme }  from '@mui/material';
 
 export const userSignTheme = createTheme({

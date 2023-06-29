@@ -26,7 +26,7 @@ const Card = ({ children, clicked, onClick }) => (
 const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
     const [selectedDivs, setSelectedDivs] = useState([]);
     const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 5);
-    
+
     useEffect(() => {
       if (textFieldValue1 !== undefined ) {
         if (parseInt(textFieldValue1, 10) === 1 && !selectedDivs.includes(1)) {
@@ -35,12 +35,12 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
           setSelectedDivs(prevSelectedDivs => prevSelectedDivs.filter((divIndex) => divIndex !== 1));
         }
       }
-    }, [textFieldValue1, selectedDivs]);
-    
+    }, [textFieldValue1]);
+
     useEffect(() => {    
       if (textFieldValue2 !== undefined) {
         console.log('textFieldValue2: ' + textFieldValue2)
-        if (parseInt(textFieldValue2, 10) === 1 && !selectedDivs.includes(2)) {
+        if (parseInt(textFieldValue2, 10) === 2 && !selectedDivs.includes(2)) {
           setSelectedDivs(prevSelectedDivs => [...prevSelectedDivs, 2]);
         } else if (parseInt(textFieldValue2, 10) === 0 && selectedDivs.includes(2)) {
           setSelectedDivs(prevSelectedDivs => prevSelectedDivs.filter((divIndex) => divIndex !== 2));
@@ -63,15 +63,15 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
       } else if (selectedDivs.length > 0) { 
         const telegramSelected = selectedDivs.includes(2) ? 1 : 0;
         const whatsappSelected = selectedDivs.includes(1) ? 1 : 0;
-  
+
         console.log('telegramselected: ' + telegramSelected);
         console.log('whatsappSelected: ' + whatsappSelected);
-    
+
         updateStepData({ telegramSelected, whatsappSelected });
         handleContinue();
       }
     };
-  
+
     const handleContinueWithPlatforms = () => {
       changeSelectedPlatforms();
     };
@@ -95,7 +95,12 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
                 borderRadius: '20px',
                 bgcolor: 'white',
                 position: 'relative',
-                width: '50%',
+                width: {
+                  xs: '80%', // en pantallas extra pequeñas (menos de 600px) el ancho será del 90%
+                  sm: '75%', // en pantallas pequeñas (600px o más) el ancho será del 75%
+                  md: '60%', // en pantallas medianas (960px o más) el ancho será del 60%
+                  lg: '50%', // en pantallas grandes (1280px o más) el ancho será del 50%
+                },
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

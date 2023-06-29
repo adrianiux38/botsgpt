@@ -1,0 +1,113 @@
+.navBar{
+    background: white;
+    justify-Content: space-between;
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.imgNav{
+    width: 60px;
+    height: 60px;
+    margin-left: 40px;
+    padding-bottom: 20px;
+}
+.logoName{
+    display: flex;
+    align-items: center;
+}
+
+.title{
+    display:flex;
+    flex:0.3;
+    margin-left:10px;
+    align-content:center;
+    font-Weight:bold;
+    align-Items:center;
+    font-Family: Roboto, Helvetica, sans-serif;
+    color:black;
+    font-size: 36px;
+}    
+
+.menu{
+    display:flex;
+    flex:0.3;
+    margin-Left:2%;
+    justify-Content:space-around;
+    align-Items:center;
+    text-Decoration:none;
+    color:black;
+    margin-right: 20px;
+}
+
+.menuItem{
+    text-Decoration:none;
+    color:black;
+    font-size: 20px;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    margin-inline: 16px;
+    white-space: nowrap;
+    font: Roboto;
+    font-weight: 600;
+}
+
+.footer {
+    background: white;
+    justify-Content: space-around;
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    padding-top:10px;
+    padding-bottom:10px;
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.addBtn{
+    background: linear-gradient(160.9deg, #42A5F6 22.2%, rgba(60, 60, 60, 0) 132.84%, #836098 170.67%);
+    border-radius: 15px;
+    transition: color 0.8s ease;
+}
+
+.footerBtn{
+    transition: color 0.8s ease;
+}
+
+.addBtn:hover{
+    background: linear-gradient(45deg,  rgb(252, 182, 248) 1% , #ac4eff 99%   );
+    border-radius: 15px;
+}
+
+.footerIcon:hover{
+    color: #ac4eff;
+}
+
+.addIcon{
+    color: white;
+}
+
+.footerIcon{
+    color: #42A5F6;
+}
+
+.menuItem:hover{
+    color: #6824A2 ;
+    font-weight: bold;
+}
+
+.menuBtn{
+    font-Size: 50px;
+    color:black;
+    transition: color 0.3s ease;
+}
+
+.menuBtn:hover{
+    color: #6824A2 ;
+}

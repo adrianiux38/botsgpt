@@ -28,12 +28,12 @@ const templateCSV = [
     'Name of the product,Product description,Price,Details,Currency',
     'Sample Product,This is a sample product,9.99,Sample details,USD',
   ].join('\n');
-  
+
   const downloadCSVTemplate = () => {
     const blob = new Blob([templateCSV], { type: 'text/csv;charset=utf-8' });
     saveAs(blob, 'template.csv');
   };
-  
+
 
 
 
@@ -62,7 +62,7 @@ const UploadProducts = ({ handleCancel, handleContinue, handleBack, updateStepDa
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-  
+
     CSVParser.parse(file, {
       header: true,
       skipEmptyLines: true,
@@ -90,7 +90,7 @@ const UploadProducts = ({ handleCancel, handleContinue, handleBack, updateStepDa
       },
     });
   };
-  
+
 
   const allFieldsFilled = rows.every((row) => row.prodName && row.desc && row.price && row.details);
 
@@ -113,7 +113,12 @@ const UploadProducts = ({ handleCancel, handleContinue, handleBack, updateStepDa
                 borderRadius: '20px',
                 bgcolor: 'white',
                 position: 'relative',
-                width: '80%',
+                width: {
+                  xs: '90%', // en pantallas extra pequeñas (menos de 600px) el ancho será del 90%
+                  sm: '75%', // en pantallas pequeñas (600px o más) el ancho será del 75%
+                  md: '60%', // en pantallas medianas (960px o más) el ancho será del 60%
+                  lg: '50%', // en pantallas grandes (1280px o más) el ancho será del 50%
+                },
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -210,7 +215,7 @@ const UploadProducts = ({ handleCancel, handleContinue, handleBack, updateStepDa
                                 </Select>
                           </TableCell>
 
-                          
+
                           <TableCell>
                             <TextField
                               fullWidth
@@ -315,5 +320,3 @@ const UploadProducts = ({ handleCancel, handleContinue, handleBack, updateStepDa
 };
 
 export default UploadProducts;
-
-

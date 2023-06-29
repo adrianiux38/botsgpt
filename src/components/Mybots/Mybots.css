@@ -8,16 +8,116 @@
 }
 
 .whatsappApiKey .MuiOutlinedInput-notchedOutline {
-    border-color:black !important;
-    color:black !important;
+    border-color:white !important;
+    color:white !important;
 }
 .whatsappApiKey .MuiInputBase-input {
     color: rgb(7, 0, 0) !important;
 }
 .mybots .MuiInputBase-input .MuiOutlinedInput-notchedOutline{
-    color: black;
-    border-color: black;
+    color: white;
+    border-color: white;
+    
 }
 
+.mybots{
+  height: 100vh;
+  background: linear-gradient(246.62deg, #42A5F6 7.3%, #6B1A9B 97.22%);
+  display: flex;
+  flex: 1;
+  align-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.container2{
+    width: 90%;
+}
+ .title2{
+    background: white;
+    margin-top: 50px;
+    margin-bottom: 3px;
+    margin-left: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-color: aqua;
+    border-bottom-width: 5px;
+    font-size: 25px;
+    color: #42A5F6;
+
+    
+ }
+
+.marginTop {
+    height:100px;
+}
+
+/*------------- TABLE----------- */
+
+.tableContainer{
+    
+    overflow: 'hidden';
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 40px;
+}
+
+.table{
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 40px;
+}
+
+/*------------- editBots----------- */
+
+.closeBtn{
+    display: flex;
+    justify-content: flex-end;
+    align-content: right;
+    align-items: right;
+    justify-content: right;
+    justify-items: right;
+    font-size: large;
+    margin-right: 10px;
+    color: red;
+
+}
+
+.myDialog .MuiDialog-paper {
+    border-radius: 25px;
+    background: white;
+    padding: 20px;
+}
+
+.myDialogDelete .MuiDialog-paper {
+    border-radius: 25px;
+    background: #F4F9FD;
+    padding: 20px;
+}
+
+.myDialogTitle {
+    
+    color: #42A5F6;
+    font-size: 30px;
+    text-align: center;
+    font-weight: 900;
+  }
+
+  .myTextField .MuiOutlinedInput-root {
+    border-radius: 20px;
+  }
+  
+  .myTextField .MuiOutlinedInput-root fieldset {
+    font-size: 18px;
+    border-color: #42A5F6;
+  }
+  
+  .myTextField .MuiOutlinedInput-root input {
+    font-size: 18px;
+  }
+  
+  .myTextField .MuiInputLabel-root {
+    font-size: 18px;
+  }
 
 
+  

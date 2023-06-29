@@ -12,8 +12,8 @@
 
 .botcategory-selected {
     border: 2px solid rgb(164, 163, 233);
-  }
-  
+}
+
 .botcategory:hover {
     border: 2px solid rgb(164, 163, 233);
 }

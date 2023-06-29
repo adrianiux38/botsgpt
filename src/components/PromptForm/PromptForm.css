@@ -1,26 +1,159 @@
+.inputCreate .MuiOutlinedInput-notchedOutline {
+  border-color: gray;
+  color: black;
+}
+
+.inputCreate #outlined-multiline-flexible-label {
+  color: black;
+}
+
+.inputCreate .MuiOutlinedInput-notchedOutline {
+  border-color: gray;
+  color: black;
+}
+.inputCreate .MuiInputBase-input .MuiOutlinedInput-input {
+  color: black;
+}
+
+.inputCreate textarea {
+  color: black;
+  border-color: gray;
+}
+
 .promptForm {
-    background-image: url("../../img/fondo.svg");
-    background-size: 100vw;
-    padding-bottom: 5%;
-}
-.inputCreate .MuiOutlinedInput-notchedOutline {
-    border-color:white;
-    color:white;
-}
-
-.inputCreate #outlined-multiline-flexible-label{
-    color: white;
+  display: flex;
+  height: 100vh;
+  align-content: center;
+  justify-content: center;
+  justify-self: center;
+  align-items: center;
+  justify-items: center;
 }
 
-.inputCreate .MuiOutlinedInput-notchedOutline {
-    border-color:white;
-    color:white;
-}
-.inputCreate .MuiInputBase-input .MuiOutlinedInput-input{
-    color: white;
+.boxContainer {
+  background-color: white;
+  border-radius: 30px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
-.inputCreate textarea{
-    color: white;
-    border-color: whiteblack;
+.promptFormTitle {
+  max-width: 100%;
+  color: black;
 }
+
+.form {
+  display: flex;
+  flex: 0.5;
+  align-self: center;
+  align-content: center;
+  width: 80%;
+  justify-content: center;
+  color: black;
+}
+
+@media (min-width: 900px) {
+  .form {
+    width: 30%;
+  }
+}
+@media (min-width: 600px) {
+  .form {
+    width: 80%;
+  }
+}
+
+
+
+.formContent {
+  width: 100%;
+}
+
+.buttonsRow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.buttonRow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#webcreateNext {
+  margin-top: 20px;
+  background: #A746BA;
+  border-radius: 20px;
+  margin-right: 50px;
+}
+
+#webcreateBack {
+  margin-top: 20px;
+  background: #E0B9E7;
+  border-radius: 20px;
+  margin-left: 50px;
+}
+
+#box {
+  display: flex;
+  flex: 0.5;
+  align-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
+}
+
+@media (min-width: 400px) {
+    #box {
+        flex: 0.9;
+    }
+  }
+
+  @media (min-width: 600px) {
+    #box {
+        flex: 0.75;
+    }
+  }  
+@media (min-width: 900px) {
+    #box {
+        flex: 0.5;
+    }
+  }
+  
+
+.inputCreate {
+  border-radius: 30px;
+}
+
+.space {
+  height: 10px;
+}
+
+.myTextField .MuiOutlinedInput-root {
+    border-radius: 20px;
+  }
+  
+  .myTextField .MuiOutlinedInput-root fieldset {
+    border-width: 3px;
+  }
+  
+  .myTextField .MuiOutlinedInput-root input {
+    font-size: 18px;
+  }
+  
+  .myTextField .MuiInputLabel-root {
+    font-size: 18px;
+  }
+
+  
+  
+  .myTextField .MuiInputLabel-root.Mui-focused {
+    font-size: 16px;
+    border-color: black;
+    border-width: 3px;
+  }

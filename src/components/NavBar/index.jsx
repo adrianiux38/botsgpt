@@ -1,22 +1,67 @@
-import {Link} from 'react-router-dom';
-import Button from '@mui/material/Button';
+import { Drawer, useMediaQuery, useTheme, List, ListItem, IconButton, Box } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser,faRobot, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import './navBar.css';
 
+import logo2 from "../../img/LOGO.png"
 
 export const NavBar = () => {
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const tutorialUrl = "https://www.youtube.com/watch?v=j61cdiPP_8s&t=2209s";
+
+  
+
   return (
-    <div style={{display:'flex', flexDirection:'row', paddingTop:'2%', backgroundColor:"black", paddingBottom: '2%'}}>
-      <div style={{display:'flex', flex:'0.4',  marginLeft:'2%', alignContent:'center'}}>
-        <p style={{display:'flex', height:'100%', alignItems:'center', marginTop:0, fontFamily:'sans-serif', fontWeight:'bold', color:'white', marginLeft:'3%'}}>  GptBots</p>
+    <>
+      <div className='navBar'>
+        <div className='logoName'>
+        <img className= 'imgNav' src={logo2} alt="logo" />
+        <h1 className='title'>GPTBOTS</h1>
+        </div>
+        {
+        (!isSmallScreen) ?
+        <div className='menu'>
+            <Link className='menuItem' to="/my-bots">My Bots</Link>
+            <Link className='menuItem' to={tutorialUrl}>Tutorial</Link>
+            <Link className='menuItem' to="/account" >Account</Link>
+          <div className='addBtn'>
+            <IconButton onClick={() => navigate('/create-bot')}>
+              <AddCircleOutlineIcon className='addIcon' fontSize="large" color='inherit' />
+            </IconButton>
+          </div>
+        </div>
+        :
+        <></>
+        }
       </div>
-      <div style={{display:'flex', flex:'0.5', marginLeft:'2%', justifyContent:'space-around', alignItems:'center'}}>
-        <Link style={{textDecoration:'none', color:'white'}} to="/my-bots">Mis Bots</Link>
-        <Link style={{textDecoration:'none', color:'white'}}  to="/create-bot">Crear nuevo bot</Link>
-        <a href="https://www.youtube.com/watch?v=j61cdiPP_8s&t=2209s" style={{textDecoration:'none', color:'white'}}>Quick Tutorial</a>
-        {/*
-        <Button variant="contained">
-            Poner en producción
-        </Button>*/}
+    {
+    (isSmallScreen) ?
+      <div className='footer'>
+        <div className='footerBtn'>
+          <IconButton onClick={() => navigate('/my-bots')}>
+            <FontAwesomeIcon icon={faRobot} className='footerIcon' size='lg' color='inherit' />
+          </IconButton>
+        </div>
+        <div className='footerBtn'>
+          <IconButton onClick={() => navigate('/login')}>
+            <FontAwesomeIcon icon={faUser} className='footerIcon' size='lg' color='inherit' />
+          </IconButton>
+        </div>
+        <div className='addBtn'>
+          <IconButton onClick={() => navigate('/create-bot')}>
+            <AddCircleOutlineIcon className='addIcon' fontSize="large" color='inherit' />
+          </IconButton>
+        </div>
       </div>
-      </div>
+      :
+      <></>
+    }
+    </>
   )
 }

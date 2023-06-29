@@ -8,7 +8,7 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import './CategorySelect.css'
 
 const Card = ({ children, clicked, onClick, updateStepData }) => (
-    
+
   <Box className={`botcategory${clicked ? ' botcategory-selected' : ''}`} onClick={onClick}>
     {children}
   </Box>
@@ -40,7 +40,12 @@ const CategorySelect = ({ handleCancel, handleContinue, handleBack }) => {
                 borderRadius: '20px',
                 bgcolor: 'white',
                 position: 'relative',
-                width: '50%',
+                width: {
+                  xs: '80%', // en pantallas extra pequeñas (menos de 600px) el ancho será del 90%
+                  sm: '75%', // en pantallas pequeñas (600px o más) el ancho será del 75%
+                  md: '60%', // en pantallas medianas (960px o más) el ancho será del 60%
+                  lg: '50%', // en pantallas grandes (1280px o más) el ancho será del 50%
+                },
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

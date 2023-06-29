@@ -22,7 +22,12 @@ const CreateButton = ({ handleCancel, handleBack, createBot, botId }) => {
                   borderRadius: '20px',
                   bgcolor: 'white',
                   position: 'relative',
-                  width: '50%',
+                  width: {
+                    xs: '80%', // en pantallas extra pequeñas (menos de 600px) el ancho será del 90%
+                    sm: '75%', // en pantallas pequeñas (600px o más) el ancho será del 75%
+                    md: '60%', // en pantallas medianas (960px o más) el ancho será del 60%
+                    lg: '50%', // en pantallas grandes (1280px o más) el ancho será del 50%
+                  },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -40,19 +45,19 @@ const CreateButton = ({ handleCancel, handleBack, createBot, botId }) => {
                       </Box>
                     </Grid>
                   </Grid>
-                  <p style={{ fontFamily: 'poppins', fontSize: '1.6em', marginBottom: '1%' }}>Write your Business name</p>
-                  
+                  <p style={{ fontFamily: 'poppins', fontSize: '1.6em', marginBottom: '1%' }}>Congratulations! Your bot is Ready</p>
+
                   {/* Replaced TextField with a Button */}
                   <Button
                     fullWidth
                     variant="contained"
                     color="primary"
-                    onClick={() => {createBot(botId)}}
-                    sx={{ alignSelf: 'center', justifySelf: 'center', mb: '4%', mt: '4%' }}
+                    onClick={() => {createBot(botId); handleCancel();}}
+                    sx={{ alignSelf: 'center', justifySelf: 'center', mb: '6%', mt: '6%', width: '50%' }}
                   >
                     Create my bot
                   </Button>
-                  
+
                   <Grid container sx={{ display: 'flex' }}>
                     <Grid item xs sx={{ display: 'flex', flex: 0.5, justifyContent: 'flex-start' }}>
                       <Box my={1}>
@@ -70,5 +75,5 @@ const CreateButton = ({ handleCancel, handleBack, createBot, botId }) => {
       </ThemeProvider>
     );
   };
-  
+
   export default CreateButton;

@@ -1,45 +1,31 @@
+import { Row, Col, Card, CardHeader, CardBody, CardFooter, Input, CloseButton } from "reactstrap";
+import { useMediaQuery, useTheme } from '@material-ui/core';
 import React, { useState, useEffect } from "react";
-import { NavBar } from '../NavBar'
-import './Mybots.css'
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Input,
-
-} from "reactstrap";
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import { NavBar } from '../NavBar'
+import './Mybots.css'
+import CloseIcon from '@mui/icons-material/Close';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Table, TableBody, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import { BottomNavigation } from "@mui/material";
+import { BottomNavigation, Icon, IconButton, Snackbar, Alert } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, } from '@mui/material';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { useNavigate } from 'react-router-dom';
-
 import { isLoggedIn } from '../../utils/auth'
+
+import { BACKEND_URL } from '../../config.js';
+import { ErrorOutlineOutlined } from "@mui/icons-material";
 
 export const Mybots = () => {
   const [bots, setBots] = useState([]);
@@ -52,16 +38,21 @@ export const Mybots = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   /* CONSTANTES QUE SE MUESTRAN EN EL FORM DE EDIT */
+  const [currentId, setCurrentId] = useState('');
+  const [currentBusinessName, setCurrentBusinessName] = useState('');
+  const [currentBusinessUrl, setCurrentBusinessUrl] = useState('');
+  const [currentPhoneNumberId, setCurrentPhoneNumberId] = useState('');
   const [currentWhatsappApiKey, setCurrentWhatsappApiKey] = useState('');
   const [currentTelegramApiKey, setCurrentTelegramApiKey] = useState('');
-  const [currentPhoneNumberId, setCurrentPhoneNumberId] = useState('');
-  const [currentUserTraining1, setCurrentUserTraining1] = useState('');
-  const [currentUserTraining2, setCurrentUserTraining2] = useState('');
-  const [currentUserTraining3, setCurrentUserTraining3] = useState('');
-  const [currentAssistantTraining1, setCurrentAssistantTraining1] = useState('');
-  const [currentAssistantTraining2, setCurrentAssistantTraining2] = useState('');
-  const [currentAssistantTraining3, setCurrentAssistantTraining3] = useState('');
-  const [currentSystemPrompt, setCurrentSystemPrompt ] = useState('');
+  const [currentBotName, setCurrentBotName] = useState('');
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [messageAlert, setMessageAlert] = useState('');
+
+  const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
 
   const navigate = useNavigate();
 
@@ -69,7 +60,7 @@ export const Mybots = () => {
   const handleEditButtonClick = (botId) => {
     setBotId(botId);
     //consultar en la base de datos los datos de ese bot 
-    fetch("https://bot-panel-server-AdrianGutierr26.replit.app/getBotData", {
+    fetch(`${BACKEND_URL}/getBotData2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,17 +69,14 @@ export const Mybots = () => {
     })
     .then((res) => res.json())
     .then((data) => {
-      //console.log(data);
-      setCurrentSystemPrompt(data[0].prompt);
-      setCurrentTelegramApiKey(data[0].telegramApiKey);
-      setCurrentPhoneNumberId(data[0].phone_number_id);
-      setCurrentWhatsappApiKey(data[0].whatsappApiKey);
-      setCurrentUserTraining1(data[0].user_content1);
-      setCurrentUserTraining2(data[0].user_content2);
-      setCurrentUserTraining3(data[0].user_content3);
-      setCurrentAssistantTraining1(data[0].assistant_content1);
-      setCurrentAssistantTraining2(data[0].assistant_content2);
-      setCurrentAssistantTraining3(data[0].assistant_content3);
+      console.log(data);
+      setCurrentId(data[0].currentId);
+      setCurrentBusinessName(data[0].business_name);
+      setCurrentBusinessUrl(data[0].business_url);
+      setCurrentPhoneNumberId(data[0].whatsapp_phone_id);
+      setCurrentWhatsappApiKey(data[0].whatsapp_api_key);
+      setCurrentTelegramApiKey(data[0].telegram_api_key);
+      setCurrentBotName(data[0].bot_name);
     })
     .catch(err => console.log(err))
     
@@ -107,26 +95,43 @@ export const Mybots = () => {
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
+      backgroundColor: 'white',
+      color: '#059CF1',
+      fontSize: 20,
+      fontWeight: 'bold',
+      
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: 14,
     },
+    
+  }));
+
+  const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+    borderBottomLeftRadius: '30px',
+    borderBottomRightRadius: '30px'
+    
   }));
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: '#DAEDFD',
+      
     },
     // hide last border
     '&:last-child td, &:last-child th': {
       border: 0,
+      
     },
+    '&:last-child': {
+      borderBottomLeftRadius: '20px',
+      borderBottomRightRadius: '20px',
+    },
+  
   }));
   
   const getData = async (userEmail) => {
-    fetch(`https://bot-panel-server-AdrianGutierr26.replit.app/getData?email=${encodeURIComponent(userEmail)}`, {
+    fetch(`${BACKEND_URL}/getData2?email=${encodeURIComponent(userEmail)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -134,7 +139,7 @@ export const Mybots = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        //console.log(data);
+        console.log(data);
         setBots(data);
       })
       .catch(err => console.log(err));
@@ -154,7 +159,8 @@ export const Mybots = () => {
   }
 
   const updateWhatsappEnable = async (whatsapp_enable, botId, callback) => {
-    await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/updateWhatsappEnable", {
+    console.log(botId);
+    await fetch(`${BACKEND_URL}/updateWhatsappEnable2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -164,13 +170,17 @@ export const Mybots = () => {
     .then((res) => res.json())
       .then((data) => {
         callback(data);
-        alert(data);
+        if(whatsapp_enable == 1){
+          showMesage('Whatsapp Enabled')
+        } else {
+          showMesage('Whatsapp Disabled')
+        };
       })
       .catch(err => console.log(err));
   }
 
   const sendWhatsappNew = async (phoneNumberId, whatsappApiKey) => {
-    await fetch('https://bot-panel-server-AdrianGutierr26.replit.app/whatsappNew', {
+    await fetch(`${BACKEND_URL}/whatsappNew`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -180,7 +190,7 @@ export const Mybots = () => {
   };
 
   const updateTelegramEnable = async (telegram_enable, botId, callback) => {
-    await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/updateTelegramEnable", {
+    await fetch(`${BACKEND_URL}/updateTelegramEnable2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -190,7 +200,11 @@ export const Mybots = () => {
     .then((res) => res.json())
       .then((data) => {
         callback(data);
-        alert(data);
+        if(telegram_enable == 1) {
+          showMesage('Telegram Enabled');
+        } else {
+          showMesage('Telegram Disabled');
+        }
       })
       .catch(err => console.log(err));
   }
@@ -237,125 +251,244 @@ export const Mybots = () => {
     }
   };
 
+  const handleDeleteButtonClick = () => {
+    setOpenConfirmationDialog(true);
+  };
+
+  const handleConfirmationDialogClose = async (confirmed) => {
+    setOpenConfirmationDialog(false);
+    if (confirmed) {
+      await fetch(`${BACKEND_URL}/deleteBot`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ botId }),
+      })
+      .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          if(data.success){
+            let newList = bots.filter(bot => bot.id !== botId);
+            setBots(newList);
+            showMesage('Bot deleted');
+          }
+        })
+        .catch(err => console.log(err))
+        .finally (() => setEditDialogOpen(false));
+    }
+  };
+
   const updateBotInfo = async (botId) => {
-    await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/updateBotInfo", {
+    await fetch(`${BACKEND_URL}/updateBotInfo2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({botId, currentSystemPrompt, currentWhatsappApiKey, currentTelegramApiKey, currentPhoneNumberId, currentUserTraining1, currentUserTraining2, currentUserTraining3, currentAssistantTraining1, currentAssistantTraining2, currentAssistantTraining3}),
+      body: JSON.stringify({
+        botId,
+        currentBusinessName,
+        currentBusinessUrl,
+        currentPhoneNumberId,
+        currentWhatsappApiKey,
+        currentTelegramApiKey,
+        currentBotName,
+      }),
     })
     .then((res) => res.json())
       .then((data) => {
-        alert(data);
+        //alert(data);
+        showMesage('Bot updated');
+        const index = bots.findIndex(bot => bot.id == botId);
+        setBots([
+          ...bots.slice(0, index),
+          {...bots[index], bot_name: currentBotName, business_name: currentBusinessName},
+          ...bots.slice(index + 1),
+        ])
       })
       .catch(err => console.log(err))
 
   }
 
+  const showMesage = (message) => {
+    setMessageAlert(message)
+    setAlertOpen(true);
+  }
 
   return (
     
     <div className="mybots">
-    <NavBar/>
-    <h2>Mys bots</h2>
-    <TableContainer component={Paper}>
-        <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Enter Whatsapp Phone number Id and Api Key</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please enter your Whatsapp Phone Number Id and Api Key.
-          </DialogContentText>
-          <TextField
-            autoFocus
+    <NavBar/> 
+    <div className="marginTop"></div>
+    <div className="container2">
+    <div className="title2">
+    <h2>My bots</h2>
+    </div>
+    <StyledTableContainer className="tableContainer" component={Paper}>
+      <Table sx={{ minWidth: 400 }} className="table" aria-label="simple table">
+        <TableHead className="tableHead" sx={{backgroundColor: 'white'}}>
+            <StyledTableRow >
+                <StyledTableCell align="center">Id</StyledTableCell>
+                <StyledTableCell align="center"> Name&nbsp;</StyledTableCell>
+                {
+                  (!isSmallScreen)?
+                  <>
+                  <StyledTableCell align="center">Business Name&nbsp;</StyledTableCell>
+                  
+                  </>
+                  :
+                  <></>
+                }
+                <StyledTableCell align="center">Whatsapp&nbsp;</StyledTableCell>
+                <StyledTableCell align="center">Telegram&nbsp;</StyledTableCell>
+                {
+                  (!isSmallScreen)?
+                  <>
+                <StyledTableCell align="center">Edit&nbsp;</StyledTableCell>
+                <StyledTableCell align="center">Delete&nbsp;</StyledTableCell>
+                </>
+                  :
+                  <></>
+                }
+            </StyledTableRow>
+        </TableHead>
+        <TableBody>
+        {bots.map(bot => (
+              <StyledTableRow onClick={() => handleEditButtonClick(bot.id)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
+                <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>
+                <StyledTableCell align='center'>{bot.bot_name}</StyledTableCell>
+                {
+                  (!isSmallScreen)?
+                  <>
+                <StyledTableCell align='center'>{bot.business_name}</StyledTableCell>
+                </>
+                  :
+                  <></>
+                }
+                <StyledTableCell align='center'>
+                  <Switch {...label} 
+                  checked={bot.whatsapp_enable == 1 ? true : false}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setEditDialogOpen(false);
+                    handleChangeWhatsapp(bot.id);
+                    //handleClickOpen(bot.id);
+                  }}/>
+                </StyledTableCell>
+                <StyledTableCell align='center'>
+                  <Switch {...label} 
+                  checked={bot.telegram_enable == 1 ? true : false}
+                  onChange={(e)=> {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setEditDialogOpen(false);
+                    handleChangeTelegram(bot.id);
+                    }}/>
+                </StyledTableCell>
+
+                {
+                  (!isSmallScreen)?
+                  <>
+                <StyledTableCell align="center">
+                  <Button onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditButtonClick(bot.id);
+                  }}>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </Button>
+                </StyledTableCell>
+
+                <StyledTableCell align="center">
+                  <Button onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteButtonClick(bot.id)
+                  }}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Button>
+                </StyledTableCell>
+                </>
+                
+                  :
+                  <></>
+                }
+                
+                
+                {/* <StyledTableCell align='center'>{bot.bot_runnning}</StyledTableCell>*/}
+              </StyledTableRow>
+                ))}
+        </TableBody>
+      </Table>
+      </StyledTableContainer>
+      </div>
+
+      <Snackbar open={alertOpen} autoHideDuration={2500} onClose={() => setAlertOpen(false)}>
+        <Alert onClose={() => setAlertOpen(false)} severity="success" sx={{ width: '90%' }}>
+          {messageAlert}
+        </Alert>
+      </Snackbar>
+
+      <Dialog open={editDialogOpen} className="myDialog">
+        <div className="closeBtn">
+          <IconButton edge="end" color="inherit" onClick={() => setEditDialogOpen(false)}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <DialogTitle fontWeight={"700"} fontSize={"1.5em"} className="myDialogTitle">Edit My Bot</DialogTitle>
+        <DialogContent color="black">
+          <DialogContentText color={"black"} paddingY={"10px"}>Please enter the required information.</DialogContentText>
+          <TextField className="myTextField"
+            margin="dense"
+            id="whatsappApiKey"
+            label="Business Name"
+            type="text"
+            fullWidth
+            value={currentBusinessName}
+            onChange={(e) => setCurrentBusinessName(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />          
+          <TextField className="myTextField"
+          margin="dense" 
+          id="whatsappPhoneNumberId" 
+          label="Busines URL"
+          type="text" 
+          fullWidth 
+          value={currentBusinessUrl}
+          onChange={(e) => setCurrentBusinessUrl(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          />
+          <TextField className="myTextField"
+            
             margin="dense"
             id="phoneNumberId"
             label="Phone Number Id"
             type="text"
             fullWidth
-            value={phoneNumberId}
-            onChange={(e) => setPhoneNumberId(e.target.value)}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderColor: 'black',
-              },
-              '& .MuiOutlinedInput-input': {
-                color: 'black',
-              },
-              '& .MuiInputLabel-outlined': {
-                color: 'black',
-              },
-              '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'black',
-              },
-            }}
-          />
-          <TextField
-            margin="dense"
-            id="whatsappApiKey"
-            label="Whatsapp Api Key"
-            type="text"
-            fullWidth
-            value={whatsappApiKey}
-            onChange={(e) => setWhatsappApiKey(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            onClick={() => {
-              // Call your fetch function here with the entered values
-              sendWhatsappNew(phoneNumberId, whatsappApiKey);
-              handleClose();
-            }}
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
-        <DialogTitle>Edit Bot</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Please enter the required information.</DialogContentText>
-          <TextField
-            margin="dense"
-            id="sytemPrompt"
-            label="System prompt"
-            type="text"
-            fullWidth
-            value={currentSystemPrompt || ''}
-            onChange={(e) => setCurrentSystemPrompt(e.target.value)}
+            value={currentPhoneNumberId}
+            onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
-          />   
-          <TextField
+          />
+          <TextField className="myTextField"
             margin="dense"
             id="whatsappApiKey"
             label="Whatsapp Api Key"
             type="text"
             fullWidth
-            value={currentWhatsappApiKey || ''}
+            value={currentWhatsappApiKey}
             onChange={(e) => setCurrentWhatsappApiKey(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
-          />          
-          <TextField
-          margin="dense" 
-          id="whatsappPhoneNumberId" 
-          label="Whatsapp Phone Number ID"
-          type="text" 
-          fullWidth 
-          value={currentPhoneNumberId}
-          onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
           />
-          <TextField 
+          <TextField className="myTextField"
           margin="dense" 
-          id="telegramApiKey" 
+          id="Bussines description" 
           label="Telegram Api Key" 
           type="text" 
           fullWidth 
@@ -365,81 +498,29 @@ export const Mybots = () => {
             shrink: true,
           }}
           />
-          <TextField 
+          <TextField className="myTextField"
           margin="dense" 
           id="userTraining1" 
-          label="User training 1" 
+          label="Bot Name" 
           type="text" 
           fullWidth 
-          value={currentUserTraining1}
-          onChange={(e) => {setCurrentUserTraining1(e.target.value)}}
+          value={currentBotName}
+          onChange={(e) => {setCurrentBotName(e.target.value)}}
           InputLabelProps={{
             shrink: true,
           }}
           />
-          <TextField 
-          margin="dense" 
-          id="assistantTraining1" 
-          label="Assistant training 1" 
-          type="text" 
-          fullWidth 
-          value ={currentAssistantTraining1}
-          onChange={(e) => {setCurrentAssistantTraining1(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField 
-          margin="dense" 
-          id="userTraining2" 
-          label="User training 2" 
-          type="text" 
-          fullWidth 
-          value={currentUserTraining2}
-          onChange={(e) => {setCurrentUserTraining2(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField 
-          margin="dense" 
-          id="assistantTraining2" 
-          label="Assistant training 2" 
-          type="text" 
-          fullWidth 
-          value ={currentAssistantTraining2}
-          onChange={(e) => {setCurrentAssistantTraining2(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField 
-          margin="dense" 
-          id="userTraining3" 
-          label="User training 3" 
-          type="text" 
-          fullWidth 
-          value={currentUserTraining3}
-          onChange={(e) => {setCurrentUserTraining3(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-          <TextField 
-          margin="dense" 
-          id="assistantTraining3" 
-          label="Assistant training 3" 
-          type="text" 
-          fullWidth 
-          value ={currentAssistantTraining3}
-          onChange={(e) => {setCurrentAssistantTraining3(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
+          
+          
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+          <Button onClick={() => {
+            handleDeleteButtonClick(botId);
+          }}
+          style={{color: 'red'}}
+          >
+            Delete
+          </Button>
           <Button
             onClick={() => {
               // Call your fetch function here to save the edited data
@@ -451,75 +532,20 @@ export const Mybots = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-            <StyledTableRow>
-                <StyledTableCell align="center">Id</StyledTableCell>
-                <StyledTableCell align="center">Prompt&nbsp;</StyledTableCell>
-                {/*<StyledTableCell align="center">TelegramApiKey&nbsp;</StyledTableCell>
-                <StyledTableCell align="center">WhatsappApiKey&nbsp;</StyledTableCell> */}
-                <StyledTableCell align="center">WhatsappEnable&nbsp;</StyledTableCell>
-                <StyledTableCell align="center">TelegramEnable&nbsp;</StyledTableCell>
-                <StyledTableCell align="center">Edit&nbsp;</StyledTableCell>
-                {/*
-                <StyledTableCell align="center">Creation Status&nbsp;</StyledTableCell>
-                */}
-            </StyledTableRow>
-        </TableHead>
-        <TableBody>
-        {bots.map(bot => (
-              <StyledTableRow key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <StyledTableCell component="th" scope='row'>{bot.id}</StyledTableCell>
-                <StyledTableCell align='center'>{bot.prompt}</StyledTableCell>
-                {/*
-                <StyledTableCell align='center'>{bot.telegramApiKey}</StyledTableCell>
-                <StyledTableCell align='center'>
-                  <Box
-                    component="form"
-                    sx={{
-                      '& > :not(style)': { m: 1, width: '25ch'},
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField
-                      className="whatsappApiKey"
-                      name="whatsappApikey"
-                      type="text"
-                      id={`${bot.id}`}
-                    />
-                  </Box>
-                </StyledTableCell>
-                */}
-                <StyledTableCell align='center'>
-                  <Switch {...label} 
-                  checked={bot.whatsapp_enable == 1 ? true : false}
-                  onChange={() => {
-                    handleChangeWhatsapp(bot.id);
-                    //handleClickOpen(bot.id);
-                  }}/>
-                </StyledTableCell>
-                <StyledTableCell align='center'>
-                  <Switch {...label} 
-                  checked={bot.telegram_enable == 1 ? true : false}
-                  onChange={()=> {
-                    handleChangeTelegram(bot.id);
-                    }}/>
-                </StyledTableCell>
-                
-                <StyledTableCell align="center">
-                <Button onClick={() => {
-                  handleEditButtonClick(bot.id)
-                }}>
-                  <FontAwesomeIcon icon={faEdit} />
-                </Button>
-                </StyledTableCell>
-                {/* <StyledTableCell align='center'>{bot.bot_runnning}</StyledTableCell>*/}
-              </StyledTableRow>
-                ))}
-        </TableBody>
-      </Table>
-      </TableContainer>
+
+      <Dialog open={openConfirmationDialog} onClose={() => handleConfirmationDialogClose(false)} className="myDialogDelete">
+        <DialogContent style={{background:"#F4F9FD", borderRadius: "20px"}}>
+          <ErrorOutlineOutlined color="error" style={{fontSize:"72px", width: "100%"}}/>
+          <DialogContentText style={{color:"#42A5F6"}}>Are you sure you want to delete this bot?</DialogContentText>
+          <hr style={{borderColor: "#059CF1", borderWidth: "0.2px"}} />
+        </DialogContent>
+        <DialogActions style={{background:"#F4F9FD"}}>
+          <Button onClick={() => handleConfirmationDialogClose(false)}>Cancel</Button>
+          <Button onClick={() => handleConfirmationDialogClose(true)} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       </div>
   );
 };

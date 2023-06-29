@@ -12,7 +12,7 @@ import TelegramKeys from './TelegramKeys';
 import PlatformSelect from './PlatformSelect';
 import { isLoggedIn } from '../../utils/auth'
 import CreateButton from './CreateButton';
-
+import { NavBar } from '../NavBar';
 
 const CreateBot = () => {
     const navigate = useNavigate();
@@ -26,15 +26,12 @@ const CreateBot = () => {
     const [textField2, setTextField2] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
-
-
     const changeCurrentStep = async (newStep) => {
         setCurrentStep(newStep);
         if (botId) {
          await updateStep(newStep, botId);
         }
       };
-
 
     //Obtener las plataformas que selecciono el user para poner activo su bot (e.g.whatsapp o telegram)
     async function getPlatforms(botId){
@@ -309,7 +306,10 @@ useEffect(() => {
 
     
     const handleCancel = () => {
-        // Implement your cancel logic here - for example, navigate back
+        setStepData({});
+        // Navigate back to the initial step
+        changeCurrentStep(1);
+        navigate('/my-bots');
     };
 
     const handleBack = async () => {
@@ -343,7 +343,7 @@ useEffect(() => {
                             <TelegramKeys handleCancel={handleCancel} handleContinue={handleContinue} handleBack={handleBack} updateStepData={updateStepData} botId={botId}/>
                           );
                           
-                    } else if (currentStep === 8 && platforms.whatsappSelected ==1){
+                    } else if (currentStep === 8 && platforms.whatsappSelected == 1){
                         setStepComponent(
                             <WhatsappKeys handleCancel={handleCancel} handleContinue={handleContinue} handleBack={handleBack} updateStepData={updateStepData} botId={botId}/>
                           );
@@ -402,9 +402,7 @@ useEffect(() => {
             return null;
         }
       };
-
-      return <div>{stepComponent}</div>;
-
+      return <div><NavBar/>{stepComponent}</div>;
 };
 
-export default CreateBot;
+export default CreateBot; 
