@@ -25,6 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import { isLoggedIn } from '../../utils/auth'
 
 import { BACKEND_URL } from '../../config.js';
+import { ErrorOutlineOutlined } from "@mui/icons-material";
 
 export const Mybots = () => {
   const [bots, setBots] = useState([]);
@@ -50,6 +51,9 @@ export const Mybots = () => {
 
   const [alertOpen, setAlertOpen] = useState(false);
   const [messageAlert, setMessageAlert] = useState('');
+
+  const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+
   const navigate = useNavigate();
 
   //funcion para abrir el form para hacer edit del bot
@@ -247,26 +251,33 @@ export const Mybots = () => {
     }
   };
 
-  const handleDeleteButtonClick = async (botId) => {
-    console.log(botId)
-    await fetch(`${BACKEND_URL}/deleteBot`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ botId }),
-    })
-    .then((res) => res.json())
-      .then((data) => {
-        console.log(data)
-        if(data.success){
-          let newList = bots.filter(bot => bot.id !== botId);
-          setBots(newList);
-          showMesage('Bot deleted');
-        }
+  const handleDeleteButtonClick = () => {
+    setOpenConfirmationDialog(true);
+  };
+
+  const handleConfirmationDialogClose = async (confirmed) => {
+    setOpenConfirmationDialog(false);
+    if (confirmed) {
+      await fetch(`${BACKEND_URL}/deleteBot`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ botId }),
       })
-      .catch(err => console.log(err));
-  }
+      .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          if(data.success){
+            let newList = bots.filter(bot => bot.id !== botId);
+            setBots(newList);
+            showMesage('Bot deleted');
+          }
+        })
+        .catch(err => console.log(err))
+        .finally (() => setEditDialogOpen(false));
+    }
+  };
 
   const updateBotInfo = async (botId) => {
     await fetch(`${BACKEND_URL}/updateBotInfo2`, {
@@ -286,7 +297,14 @@ export const Mybots = () => {
     })
     .then((res) => res.json())
       .then((data) => {
-        alert(data);
+        //alert(data);
+        showMesage('Bot updated');
+        const index = bots.findIndex(bot => bot.id == botId);
+        setBots([
+          ...bots.slice(0, index),
+          {...bots[index], bot_name: currentBotName, business_name: currentBusinessName},
+          ...bots.slice(index + 1),
+        ])
       })
       .catch(err => console.log(err))
 
@@ -307,27 +325,6 @@ export const Mybots = () => {
     <h2>My bots</h2>
     </div>
     <StyledTableContainer className="tableContainer" component={Paper}>
-        <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Enter Whatsapp Phone number Id and Api Key</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please enter your Whatsapp Phone Number Id and Api Key.
-          </DialogContentText>
-          
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            onClick={() => {
-              // Call your fetch function here with the entered values
-              sendWhatsappNew(phoneNumberId, whatsappApiKey);
-              handleClose();
-            }}
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
       <Table sx={{ minWidth: 400 }} className="table" aria-label="simple table">
         <TableHead className="tableHead" sx={{backgroundColor: 'white'}}>
             <StyledTableRow >
@@ -518,9 +515,12 @@ export const Mybots = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {
-            handleDeleteButtonClick(currentId);
-            setEditDialogOpen(false);
-          }}>Delete</Button>
+            handleDeleteButtonClick(botId);
+          }}
+          style={{color: 'red'}}
+          >
+            Delete
+          </Button>
           <Button
             onClick={() => {
               // Call your fetch function here to save the edited data
@@ -529,6 +529,20 @@ export const Mybots = () => {
             }}
           >
             Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openConfirmationDialog} onClose={() => handleConfirmationDialogClose(false)} className="myDialogDelete">
+        <DialogContent style={{background:"#F4F9FD", borderRadius: "20px"}}>
+          <ErrorOutlineOutlined color="error" style={{fontSize:"72px", width: "100%"}}/>
+          <DialogContentText style={{color:"#42A5F6"}}>Are you sure you want to delete this bot?</DialogContentText>
+          <hr style={{borderColor: "#059CF1", borderWidth: "0.2px"}} />
+        </DialogContent>
+        <DialogActions style={{background:"#F4F9FD"}}>
+          <Button onClick={() => handleConfirmationDialogClose(false)}>Cancel</Button>
+          <Button onClick={() => handleConfirmationDialogClose(true)} color="error" autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

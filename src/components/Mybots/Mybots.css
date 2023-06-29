@@ -88,6 +88,12 @@
     padding: 20px;
 }
 
+.myDialogDelete .MuiDialog-paper {
+    border-radius: 25px;
+    background: #F4F9FD;
+    padding: 20px;
+}
+
 .myDialogTitle {
     
     color: #42A5F6;
