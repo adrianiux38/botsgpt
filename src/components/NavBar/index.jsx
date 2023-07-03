@@ -49,7 +49,7 @@ export const NavBar = () => {
           </IconButton>
         </div>
         <div className='footerBtn'>
-          <IconButton onClick={() => navigate('/login')}>
+          <IconButton onClick={() => navigate("/account")}>
             <FontAwesomeIcon icon={faUser} className='footerIcon' size='lg' color='inherit' />
           </IconButton>
         </div>
