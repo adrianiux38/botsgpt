@@ -42,9 +42,9 @@ import logo2 from "../../img/LOGO.png"
             accessToken: accessToken,
           }),
         })
-        .then(backendResponse => {
+        .then(async backendResponse => {
           if (backendResponse.ok) {
-            return backendResponse.json();
+            return await backendResponse.json();
           } else {
             return backendResponse.json().then(errorData => {
               throw new Error(errorData.error);
