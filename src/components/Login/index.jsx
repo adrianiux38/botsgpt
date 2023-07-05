@@ -42,17 +42,8 @@ import logo2 from "../../img/LOGO.png"
             accessToken: accessToken,
           }),
         })
-        .then(async backendResponse => {
-          if (backendResponse.ok) {
-            return await backendResponse.json();
-          } else {
-            return backendResponse.json().then(errorData => {
-              throw new Error(errorData.error);
-            });
-          }
-        })
+        .then(backendResponse => backendResponse.json())
         .then(data => {
-          //console.log(data);
           localStorage.setItem('token', data.token);
           localStorage.setItem('email', data.email);
           navigate('/create-bot');
