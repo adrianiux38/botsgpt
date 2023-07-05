@@ -69,7 +69,7 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData 
                   />
                   <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
                   <img src={Info} style={{marginRight:'2%'}}/>
-                  <a href='https://youtu.be/NnZ55c2IMlM'><p style={{display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}}>Watch our video about how to get your Telegram Api Key </p></a>
+                  <a href='https://youtu.be/NnZ55c2IMlM' target="_blank"><p style={{display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}}>Watch our video about how to get your Telegram Api Key </p></a>
                   </div>
                  <Grid container sx={{display:'flex'}}>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>

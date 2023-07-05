@@ -16,13 +16,14 @@
     padding-bottom: 20px;
 }
 .logoName{
+    width: 60%;
     display: flex;
     align-items: center;
 }
 
 .title{
     display:flex;
-    flex:0.3;
+    flex:0.6;
     margin-left:10px;
     align-content:center;
     font-Weight:bold;
@@ -31,6 +32,26 @@
     color:black;
     font-size: 36px;
 }    
+
+@media (max-width: 768px) {
+    .title{
+        flex:1;
+    }
+    .logoName{
+        width: 100%;
+    }
+}
+
+/* Tamaño de fuente aún más pequeño para pantallas pequeñas (por ejemplo, teléfonos móviles) */
+@media (max-width: 480px) {
+    .title{
+        flex:1;
+    }
+    .logoName{
+        width: 100%;
+    }
+}
+
 
 .menu{
     display:flex;

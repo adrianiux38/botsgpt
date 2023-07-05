@@ -127,7 +127,7 @@ import logo2 from "../../img/LOGO.png"
               }}>
               <div>
                   <img src={logo} alt="logo" style={{width: "40%"}}/>
-                  <h1 style={{color:"white", fontSize: "40px"}} >BOTS GPT</h1>
+                  <h1 style={{color:"white", fontSize: "40px"}} >GPT CUSTOM</h1>
                   <p style={{fontSize: "18px", color:"#fff", fontWeight:"600"}}>Create chatbots in a matter of minutes</p>
               </div>
            </Grid>
