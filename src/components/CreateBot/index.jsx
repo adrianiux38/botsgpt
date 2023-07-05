@@ -38,7 +38,7 @@ const CreateBot = () => {
         return new Promise(async (resolve, reject) => {
             let platforms = {};
             try {
-            const response = await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/getPlatforms", {
+            const response = await fetch("http://localhost:3001/getPlatforms", {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
@@ -70,7 +70,7 @@ const CreateBot = () => {
     function createBot(botId){
         return new Promise(async (resolve, reject) => {
             try {
-            const response = await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/createPrompt", {
+            const response = await fetch("http://localhost:3001/createPrompt", {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const CreateBot = () => {
   async function updateBotCreationStatus(botId) { 
     return new Promise(async (resolve, reject) => {
         try {
-        const response = await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/updateBotCreationStatus", {
+        const response = await fetch("http://localhost:3001/updateBotCreationStatus", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
@@ -136,7 +136,7 @@ const CreateBot = () => {
     return new Promise(async (resolve, reject) => {
         let botInfo = {};
         try {
-        const response = await fetch("https://bot-panel-server-AdrianGutierr26.replit.app/getBotId", {
+        const response = await fetch("http://localhost:3001/getBotId", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
@@ -187,7 +187,7 @@ useEffect(() => {
 
     const updateStep = async (currentStep, botId) => {
         try {
-            const response = await fetch('https://bot-panel-server-AdrianGutierr26.replit.app/updateStep', {
+            const response = await fetch('http://localhost:3001/updateStep', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ useEffect(() => {
     const createInitialBotRecord = async () => {
         return new Promise(async (resolve, reject) => {
           try {
-            const response = await fetch('https://bot-panel-server-AdrianGutierr26.replit.app/createInitialBotRecord', { 
+            const response = await fetch('http://localhost:3001/createInitialBotRecord', { 
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json'
@@ -275,7 +275,7 @@ useEffect(() => {
     
           const botIdToUse = currentStep === 1 ? (botId === null ? newBotId : botId) : botId;
           try {
-            const response = await fetch('https://bot-panel-server-AdrianGutierr26.replit.app/saveBotStep', {
+            const response = await fetch('http://localhost:3001/saveBotStep', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
