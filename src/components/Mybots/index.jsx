@@ -251,7 +251,8 @@ export const Mybots = () => {
     }
   };
 
-  const handleDeleteButtonClick = () => {
+  const handleDeleteButtonClick = (botId) => {
+    setBotId(botId);
     setOpenConfirmationDialog(true);
   };
 
@@ -403,6 +404,7 @@ export const Mybots = () => {
                   <Button onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteButtonClick(bot.id)
+                    
                   }}>
                     <FontAwesomeIcon icon={faTrash} />
                   </Button>

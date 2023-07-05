@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -6,15 +6,49 @@ import  Info from './assets/info.svg'
 
 const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
   const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 8);
+  const [isValidStep, setIsValidStep] = useState(false);
+  const [text1, setText1] = useState(false);
+  const [text2, setText2] = useState(false);
+  
 
   const handleChange1 = (e) => {
+    
     handleTextField1Change(e);
     updateStepData({ whatsappApiKey: e.target.value });
+    if ((e.target.value !== '') && text2) {
+      setIsValidStep(true);
+
+    }else if ((e.target.value !== '') && !text2) {
+      setText1(true)
+
+    
+    
+  }else if ((e.target.value == '') && !text2) {
+    setText1(false)
+    setIsValidStep(false);
+
+  } else {
+      setIsValidStep(false);
+    }
   }
 
   const handleChange2 = (e) => {
     handleTextField2Change(e);
     updateStepData({ whatsappPhoneId: e.target.value });
+    
+    if ((e.target.value !== '') && text1) {
+      setIsValidStep(true);
+
+    }else if ((e.target.value !== '') && !text1) {
+      setText2(true)
+
+    } else if ((e.target.value == '') && !text2) {
+      setText1(false)
+      setIsValidStep(false);
+  
+    }else {
+      setIsValidStep(false);
+    }
   }
 
     return (
@@ -102,7 +136,7 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                     </Grid>
                       <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                       <Box my={1}>
-                        <Button variant='contained' color='success' onClick={handleContinue}>
+                        <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                           Continue
                         </Button>
                       </Box>
