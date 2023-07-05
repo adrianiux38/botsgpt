@@ -1,13 +1,21 @@
-import React from 'react';
+import {React, useState} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 
 const BusinessName = ({handleCancel, handleContinue, handleBack, updateStepData, botId}) => {
 const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 2);
+const [isValidStep, setIsValidStep] = useState(false);
+
 const handleChange1 = (e) => {
     handleTextField1Change(e);
     updateStepData({ businessName: e.target.value });
+    if (e.target.value !== '') {
+        setIsValidStep(true);
+      } else {
+        setIsValidStep(false);
+      }
+
 }
 
 return (
@@ -77,7 +85,7 @@ return (
                 </Grid>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                     <Box my={1}>
-                    <Button variant='contained' color='success' onClick={handleContinue}>
+                    <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                         Continue
                     </Button>
                     </Box>

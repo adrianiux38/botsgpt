@@ -159,7 +159,7 @@ const RegisterComponent = () => {
             >
               <div>
                 <img src={logo} alt="logo" style={{ width: "40%" }} />
-                <h1 style={{ color: "white", fontSize: "40px" }}>BOTS GPT</h1>
+                <h1 style={{ color: "white", fontSize: "40px" }}>GPT CUSTOM</h1>
               </div>
             </Grid>
             <Grid item xs={6}>
