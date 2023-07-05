@@ -55,7 +55,7 @@ const Account = () => {
     else if((eMail === '' && password !== '' && newPassword !== '') || (eMail === localStorage.getItem('email') && password !== '' && newPassword !== '')) {
       isValid = true;
       route = "change-password";
-    } else if(eMail !== localStorage.getItem('email') && password !== '' && newPassword !== ''){
+    } else if((eMail !== localStorage.getItem('email') || eMail !== '') && password !== '' && newPassword !== ''){
       error = "You can only change the password or email at a time.";
     } else {
       error = "Passwords do not match.";
@@ -90,11 +90,11 @@ const Account = () => {
           const { message } = await response.json()
           alert(message)
         } else {
-          errorMessage(response.error);
+          const { error } = await response.json()
+          errorMessage(error);
         }
       } catch (error) {
-        console.log('Error:', error);
-        errorMessage(error.message);
+        errorMessage(error);
       }
     }
     else{
