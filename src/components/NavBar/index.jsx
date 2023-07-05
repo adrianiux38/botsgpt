@@ -15,8 +15,6 @@ export const NavBar = () => {
 
   const tutorialUrl = "https://www.youtube.com/watch?v=j61cdiPP_8s&t=2209s";
 
-  
-
   return (
     <>
       <div className='navBar'>
@@ -49,7 +47,7 @@ export const NavBar = () => {
           </IconButton>
         </div>
         <div className='footerBtn'>
-          <IconButton onClick={() => navigate('/login')}>
+          <IconButton onClick={() => navigate('/account')}>
             <FontAwesomeIcon icon={faUser} className='footerIcon' size='lg' color='inherit' />
           </IconButton>
         </div>
