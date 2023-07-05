@@ -1,10 +1,20 @@
-import React from 'react';
+import {React, useState} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 import  Info from './assets/info.svg'
 
 const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData }) => {
-  const changeTelegramKey = (e) => updateStepData({ telegramApiKey: e.target.value });
+  const [isValidStep, setIsValidStep] = useState(false);
+
+  const changeTelegramKey = (e) => {
+    updateStepData({ telegramApiKey: e.target.value });
+    if (e.target.value !== '') {
+      setIsValidStep(true);
+    } else {
+      setIsValidStep(false);
+    }
+  }
+  
     return (
       <ThemeProvider theme={userSignTheme}>
         <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>
@@ -71,7 +81,7 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData 
                     </Grid>
                       <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                       <Box my={1}>
-                        <Button variant='contained' color='success' onClick={handleContinue}>
+                        <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                           Continue
                         </Button>
                       </Box>

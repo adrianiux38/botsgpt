@@ -2,7 +2,7 @@ import React from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import { Button, Box, ThemeProvider, Grid } from '@mui/material';
 
-const CreateButton = ({ handleCancel, handleBack, createBot, botId }) => {
+const CreateButton = ({ handleCancel, handleBack, createBot, botId}) => {
     return (
       <ThemeProvider theme={userSignTheme}>
         <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>

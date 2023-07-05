@@ -5,9 +5,18 @@ import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 
 const NameBot = ({handleCancel, handleContinue, handleBack, updateStepData, botId}) => {
   const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 1);
+  const [isValidStep, setIsValidStep] = useState(false);
+ 
   const handleChange1 = (e) => {
     handleTextField1Change(e);
     updateStepData({ botName: e.target.value });
+    if (e.target.value !== '') {
+      setIsValidStep(true);
+    } else {
+      setIsValidStep(false);
+    }
+    
+    
   }
 
     return (
@@ -55,6 +64,7 @@ const NameBot = ({handleCancel, handleContinue, handleBack, updateStepData, botI
                   </Grid>
                   <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>Write the name of your custom Gpt</p>
                   <TextField
+                     
                     fullWidth
                     id='custom-input'
                     label='Your AI Name'
@@ -75,7 +85,7 @@ const NameBot = ({handleCancel, handleContinue, handleBack, updateStepData, botI
                     </Grid>
                       <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                       <Box my={1}>
-                        <Button variant='contained' color='success' onClick={handleContinue}>
+                        <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                           Continue
                         </Button>
                       </Box>

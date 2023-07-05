@@ -4,52 +4,21 @@ import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 import  Info from './assets/info.svg'
 
-const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
-  const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 8);
+const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
+  const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 9);
   const [isValidStep, setIsValidStep] = useState(false);
-  const [text1, setText1] = useState(false);
-  const [text2, setText2] = useState(false);
-  
 
   const handleChange1 = (e) => {
-    
     handleTextField1Change(e);
-    updateStepData({ whatsappApiKey: e.target.value });
-    if ((e.target.value !== '') && text2) {
+    updateStepData({ callbackURL: e.target.value });
+    if (e.target.value !== '') {
       setIsValidStep(true);
-
-    }else if ((e.target.value !== '') && !text2) {
-      setText1(true)
-
-    
-    
-  }else if ((e.target.value == '') && !text2) {
-    setText1(false)
-    setIsValidStep(false);
-
-  } else {
+    } else {
       setIsValidStep(false);
     }
   }
 
-  const handleChange2 = (e) => {
-    handleTextField2Change(e);
-    updateStepData({ whatsappPhoneId: e.target.value });
-    
-    if ((e.target.value !== '') && text1) {
-      setIsValidStep(true);
-
-    }else if ((e.target.value !== '') && !text1) {
-      setText2(true)
-
-    } else if ((e.target.value == '') && !text2) {
-      setText1(false)
-      setIsValidStep(false);
-  
-    }else {
-      setIsValidStep(false);
-    }
-  }
+ 
 
     return (
       <ThemeProvider theme={userSignTheme}>
@@ -94,13 +63,13 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                       </Box>
                       </Grid>
                   </Grid>
-                  <p style={{display: 'flex', fontFamily:'poppins', fontSize:'1.2em', marginBottom: '0%', color:'#6F3FF8', fontWeight:'bold'}}>Whatsapp API Key</p>
+                  <p style={{display: 'flex', fontFamily:'poppins', fontSize:'1.2em', marginBottom: '0%', color:'#6F3FF8', fontWeight:'bold'}}>Whatsapp Callback URL</p>
                   <TextField
                     fullWidth
-                    id='whatsapp-api-key-input'
-                    label='Whatsapp Api Key'
+                    id='whatsapp-callback'
+                    label='Whatsapp Callback URL'
                     variant='outlined'
-                    placeholder={ textFieldValue1 ? '' : 'Whatsapp Api Key'}
+                    placeholder={ textFieldValue1 ? '' : 'Whatsapp Callback URL'}
                     value={ textFieldValue1 }
                     onChange={handleChange1}
                     InputLabelProps={{
@@ -108,23 +77,10 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                     }}
                     sx={{ alignSelf: 'center', justifySelf: 'center', mb:'4%', mt:'4%'}}
                   />
-                  <p style={{display: 'flex', fontFamily:'poppins', fontSize:'1.2em', marginBottom: '0%', color:'#6F3FF8', fontWeight:'bold'}}>Phone Number ID</p>
-                  <TextField
-                    fullWidth
-                    id='phone-number-id-input'
-                    label='Phone number ID'
-                    variant='outlined'
-                    placeholder={ textFieldValue2 ? '' : 'Meta Phone Number ID'}
-                    value={ textFieldValue2 }
-                    onChange={handleChange2}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    sx={{ alignSelf: 'center', justifySelf: 'center', mb:'1%', mt:'4%'}}
-                  />
+                                    
                   <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
                   <img src={Info} style={{marginRight:'2%'}}/>
-                  <a href='https://youtu.be/NUwN3exDJ6Y'><p style={{display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}}>Watch our video about how to get your Whatsapp Api Key and Phone number Id</p></a>
+                  <a href='https://youtu.be/NUwN3exDJ6Y' target="_blank" ><p style={{display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}}>Watch our video about how to get your Whatsapp Callback URL</p></a>
                   </div>
                  <Grid container sx={{display:'flex'}}>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>
@@ -136,7 +92,7 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                     </Grid>
                       <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                       <Box my={1}>
-                        <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
+                        <Button variant='contained' color='success' onClick={handleContinue}disabled={!isValidStep}>
                           Continue
                         </Button>
                       </Box>
@@ -151,4 +107,4 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
     );
   };
 
-  export default WhatsappKeys;
+  export default CallbackURL;

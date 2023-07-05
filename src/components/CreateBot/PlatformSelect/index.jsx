@@ -159,7 +159,7 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
                     </Grid>
                       <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                       <Box my={1}>
-                        <Button variant='contained' color='success' onClick={handleContinueWithPlatforms}>
+                        <Button variant='contained' color='success' onClick={handleContinueWithPlatforms} disabled={selectedDivs.length === 0}>
                           Continue
                         </Button>
                       </Box>
