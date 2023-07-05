@@ -44,31 +44,53 @@ const Account = () => {
   const [newPassword, setNewPassword] = useState("");
   
   const isInputValid = () => {
-    return (eMail !== '' && password !== '' && newPassword !== '' && password !== newPassword );
+    let route;
+    let isValid = false;
+    let error;
+
+    if(eMail !== '' && password === '' && newPassword === ''){
+      route = "change-email";
+      isValid = true
+    }
+    else if((eMail === '' && password !== '' && newPassword !== '') || (eMail === localStorage.getItem('email') && password !== '' && newPassword !== '')) {
+      isValid = true;
+      route = "change-password";
+    } else if(eMail !== localStorage.getItem('email') && password !== '' && newPassword !== ''){
+      error = "You can only change the password or email at a time.";
+    } else {
+      error = "Passwords do not match.";
+    }
+
+    return ({ route, isValid, error});
   }
 
   const errorMessage = (error) => {
     alert(error)
-};
+  };
+
   const changePassword= async () => {
-    if(isInputValid()){
+    let validation = isInputValid();
+    if(validation.isValid){
       try {
-        const response = await fetch(`${BACKEND_URL}/set-password`, {
+        const response = await fetch(`${BACKEND_URL}/${validation.route}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: eMail,
+            newEmail: eMail,
+            email: localStorage.getItem('email'),
             newPassword: newPassword,
             currentPassword: password
           }),
         });
     
         if (response.ok) {
-          alert("contraseña actualizada")
+          localStorage.setItem('email', eMail);
+          const { message } = await response.json()
+          alert(message)
         } else {
-          errorMessage("Invalid email or password");
+          errorMessage(response.error);
         }
       } catch (error) {
         console.log('Error:', error);
@@ -76,7 +98,7 @@ const Account = () => {
       }
     }
     else{
-      errorMessage("Ingrese contraseñas nuevas y confirmación de la misma.");
+      errorMessage(validation.error);
     }
   };
   
@@ -111,10 +133,10 @@ const Account = () => {
         <div className="container">
             <h1 className="title3">My Account</h1>
             <div className='row'>
-                <div class="column">
-                    <img class="round-image" src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="Descripción de la imagen"/>
+                <div className="column">
+                    <img className="round-image" src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="Descripción de la imagen"/>
                 </div>
-                <div class="column">
+                <div className="column">
                 
                 {/* <TextField className='myTextField2'
                 fullWidth
@@ -160,7 +182,6 @@ const Account = () => {
                 <TextField className='myTextField2'
                 fullWidth
                 type='password'
-                id='custom-input'
                 label='New Password'
                 value={newPassword}
                 onChange={(event) => setNewPassword(event.target.value)}
