@@ -7,8 +7,7 @@ import { NavBar } from "../NavBar";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-
-
+import useUser from '../../hooks/useUser.jsx';
 
 import TextField from "@mui/material/TextField";
 import { BottomNavigation, Icon, Box, IconButton } from "@mui/material";
@@ -37,6 +36,8 @@ const Account = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const navigate = useNavigate();
+
+  const [userData, setUserData] = useUser();
 
   const [userName, setUserName] = useState("");
   const [eMail, setEmail] = useState("");
@@ -104,6 +105,7 @@ const Account = () => {
   
   const logout = () => {
     localStorage.clear();
+    setUserData(null);
     navigate('/login');
   }
 
@@ -165,32 +167,40 @@ const Account = () => {
                 }}
                 />
 
-                <TextField className='myTextField2'
-                fullWidth
-                id='currentPassword'
-                label='Current Password'
-                type='password'
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                variant='outlined'
-                sx={{marginTop : "10px"}}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                
-                />
-                <TextField className='myTextField2'
-                fullWidth
-                type='password'
-                label='New Password'
-                value={newPassword}
-                onChange={(event) => setNewPassword(event.target.value)}
-                variant='outlined'
-                sx={{marginTop : "10px"}}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                />
+                {
+                  (userData.loggedWith !== 'google')
+                  ?
+                  <>
+                  <TextField className='myTextField2'
+                  fullWidth
+                  id='currentPassword'
+                  label='Current Password'
+                  type='password'
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  variant='outlined'
+                  sx={{marginTop : "10px"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  
+                  />
+                  <TextField className='myTextField2'
+                  fullWidth
+                  type='password'
+                  label='New Password'
+                  value={newPassword}
+                  onChange={(event) => setNewPassword(event.target.value)}
+                  variant='outlined'
+                  sx={{marginTop : "10px"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  />
+                  </>
+                  :
+                  <></>
+                }
                 </div>                
             </div>
 

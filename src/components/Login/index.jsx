@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import logo from "../../img/logoB.png"
 import logo2 from "../../img/LOGO.png"
+import useUser from '../../hooks/useUser.jsx';
 
   const LoginComponent = () => {
     const [email, setEmail] = useState('');
@@ -19,7 +20,8 @@ import logo2 from "../../img/LOGO.png"
     const navigate = useNavigate();
     const theme = useTheme();   
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    
+
+    const [userData, setUserData] = useUser();
 
     const [open, setOpen] = React.useState(false);
 
@@ -46,6 +48,11 @@ import logo2 from "../../img/LOGO.png"
         .then(data => {
           localStorage.setItem('token', data.token);
           localStorage.setItem('email', data.email);
+          setUserData({
+            email: data.email,
+            token: data.token,
+            loggedWith: 'google'
+          });
           navigate('/create-bot');
         })
         .catch(error => {
@@ -85,6 +92,11 @@ import logo2 from "../../img/LOGO.png"
             //console.log(data);
             localStorage.setItem('token', data.token);
             localStorage.setItem('email', data.email);
+            setUserData({
+              email: data.email,
+              token: data.token,
+              loggedWith: 'email'
+            });
             navigate('/create-bot');
           } else {
             errorMessage("Invalid email or password");
