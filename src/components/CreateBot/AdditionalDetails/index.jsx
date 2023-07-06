@@ -83,22 +83,23 @@ return (
                 variant='outlined'
                 placeholder={ textFieldValue1 ? '' : 'e.g. if the client asks for the top selling products, send him the following url: www.topsellingproducts.com'}
                 value={ textFieldValue1 }
-                onChange={handleChange1}
+                onChange={(e) => {if(e.target.value.length <= 300) handleChange1(e)}}
                 onFocus={handleFocus}
                 InputLabelProps={{
                     shrink: true,
                 }}
                 multiline
-                rows={4} // Número de líneas visibles
-                rowsMax={5} // Número máximo de líneas antes de mostrar una barra de desplazamiento
+                rows={5} // Número de líneas visibles
+                rowsMax={6}
+                inputProps={{ maxLength: 300 }}
+                 // Número máximo de líneas antes de mostrar una barra de desplazamiento
                 sx={{
                     alignSelf: 'center',
                     justifySelf: 'center',
                     mb: '4%',
                     mt: '4%',
-                    '& .MuiOutlinedInput-input': {
-                        paddingBottom: '20%',
-                    }
+                    
+                    
                     }}
                 />
                 <Grid container sx={{display:'flex'}}>

@@ -77,23 +77,17 @@ return (
                 variant='outlined'
                 placeholder={ textFieldValue1 ? '' : 'Describe your business'}
                 value={ textFieldValue1 }
-                onChange={handleChange1}
+                onChange={(e) => {if(e.target.value.length <= 300) handleChange1(e)}}
                 onFocus={handleFocus}
                 InputLabelProps={{
                     shrink: true,
                 }}
                 multiline
-                rows={4} // Número de líneas visibles
+                inputProps={{ maxLength: 300 }}
+                rows={5} // Número de líneas visibles
                 rowsMax={5} // Número máximo de líneas antes de mostrar una barra de desplazamiento
-                sx={{
-                    alignSelf: 'center',
-                    justifySelf: 'center',
-                    mb: '4%',
-                    mt: '4%',
-                    '& .MuiOutlinedInput-input': {
-                        paddingBottom: '20%',
-                    }
-                    }}
+                    
+                    
                 />
                 <Grid container sx={{display:'flex'}}>
                 <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>
