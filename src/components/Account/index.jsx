@@ -130,17 +130,19 @@ const Account = () => {
                 }}
                 /> */}
 
-                <TextField className='myTextField2'
-                fullWidth
-                id='custom-input'
-                label='Email'
-                value={eMail}
-                onChange={(event) => setEmail(event.target.value)}
-                variant='outlined'
-                sx={{marginTop : "10px"}}
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                <TextField 
+                  className='myTextField2'
+                  fullWidth
+                  id='custom-input'
+                  label='Email'
+                  value={eMail}
+                  onChange={(event) => setEmail(event.target.value)}
+                  variant='outlined'
+                  sx={{marginTop : "10px"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  disabled={true}
                 />
 
                 <TextField className='myTextField2'

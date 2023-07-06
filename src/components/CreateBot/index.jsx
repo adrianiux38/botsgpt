@@ -290,30 +290,25 @@ const CreateBot = () => {
   };
 
   const handleContinue = () => {
-    
       setShouldContinue(true);    
-              
   };
 
   useEffect(() => {
     const saveData = async () => {
       if (!shouldContinue) return;
-      if (currentStep == 6 || currentStep == 7) {
-        const platforms = await getPlatforms(botId);
         if (currentStep == 6) {
-          if (platforms.telegramSelected == 1) {
+        const platforms = await getPlatforms(botId);
+        if (currentStep == 6 && platforms.telegramSelected == 1) {
             changeCurrentStep(currentStep + 1);
-          } else {
+        } else if (currentStep == 6 && platforms.telegramSelected == 0 && platforms.whatsappSelected == 1) {
             changeCurrentStep(currentStep + 2);
-          }
-        } else if (currentStep == 7) {
-          if (platforms.whatsappSelected == 1) {
-            changeCurrentStep(currentStep + 1);
-          } else {
-            changeCurrentStep(currentStep + 2);
-          }
+        } else if (currentStep == 7 && platforms.whatsappSelected == 0 ){
+          alert('listo')
+          changeCurrentStep(10)
         }
       }
+                
+
 
           var newBotId;
           if (currentStep === 1 && botId === null) {
@@ -337,9 +332,10 @@ const CreateBot = () => {
     
             const data = await response.json();
             if (data.success) {
-              //console.log(`Step ${currentStep} data stored successfully`);
+              console.log(`Step ${currentStep} data stored successfully`);
               changeCurrentStep(currentStep + 1);
             } else {
+              console.log('error al guardar los datos')
               console.error(`Error storing step ${currentStep} data:`, data.error);
             }
           } catch (error) {
