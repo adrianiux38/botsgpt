@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect } from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -12,6 +12,9 @@ const handleChange1 = (e) => {
     updateStepData({ businessUrl: e.target.value });
     setIsValidStep(e.target.value.trim() !== '');
 }
+useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
+  }, [textFieldValue1]);  
 return (
     <ThemeProvider theme={userSignTheme}>
     <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>

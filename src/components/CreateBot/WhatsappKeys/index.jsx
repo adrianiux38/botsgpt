@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -50,6 +50,10 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
       setIsValidStep(false);
     }
   }
+
+  useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null) && (textFieldValue2 !== '') && ( textFieldValue2 !== null));   	
+  }, [textFieldValue1]);  
 
     return (
       <ThemeProvider theme={userSignTheme}>

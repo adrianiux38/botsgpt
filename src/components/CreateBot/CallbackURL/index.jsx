@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState , useEffect} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -17,6 +17,10 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
       setIsValidStep(false);
     }
   }
+
+  useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
+  }, [textFieldValue1]);  
 
  
 
