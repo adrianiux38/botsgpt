@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -11,12 +11,19 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
   const handleChange1 = (e) => {
     handleTextField1Change(e);
     updateStepData({ callbackURL: e.target.value });
-    if (e.target.value !== '') {
-      setIsValidStep(true);
-    } else {
-      setIsValidStep(false);
-    }
+    setIsValidStep(e.target.value !== ''); 
   }
+
+  const handleFocus= (e) => {
+      
+    setIsValidStep(e.target.value !== ''); 
+    
+    
+  }
+
+  useEffect(() => {
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));      
+  }, [textFieldValue1]);
 
  
 
@@ -66,12 +73,14 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
                   <p style={{display: 'flex', fontFamily:'poppins', fontSize:'1.2em', marginBottom: '0%', color:'#6F3FF8', fontWeight:'bold'}}>Whatsapp Callback URL</p>
                   <TextField
                     fullWidth
+                    
                     id='whatsapp-callback'
                     label='Whatsapp Callback URL'
                     variant='outlined'
                     placeholder={ textFieldValue1 ? '' : 'Whatsapp Callback URL'}
                     value={ textFieldValue1 }
                     onChange={handleChange1}
+                    onFocus={handleFocus}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -92,7 +101,7 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
                     </Grid>
                       <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                       <Box my={1}>
-                        <Button variant='contained' color='success' onClick={handleContinue}disabled={!isValidStep}>
+                        <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                           Continue
                         </Button>
                       </Box>

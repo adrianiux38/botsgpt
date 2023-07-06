@@ -1,14 +1,30 @@
-import React from 'react';
+import {React,useState, useEffect }from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 
 const BusinessDescription = ({handleCancel, handleContinue, handleBack, updateStepData, botId}) => {
 const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 3);
+const [isValidStep, setIsValidStep] = useState(false);
 const handleChange1 = (e) => {
     handleTextField1Change(e);
     updateStepData({ businessDescription: e.target.value });
 }
+const handleFocus= (e) => {
+    
+    if (e.target.value !== '') {
+      setIsValidStep(true);
+    } else {
+      setIsValidStep(false);
+    }   
+    
+  }
+
+  useEffect(() => {
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   
+  }, [textFieldValue1]);  
+
+
 return (
     <ThemeProvider theme={userSignTheme}>
     <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>
@@ -55,15 +71,18 @@ return (
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>What does your business do/sell?</p>
                 <TextField
                 fullWidth
+                autoFocus
                 id='custom-input'
                 label='Describe your business'
                 variant='outlined'
                 placeholder={ textFieldValue1 ? '' : 'Describe your business'}
                 value={ textFieldValue1 }
                 onChange={handleChange1}
+                onFocus={handleFocus}
                 InputLabelProps={{
                     shrink: true,
                 }}
+                multiline
                 sx={{
                     alignSelf: 'center',
                     justifySelf: 'center',
@@ -84,7 +103,7 @@ return (
                 </Grid>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                     <Box my={1}>
-                    <Button variant='contained' color='success' onClick={handleContinue}>
+                    <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                         Continue
                     </Button>
                     </Box>

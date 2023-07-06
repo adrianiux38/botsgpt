@@ -1,4 +1,4 @@
-import {React,useState }from 'react';
+import {React,useState, useEffect}from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -16,6 +16,20 @@ if (e.target.value !== '') {
     setIsValidStep(false);
   }
 }
+
+const handleFocus= (e) => {
+    
+    if (e.target.value !== '') {
+      setIsValidStep(true);
+    } else {
+      setIsValidStep(false);
+    }   
+    
+  }
+  useEffect(() => {
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));      
+  }, [textFieldValue1]);
+
 
 return (
     <ThemeProvider theme={userSignTheme}>
@@ -63,12 +77,14 @@ return (
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>What else would you want your AI to do?</p>
                 <TextField
                 fullWidth
+                autoFocus
                 id='custom-input'
                 label='Additional Details'
                 variant='outlined'
                 placeholder={ textFieldValue1 ? '' : 'e.g. if the client asks for the top selling products, send him the following url: www.topsellingproducts.com'}
                 value={ textFieldValue1 }
                 onChange={handleChange1}
+                onFocus={handleFocus}
                 InputLabelProps={{
                     shrink: true,
                 }}

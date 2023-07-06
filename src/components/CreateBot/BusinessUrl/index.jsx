@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -12,6 +12,14 @@ const handleChange1 = (e) => {
     updateStepData({ businessUrl: e.target.value });
     setIsValidStep(e.target.value.trim() !== '');
 }
+const handleFocus= (e) => {    
+    setIsValidStep(e.target.value.trim() !== '');    
+}
+
+useEffect(() => {
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));    
+  }, [textFieldValue1]);
+
 return (
     <ThemeProvider theme={userSignTheme}>
     <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>
@@ -57,6 +65,7 @@ return (
                 </Grid>
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>Write your Business url (if you have one)</p>
                 <TextField
+                autoFocus
                 fullWidth
                 id='custom-input'
                 label='e.g. www.mybusiness.com'
@@ -64,6 +73,7 @@ return (
                 placeholder={ textFieldValue1 ? '' : 'Business URL'}
                 value={ textFieldValue1 }
                 onChange={handleChange1}
+                onFocus={handleFocus}
                 InputLabelProps={{
                     shrink: true,
                 }}

@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -51,6 +51,15 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
     }
   }
 
+  useEffect(() => {
+    setIsValidStep(((textFieldValue1 !== '') && ( textFieldValue1 !== null))&&((textFieldValue2 !== '') && ( textFieldValue2 !== null)));   
+     
+  }, [textFieldValue1,textFieldValue2]);
+
+  const handleFocus= (e) => {    
+    setIsValidStep(e.target.value.trim() !== '');    
+}
+
     return (
       <ThemeProvider theme={userSignTheme}>
         <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>
@@ -100,9 +109,11 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                     id='whatsapp-api-key-input'
                     label='Whatsapp Api Key'
                     variant='outlined'
+                    autoFocus
                     placeholder={ textFieldValue1 ? '' : 'Whatsapp Api Key'}
                     value={ textFieldValue1 }
                     onChange={handleChange1}
+                    onFocus={handleFocus}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -111,12 +122,14 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                   <p style={{display: 'flex', fontFamily:'poppins', fontSize:'1.2em', marginBottom: '0%', color:'#6F3FF8', fontWeight:'bold'}}>Phone Number ID</p>
                   <TextField
                     fullWidth
+                    autoFocus
                     id='phone-number-id-input'
                     label='Phone number ID'
                     variant='outlined'
                     placeholder={ textFieldValue2 ? '' : 'Meta Phone Number ID'}
                     value={ textFieldValue2 }
                     onChange={handleChange2}
+                    onFocus={handleFocus}
                     InputLabelProps={{
                       shrink: true,
                     }}

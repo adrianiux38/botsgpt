@@ -1,4 +1,4 @@
-import {React, useState } from 'react';
+import {React, useState,useEffect } from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -10,6 +10,7 @@ const NameBot = ({handleCancel, handleContinue, handleBack, updateStepData, botI
   const handleChange1 = (e) => {
     handleTextField1Change(e);
     updateStepData({ botName: e.target.value });
+    console.log(e.target.value)
     if (e.target.value !== '') {
       setIsValidStep(true);
     } else {
@@ -18,6 +19,24 @@ const NameBot = ({handleCancel, handleContinue, handleBack, updateStepData, botI
     
     
   }
+
+  const handleFocus= (e) => {
+      
+    setIsValidStep(e.target.value !== ''); 
+    
+    
+  }
+
+  useEffect(() => {
+    
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));    
+  }, [textFieldValue1]);
+    
+    
+    
+    
+  
+
 
     return (
       <ThemeProvider theme={userSignTheme}>
@@ -64,13 +83,16 @@ const NameBot = ({handleCancel, handleContinue, handleBack, updateStepData, botI
                   </Grid>
                   <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>Write the name of your custom Gpt</p>
                   <TextField
-                     
+                    
                     fullWidth
                     id='custom-input'
                     label='Your AI Name'
+                    
                     placeholder={ textFieldValue1 ? '' : 'Your AI Name'}
                     value={ textFieldValue1 }
                     onChange={handleChange1}
+                    onFocus={handleFocus}
+                    autoFocus
                     InputLabelProps={{
                       shrink: true,
                     }}

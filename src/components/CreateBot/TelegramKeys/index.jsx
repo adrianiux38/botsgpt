@@ -1,19 +1,24 @@
-import {React, useState} from 'react';
+import {React, useState,useEffect } from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 import  Info from './assets/info.svg'
+import useTextFieldData from '../../../hooks/useTextFieldData';
 
-const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData }) => {
+const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId}) => {
   const [isValidStep, setIsValidStep] = useState(false);
+  const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 7);
 
   const changeTelegramKey = (e) => {
     updateStepData({ telegramApiKey: e.target.value });
-    if (e.target.value !== '') {
-      setIsValidStep(true);
-    } else {
-      setIsValidStep(false);
-    }
+    setIsValidStep(e.target.value.trim() !== '');
   }
+  const handleFocus= (e) => {    
+    setIsValidStep(e.target.value.trim() !== '');    
+}
+
+useEffect(() => {
+  setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));    
+}, [textFieldValue1]);
   
     return (
       <ThemeProvider theme={userSignTheme}>
@@ -61,11 +66,14 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData 
                   <p style={{display: 'flex', fontFamily:'poppins', fontSize:'1.2em', marginBottom: '0%', color:'#6F3FF8', fontWeight:'bold'}}>Telegram API Token</p>
                   <TextField
                     fullWidth
+                    autoFocus
                     id='custom-input'
                     label='Telegram Api Token'
                     variant='outlined'
                     sx={{ alignSelf: 'center', justifySelf: 'center', mb:'4%', mt:'4%'}}
                     onChange={changeTelegramKey}
+                    onFocus={handleFocus}
+
                   />
                   <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
                   <img src={Info} style={{marginRight:'2%'}}/>
