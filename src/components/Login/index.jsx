@@ -48,6 +48,7 @@ import useUser from '../../hooks/useUser.jsx';
         .then(data => {
           localStorage.setItem('token', data.token);
           localStorage.setItem('email', data.email);
+          localStorage.setItem('loggedWith', 'google');
           setUserData({
             email: data.email,
             token: data.token,
@@ -92,6 +93,7 @@ import useUser from '../../hooks/useUser.jsx';
             //console.log(data);
             localStorage.setItem('token', data.token);
             localStorage.setItem('email', data.email);
+            localStorage.setItem('loggedWith', 'email');
             setUserData({
               email: data.email,
               token: data.token,

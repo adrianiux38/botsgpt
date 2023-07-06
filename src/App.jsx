@@ -10,7 +10,11 @@ import UserContex from './context/UserContext';
 
 function App() {
 
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState({
+    email: localStorage.getItem('email'),
+    token: localStorage.getItem('token'),
+    loggedWith: localStorage.getItem('loggedWith'),
+  })
 
   return (
     <UserContex.Provider value={[userData, setUserData]}>
