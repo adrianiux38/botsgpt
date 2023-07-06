@@ -7,7 +7,7 @@ import { NavBar } from '../NavBar'
 import './Mybots.css'
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Table, TableBody, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 import Box from '@mui/material/Box';
@@ -53,6 +53,9 @@ export const Mybots = () => {
   const [messageAlert, setMessageAlert] = useState('');
 
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+
+  const [isLoadingTelegram, setIsLoadingTelegram] = useState(false);
+  const [isLoadingWhatsapp, setIsLoadingWhatsapp] = useState(false);
 
   const navigate = useNavigate();
 
@@ -159,7 +162,7 @@ export const Mybots = () => {
   }
 
   const updateWhatsappEnable = async (whatsapp_enable, botId, callback) => {
-    console.log(botId);
+    setIsLoadingWhatsapp(true);
     await fetch(`${BACKEND_URL}/updateWhatsappEnable2`, {
       method: "POST",
       headers: {
@@ -176,7 +179,8 @@ export const Mybots = () => {
           showMesage('Whatsapp Disabled')
         };
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+      .finally(() => setIsLoadingWhatsapp(false));
   }
 
   const sendWhatsappNew = async (phoneNumberId, whatsappApiKey) => {
@@ -190,6 +194,7 @@ export const Mybots = () => {
   };
 
   const updateTelegramEnable = async (telegram_enable, botId, callback) => {
+    setIsLoadingTelegram(true);
     await fetch(`${BACKEND_URL}/updateTelegramEnable2`, {
       method: "POST",
       headers: {
@@ -206,7 +211,10 @@ export const Mybots = () => {
           showMesage('Telegram Disabled');
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+      .finally(() => {
+        setIsLoadingTelegram(false)
+      });
   }
 
   const handleChangeTelegram = (botId) => {
@@ -367,25 +375,39 @@ export const Mybots = () => {
                   <></>
                 }
                 <StyledTableCell align='center'>
-                  <Switch {...label} 
-                  checked={bot.whatsapp_enable == 1 ? true : false}
-                  onChange={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setEditDialogOpen(false);
-                    handleChangeWhatsapp(bot.id);
-                    //handleClickOpen(bot.id);
-                  }}/>
+                  {
+                    (!isLoadingWhatsapp)
+                    ?
+                    <Switch {...label} 
+                    checked={bot.whatsapp_enable == 1 ? true : false}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      setEditDialogOpen(false);
+                      handleChangeWhatsapp(bot.id);
+                      //handleClickOpen(bot.id);
+                    }}
+                    />
+                    :
+                    <CircularProgress />
+                  }
                 </StyledTableCell>
                 <StyledTableCell align='center'>
-                  <Switch {...label} 
-                  checked={bot.telegram_enable == 1 ? true : false}
-                  onChange={(e)=> {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setEditDialogOpen(false);
-                    handleChangeTelegram(bot.id);
-                    }}/>
+                  {
+                    (!isLoadingTelegram)
+                    ?
+                    <Switch {...label} 
+                    checked={bot.telegram_enable == 1 ? true : false}
+                    onChange={(e)=> {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      setEditDialogOpen(false);
+                      handleChangeTelegram(bot.id);
+                    }}
+                    />
+                    :
+                    <CircularProgress />
+                  }
                 </StyledTableCell>
 
                 {
@@ -403,7 +425,8 @@ export const Mybots = () => {
                 <StyledTableCell align="center">
                   <Button onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteButtonClick(bot.id);
+                    handleDeleteButtonClick(bot.id)
+                    
                   }}>
                     <FontAwesomeIcon icon={faTrash} />
                   </Button>
