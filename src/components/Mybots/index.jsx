@@ -57,10 +57,10 @@ export const Mybots = () => {
   const navigate = useNavigate();
 
   //funcion para abrir el form para hacer edit del bot
-  const handleEditButtonClick = (bot) => {
-    setBotId(bot.id);
+  const handleEditButtonClick = async (bot) => {
+    setBotId(bot.id)
     //consultar en la base de datos los datos de ese bot 
-    fetch(`${BACKEND_URL}/getBotData2`, {
+    await fetch(`${BACKEND_URL}/getBotData2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,13 +70,13 @@ export const Mybots = () => {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      setCurrentId(data[0].currentId);
-      setCurrentBusinessName(data[0].business_name);
-      setCurrentBusinessUrl(data[0].business_url);
-      setCurrentPhoneNumberId(data[0].whatsapp_phone_id);
-      setCurrentWhatsappApiKey(data[0].whatsapp_api_key);
-      setCurrentTelegramApiKey(data[0].telegram_api_key);
-      setCurrentBotName(data[0].bot_name);
+      setCurrentId(data[0].currentId ?? '');
+      setCurrentBusinessName(data[0].business_name ?? '');
+      setCurrentBusinessUrl(data[0].business_url ?? '');
+      setCurrentPhoneNumberId(data[0].whatsapp_phone_id ?? '');
+      setCurrentWhatsappApiKey(data[0].whatsapp_api_key ?? '');
+      setCurrentTelegramApiKey(data[0].telegram_api_key ?? '');
+      setCurrentBotName(data[0].bot_name ?? '');
     })
     .catch(err => console.log(err))
     
@@ -246,12 +246,17 @@ export const Mybots = () => {
   };
 
   const handleDeleteButtonClick = (bot) => {
-    setBotId(bot.id);
+    if (typeof bot === "number") {
+      setBotId(bot);
+    } else {
+      setBotId(bot.id);
+    }
     setOpenConfirmationDialog(true);
   };
 
   const handleConfirmationDialogClose = async (confirmed) => {
     setOpenConfirmationDialog(false);
+    console.log(botId)
     if (confirmed) {
       await fetch(`${BACKEND_URL}/deleteBot`, {
         method: "POST",
@@ -349,7 +354,7 @@ export const Mybots = () => {
         </TableHead>
         <TableBody>
         {bots.map(bot => (
-              <StyledTableRow onClick={() => handleEditButtonClick(bot.id)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
+              <StyledTableRow onClick={() => handleEditButtonClick(bot)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
                 <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>
                 <StyledTableCell align='center'>{bot.bot_name}</StyledTableCell>
                 {
