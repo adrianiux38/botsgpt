@@ -1,11 +1,11 @@
-import {React,useState, useEffect}from 'react';
+import {React,useState, useEffect }from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 
-const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
-const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 6);
-const [isValidStep, setIsValidStep] = useState(false);
+const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStepData, botId })  => {
+    const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 6);	
+    const [isValidStep, setIsValidStep] = useState(false);
 
 const handleChange1 = (e) => {
 handleTextField1Change(e);
@@ -17,18 +17,18 @@ if (e.target.value !== '') {
   }
 }
 
-const handleFocus= (e) => {
-    
-    if (e.target.value !== '') {
-      setIsValidStep(true);
-    } else {
-      setIsValidStep(false);
-    }   
-    
-  }
-  useEffect(() => {
-    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));      
-  }, [textFieldValue1]);
+const handleFocus= (e) => {	
+
+    if (e.target.value !== '') {	
+      setIsValidStep(true);	
+    } else {	
+      setIsValidStep(false);	
+    }   	
+
+  }	
+  useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));      	
+  }, [textFieldValue1]);	
 
 
 return (
@@ -77,30 +77,25 @@ return (
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>What else would you want your AI to do?</p>
                 <TextField
                 fullWidth
-                autoFocus
                 id='custom-input'
                 label='Additional Details'
                 variant='outlined'
                 placeholder={ textFieldValue1 ? '' : 'e.g. if the client asks for the top selling products, send him the following url: www.topsellingproducts.com'}
                 value={ textFieldValue1 }
                 onChange={(e) => {if(e.target.value.length <= 300) handleChange1(e)}}
-                onFocus={handleFocus}
                 InputLabelProps={{
                     shrink: true,
                 }}
                 multiline
-                rows={5} // Número de líneas visibles
-                rowsMax={6}
-                inputProps={{ maxLength: 300 }}
-                 // Número máximo de líneas antes de mostrar una barra de desplazamiento
+                rows={6} // Número de líneas visibles
+                rowsMax={6} // Número máximo de líneas antes de mostrar una barra de desplazamiento
                 sx={{
                     alignSelf: 'center',
                     justifySelf: 'center',
                     mb: '4%',
                     mt: '4%',
                     
-                    
-                    }}
+                     }}
                 />
                 <Grid container sx={{display:'flex'}}>
                 <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>

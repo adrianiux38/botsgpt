@@ -7,7 +7,7 @@ import { Button, TextField,  Box, ThemeProvider, Grid, IconButton } from '@mui/m
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import Whalogo from './assets/whasapp.png';
 import Telegramlogo from './assets/telegram.png';
-
+import { BACKEND_URL } from '../../../config';
 import CheckCircle from '@mui/icons-material/CheckCircle';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 
@@ -55,6 +55,28 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
         setSelectedDivs([...selectedDivs, index]);
       }
     };
+
+    useEffect(()=> {
+      fetch(`${BACKEND_URL}/getBotData2`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ botId }),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(12123)
+        console.log(data[0]);
+        let res = []
+        const whatsapp = data[0].whatsapp_selected;
+        const telegram = data[0].telegram_selected;
+        if(whatsapp == "1") res.push(1);
+        if(telegram == "1") res.push(2);
+        setSelectedDivs(res);
+      })
+      .catch(err => console.log(err))
+    },[]);
 
     const changeSelectedPlatforms = () => {
       if (selectedDivs.length === 0) {

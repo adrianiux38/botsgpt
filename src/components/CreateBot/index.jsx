@@ -14,6 +14,7 @@ import PlatformSelect from "./PlatformSelect";
 import { isLoggedIn } from "../../utils/auth";
 import CreateButton from "./CreateButton";
 import { NavBar } from "../NavBar";
+import { BACKEND_URL } from "../../config";
 
 const CreateBot = () => {
   const navigate = useNavigate();
@@ -29,88 +30,21 @@ const CreateBot = () => {
   const [isLoading, setIsLoading] = useState(false);
   
 
-    const changeCurrentStep = async (newStep) => {
-        setCurrentStep(newStep);
-        if (botId) {
-         await updateStep(newStep, botId);
-        }
-      };
-
-    //Obtener las plataformas que selecciono el user para poner activo su bot (e.g.whatsapp o telegram)
-    async function getPlatforms(botId){
-        return new Promise(async (resolve, reject) => {
-            let platforms = {};
-            try {
-            const response = await fetch("http://localhost:3001/getPlatforms", {
-                method: "POST",
-                headers: {
-                "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ userEmail: loggedInUserEmail, botId }),
-            });
-        
-            if (!response.ok) {
-                throw new Error(`HTTP error ${response.status}`);
-            }
-            const data = await response.json();
-            if (data.success) {
-                platforms = { botId: data.botId, whatsappSelected: data.whatsappSelected, telegramSelected: data.telegramSelected };
-            } else {
-                console.error(
-                "Error getting the bot id of a bot the user was creating:",
-                data.error
-                );
-                reject()
-            }
-            } catch (error) {
-                reject()
-    
-            }
-            resolve(platforms);
-        });
+  const changeCurrentStep = async (newStep) => {
+    setCurrentStep(newStep);
+    if (botId) {
+      await updateStep(newStep, botId);
     }
+  };
 
-
-    function createBot(botId){
-        return new Promise(async (resolve, reject) => {
-            try {
-            const response = await fetch("http://localhost:3001/createPrompt", {
-                method: "POST",
-                headers: {
-                "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ botId }),
-            });
-        
-            if (!response.ok) {
-                throw new Error(`HTTP error ${response.status}`);
-            }
-            const data = await response.json();
-            if (data.success) {
-                console.log(`Bot creation status updated successfully`);
-            } else {
-                console.error(
-                "Error getting the bot id of a bot the user was creating:",
-                data.error
-                );
-                reject()
-            }
-            } catch (error) {
-                reject()
-    
-            }
-            navigate('/my-bots');
-            resolve();
-        });
-    }
-
-  async function updateBotCreationStatus(botId) { 
-    let platforms = {};
+  //Obtener las plataformas que selecciono el user para poner activo su bot (e.g.whatsapp o telegram)
+  async function getPlatforms(botId) {
     return new Promise(async (resolve, reject) => {
-        try {
-        const response = await fetch("http://localhost:3001/updateBotCreationStatus", {
-            method: "POST",
-            headers: {
+      let platforms = {};
+      try {
+        const response = await fetch(`${BACKEND_URL}/getPlatforms`, {
+          method: "POST",
+          headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ userEmail: loggedInUserEmail, botId }),
@@ -140,11 +74,43 @@ const CreateBot = () => {
     });
   }
 
+  function createBot(botId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/createPrompt`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ botId }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.success) {
+          console.log(`Bot creation status updated successfully`);
+        } else {
+          console.error(
+            "Error getting the bot id of a bot the user was creating:",
+            data.error
+          );
+          reject();
+        }
+      } catch (error) {
+        reject();
+      }
+      navigate("/my-bots");
+      resolve();
+    });
+  }
+
   async function updateBotCreationStatus(botId) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
-          "http://localhost:3001/updateBotCreationStatus",
+          `${BACKEND_URL}/updateBotCreationStatus`,
           {
             method: "POST",
             headers: {
@@ -178,7 +144,7 @@ const CreateBot = () => {
     return new Promise(async (resolve, reject) => {
       let botInfo = {};
       try {
-        const response = await fetch("http://localhost:3001/getBotId", {
+        const response = await fetch(`${BACKEND_URL}/getBotId`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -226,7 +192,7 @@ const CreateBot = () => {
 
   const updateStep = async (currentStep, botId) => {
     try {
-      const response = await fetch("http://localhost:3001/updateStep", {
+      const response = await fetch(`${BACKEND_URL}/updateStep`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -259,7 +225,7 @@ const CreateBot = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
-          "http://localhost:3001/createInitialBotRecord",
+          `${BACKEND_URL}/createInitialBotRecord`,
           {
             method: "POST",
             headers: {
@@ -290,72 +256,78 @@ const CreateBot = () => {
   };
 
   const handleContinue = () => {
+    
       setShouldContinue(true);    
+              
   };
 
   useEffect(() => {
     const saveData = async () => {
       if (!shouldContinue) return;
-        if (currentStep == 6) {
+      if (currentStep == 6 || currentStep == 7) {
         const platforms = await getPlatforms(botId);
-        if (currentStep == 6 && platforms.telegramSelected == 1) {
+        if (currentStep == 6) {
+          if (platforms.telegramSelected == 1) {
             changeCurrentStep(currentStep + 1);
-        } else if (currentStep == 6 && platforms.telegramSelected == 0 && platforms.whatsappSelected == 1) {
+          } else {
             changeCurrentStep(currentStep + 2);
-        } else if (currentStep == 7 && platforms.whatsappSelected == 0 ){
-          alert('listo')
-          changeCurrentStep(10)
+          }
+        } else if (currentStep == 7) {
+          if (platforms.whatsappSelected == 1) {
+            changeCurrentStep(currentStep + 1);
+          } else {
+            changeCurrentStep(currentStep + 2);
+          }
         }
       }
-                
 
+      var newBotId;
+      if (currentStep === 1 && botId === null) {
+        newBotId = await createInitialBotRecord();
+        setBotId(newBotId);
+      }
 
-          var newBotId;
-          if (currentStep === 1 && botId === null) {
-            newBotId = await createInitialBotRecord();
-            setBotId(newBotId);
-          }
-    
-          const botIdToUse = currentStep === 1 ? (botId === null ? newBotId : botId) : botId;
-          try {
-            const response = await fetch('http://localhost:3001/saveBotStep', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ step: currentStep, botId: botIdToUse, stepData }),
-            });
-    
-            if (!response.ok) {
-              throw new Error(`HTTP error ${response.status}`);
-            }
-    
-            const data = await response.json();
-            if (data.success) {
-              console.log(`Step ${currentStep} data stored successfully`);
-              changeCurrentStep(currentStep + 1);
-            } else {
-              console.log('error al guardar los datos')
-              console.error(`Error storing step ${currentStep} data:`, data.error);
-            }
-          } catch (error) {
-            console.error(`Error storing step ${currentStep} data:`, error.message);
-          }
-          setShouldContinue(false);
-        };
-    
-        saveData();
-      }, [stepData, shouldContinue]);
-    
+      const botIdToUse =
+        currentStep === 1 ? (botId === null ? newBotId : botId) : botId;
+      try {
+        const response = await fetch(`${BACKEND_URL}/saveBotStep`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            step: currentStep,
+            botId: botIdToUse,
+            stepData,
+          }),
+        });
 
-    
-    const handleCancel = () => {
-        setStepData({});
-        // Navigate back to the initial step
-        changeCurrentStep(1);
-        navigate('/my-bots');
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          //console.log(`Step ${currentStep} data stored successfully`);
+          changeCurrentStep(currentStep + 1);
+        } else {
+          console.error(`Error storing step ${currentStep} data:`, data.error);
+        }
+      } catch (error) {
+        console.error(`Error storing step ${currentStep} data:`, error.message);
+      }
+      setShouldContinue(false);
     };
 
+    saveData();
+  }, [stepData, shouldContinue]);
+
+  const handleCancel = () => {
+    setStepData({});
+    // Navigate back to the initial step
+    changeCurrentStep(1);
+    navigate("/my-bots");
+  };
 
   const handleBack = async () => {
     if (currentStep == 8 || currentStep == 9) {
@@ -379,6 +351,7 @@ const CreateBot = () => {
   };
 
   const loadStepContent = async () => {
+    console.log(currentStep)
     if (currentStep === 7 || currentStep === 8 || currentStep === 9) {
       if (botId !== null) {
         const platforms = await getPlatforms(botId);
@@ -454,10 +427,7 @@ const CreateBot = () => {
         return (
           <NameBot
           handleContinue={handleContinue}
-         // setIsValidStep={setIsValidStep}
-
             handleCancel={handleCancel}
-            
             handleBack={handleBack}
             updateStepData={updateStepData}
             botId={botId}
@@ -466,7 +436,6 @@ const CreateBot = () => {
       case 2:
         return (
           <BusinessName
-         // setIsValidStep={setIsValidStep}
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}
@@ -477,7 +446,6 @@ const CreateBot = () => {
       case 3:
         return (
           <BusinessDescription
-          //setIsValidStep={setIsValidStep}
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}
@@ -488,7 +456,6 @@ const CreateBot = () => {
       case 4:
         return (
           <BusinessUrl
-          //setIsValidStep={setIsValidStep}
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}
@@ -499,7 +466,6 @@ const CreateBot = () => {
       case 5:
         return (
           <PlatformSelect
-
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}
@@ -510,7 +476,6 @@ const CreateBot = () => {
       case 6:
         return (
           <AdditionalDetails
-         // setIsValidStep={setIsValidStep}
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}

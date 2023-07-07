@@ -1,4 +1,4 @@
-import {React,useState, useEffect }from 'react';
+import {React, useState, useEffect} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -6,25 +6,19 @@ import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 const BusinessDescription = ({handleCancel, handleContinue, handleBack, updateStepData, botId}) => {
 const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 3);
 const [isValidStep, setIsValidStep] = useState(false);
+
 const handleChange1 = (e) => {
     handleTextField1Change(e);
     updateStepData({ businessDescription: e.target.value });
-}
-const handleFocus= (e) => {
-    
     if (e.target.value !== '') {
-      setIsValidStep(true);
+        setIsValidStep(true);
     } else {
-      setIsValidStep(false);
-    }   
-    
-  }
-
-  useEffect(() => {
-    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   
+        setIsValidStep(false);
+    }
+}
+useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
   }, [textFieldValue1]);  
-
-
 return (
     <ThemeProvider theme={userSignTheme}>
     <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>
@@ -71,23 +65,28 @@ return (
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>What does your business do/sell?</p>
                 <TextField
                 fullWidth
-                autoFocus
                 id='custom-input'
                 label='Describe your business'
                 variant='outlined'
                 placeholder={ textFieldValue1 ? '' : 'Describe your business'}
                 value={ textFieldValue1 }
                 onChange={(e) => {if(e.target.value.length <= 300) handleChange1(e)}}
-                onFocus={handleFocus}
                 InputLabelProps={{
                     shrink: true,
                 }}
                 multiline
                 inputProps={{ maxLength: 300 }}
-                rows={5} // Número de líneas visibles
+                rows={5}
                 rowsMax={5} // Número máximo de líneas antes de mostrar una barra de desplazamiento
-                    
-                    
+                sx={{
+                    alignSelf: 'center',
+                    justifySelf: 'center',
+                    mb: '4%',
+                    mt: '4%',
+                    '& .MuiOutlinedInput-input': {
+                        paddingBottom: '20%',
+                    }
+                    }}
                 />
                 <Grid container sx={{display:'flex'}}>
                 <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>

@@ -1,4 +1,4 @@
-import {React, useState,  useEffect} from 'react';
+import {React, useState, useEffect} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
@@ -17,21 +17,9 @@ const handleChange1 = (e) => {
       }
 
 }
-const handleFocus= (e) => {
-    
-    if (e.target.value !== '') {
-      setIsValidStep(true);
-    } else {
-      setIsValidStep(false);
-    }   
-    
-  }
-
-  useEffect(() => {
-    console.log(textFieldValue1+"hola")
-    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));    
-  }, [textFieldValue1]);
-
+useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
+  }, [textFieldValue1]);  
 
 return (
     <ThemeProvider theme={userSignTheme}>
@@ -78,15 +66,12 @@ return (
                 </Grid>
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>Write your Business name</p>
                 <TextField
-                
                 fullWidth
                 id='custom-input'
                 label='Your Business Name'
                 placeholder={ textFieldValue1 ? '' : 'Your Business Name'}
                 value={ textFieldValue1 }
                 onChange={handleChange1}
-                onFocus={handleFocus}
-                VS
                 InputLabelProps={{
                     shrink: true,
                 }}

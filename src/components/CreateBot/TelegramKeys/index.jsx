@@ -1,26 +1,30 @@
-import {React, useState,useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 import  Info from './assets/info.svg'
 import useTextFieldData from '../../../hooks/useTextFieldData';
+import ModalVideo from 'react-modal-video';
+import 'react-modal-video/scss/modal-video.scss';
 
-const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId}) => {
-  const [isValidStep, setIsValidStep] = useState(false);
+const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
   const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 7);
+  const [isValidStep, setIsValidStep] = useState(false);
+  const [isOpen, setOpen] = useState(false);
+
+ const openModal = () => {
+   setOpen(true);
+  }
 
   const changeTelegramKey = (e) => {
     updateStepData({ telegramApiKey: e.target.value });
-    setIsValidStep(e.target.value.trim() !== '');
+    if (e.target.value !== '') {
+      setIsValidStep(true);
+    } else {
+      setIsValidStep(false);
+    }
   }
-  const handleFocus= (e) => {    
-    setIsValidStep(e.target.value.trim() !== '');    
-}
-
-useEffect(() => {
-  setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));    
-}, [textFieldValue1]);
-  
-    return (
+    
+  return (
       <ThemeProvider theme={userSignTheme}>
         <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>
           <Grid item xs={12}>
@@ -66,18 +70,16 @@ useEffect(() => {
                   <p style={{display: 'flex', fontFamily:'poppins', fontSize:'1.2em', marginBottom: '0%', color:'#6F3FF8', fontWeight:'bold'}}>Telegram API Token</p>
                   <TextField
                     fullWidth
-                    autoFocus
                     id='custom-input'
                     label='Telegram Api Token'
                     variant='outlined'
                     sx={{ alignSelf: 'center', justifySelf: 'center', mb:'4%', mt:'4%'}}
                     onChange={changeTelegramKey}
-                    onFocus={handleFocus}
-
                   />
+                  <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId='NnZ55c2IMlM' onClose={() => setOpen(false)} />
                   <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
-                  <img src={Info} style={{marginRight:'2%'}}/>
-                  <a href='https://youtu.be/NnZ55c2IMlM' target="_blank"><p style={{display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}}>Watch our video about how to get your Telegram Api Key </p></a>
+                    <img src={Info} style={{marginRight:'2%'}}/>
+                    <p onClick={openModal} style={{display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold', cursor: 'pointer'}}>Watch our video about how to get your Telegram Api Key</p>
                   </div>
                  <Grid container sx={{display:'flex'}}>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>
