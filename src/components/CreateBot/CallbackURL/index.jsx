@@ -14,11 +14,6 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
   
   const [isOpen, setOpen] = useState(false);
 
-  
-
-
-
-
   const textRef = useRef(null);
 
   function handleCopyClick() {
@@ -32,9 +27,7 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
         console.error('Error al copiar texto: ', err);
       });
   }
-
  
-
     return (
       <ThemeProvider theme={userSignTheme}>
         <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>

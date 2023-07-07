@@ -32,6 +32,18 @@ import useUser from '../../hooks/useUser.jsx';
       setOpen(false);
     };
 
+    const hasAnyBot = async (userEmail) => {
+      return await fetch(`${BACKEND_URL}/hasAnyBot?email=${encodeURIComponent(userEmail)}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+        .then((res) => res.json())
+        .then((data) => data.hasAnyBot)
+        .catch(err => console.log(err));
+    };
+
     const login = useGoogleLogin({
       onSuccess: tokenResponse => {
         const accessToken = tokenResponse.access_token;
@@ -45,7 +57,7 @@ import useUser from '../../hooks/useUser.jsx';
           }),
         })
         .then(backendResponse => backendResponse.json())
-        .then(data => {
+        .then(async data => {
           localStorage.setItem('token', data.token);
           localStorage.setItem('email', data.email);
           localStorage.setItem('loggedWith', 'google');
@@ -54,7 +66,14 @@ import useUser from '../../hooks/useUser.jsx';
             token: data.token,
             loggedWith: 'google'
           });
-          navigate('/create-bot');
+          const checkHasAnyBot = await hasAnyBot(data.email);
+          console.log(checkHasAnyBot);
+          if(checkHasAnyBot) {
+            navigate('/my-bots');
+          }
+          else {
+            navigate('/create-bot');
+          }
         })
         .catch(error => {
           console.log(error.message);
@@ -99,7 +118,14 @@ import useUser from '../../hooks/useUser.jsx';
               token: data.token,
               loggedWith: 'email'
             });
-            navigate('/create-bot');
+            const checkHasAnyBot = await hasAnyBot(data.email);
+            console.log(checkHasAnyBot);
+            if(checkHasAnyBot) {
+              navigate('/my-bots');
+            }
+            else {
+              navigate('/create-bot');
+            }
           } else {
             errorMessage("Invalid email or password");
           }

@@ -136,8 +136,12 @@ const CreateBot = () => {
     });
   }
 
-  async function getCurrentEditingBotInfo(userEmail) {
-    return new Promise(async (resolve, reject) => {
+  async function getCurrentEditingBotInfo() {
+    /*if (currentStep === 1 && botId === null) {
+      const newBotId = await createInitialBotRecord();
+      setBotId(newBotId);
+    }*/
+    return await new Promise(async (resolve, reject) => {
       let botInfo = {};
       try {
         const response = await fetch(`${BACKEND_URL}/getBotId`, {
@@ -148,10 +152,13 @@ const CreateBot = () => {
           body: JSON.stringify({ userEmail: loggedInUserEmail }),
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error ${response.status}`);
-        }
         const data = await response.json();
+
+        if (!response.ok) {
+          botInfo = { botId: null, currentStep: 1 };
+          resolve(botInfo);
+        }
+
         if (data.success) {
           botInfo = { botId: data.botId, currentStep: data.currentStep };
         } else {
@@ -218,7 +225,7 @@ const CreateBot = () => {
   };
 
   const createInitialBotRecord = async () => {
-    return new Promise(async (resolve, reject) => {
+    return await new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(`${BACKEND_URL}/createInitialBotRecord`, {
           method: "POST",
@@ -277,6 +284,8 @@ const CreateBot = () => {
         newBotId = await createInitialBotRecord();
         setBotId(newBotId);
       }
+
+      console.log(stepData)
 
       const botIdToUse =
         currentStep === 1 ? (botId === null ? newBotId : botId) : botId;

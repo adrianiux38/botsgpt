@@ -9,7 +9,7 @@ const [isValidStep, setIsValidStep] = useState(false);
 
 const handleChange1 = (e) => {
     handleTextField1Change(e);
-    updateStepData({ additionalDetails: e.target.value });
+    updateStepData({ businessDescription: e.target.value });
     setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
     }
     

@@ -24,16 +24,21 @@ const useTextFieldData = (botId, step) => {
                       },
                       body: JSON.stringify({ step: step, botId }),
                   });
+
                   if (!response.ok) {
-                      throw new Error(`HTTP error ${response.status}`);
+                    setTextFieldValue1('');
+                    setTextFieldValue2('');
+                    resolve()
                   }
+
                   const data = await response.json();
+
                   if (data.success) {
                       console.log(data);
-                      if (data.textFieldData1 !== undefined){
+                      if (data.textFieldData1 !== undefined && data.textFieldData1 !== null){
                         setTextFieldValue1(data.textFieldData1);
                       }
-                      if (data.textFieldData2 !== undefined) { 
+                      if (data.textFieldData2 !== undefined  && data.textFieldData2 !== null) { 
                         setTextFieldValue2(data.textFieldData2);
                       }
                       resolve()

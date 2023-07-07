@@ -1,65 +1,58 @@
+import { Table, TableBody, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, } from '@mui/material';
 import { Row, Col, Card, CardHeader, CardBody, CardFooter, Input, CloseButton } from "reactstrap";
+import { BottomNavigation, Icon, IconButton, Snackbar, Alert } from "@mui/material";
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { useMediaQuery, useTheme } from '@material-ui/core';
 import React, { useState, useEffect } from "react";
+import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
+import { blueGrey } from "@mui/material/colors";
 import { styled } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import { NavBar } from '../NavBar'
 import './Mybots.css'
-import CloseIcon from '@mui/icons-material/Close';
 
-import { Table, TableBody, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-
-import Box from '@mui/material/Box';
-import Switch from '@mui/material/Switch';
-import TextField from '@mui/material/TextField';
-import { BottomNavigation, Icon, IconButton, Snackbar, Alert } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
-
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, } from '@mui/material';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useNavigate } from 'react-router-dom';
 import { isLoggedIn } from '../../utils/auth'
 
-import { BACKEND_URL } from '../../config.js';
 import { ErrorOutlineOutlined } from "@mui/icons-material";
+import { BACKEND_URL } from '../../config.js';
 
 export const Mybots = () => {
   const [bots, setBots] = useState([]);
-  const [whatsappEnable, setWhatsappEnable] = useState(true);
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const [open, setOpen] = useState(false);
-  const [phoneNumberId, setPhoneNumberId] = useState('');
-  const [whatsappApiKey, setWhatsappApiKey] = useState('');
   const [botId, setBotId] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   /* CONSTANTES QUE SE MUESTRAN EN EL FORM DE EDIT */
-  const [currentId, setCurrentId] = useState('');
+  const [currentBotName, setCurrentBotName] = useState('');
   const [currentBusinessName, setCurrentBusinessName] = useState('');
   const [currentBusinessUrl, setCurrentBusinessUrl] = useState('');
   const [currentPhoneNumberId, setCurrentPhoneNumberId] = useState('');
   const [currentWhatsappApiKey, setCurrentWhatsappApiKey] = useState('');
   const [currentTelegramApiKey, setCurrentTelegramApiKey] = useState('');
-  const [currentBotName, setCurrentBotName] = useState('');
+  const [currentBusinessDescription, setCurrentBusinessDescription] = useState('');
+  const [currentAdditionalDetails, setCurrentAdditionalDetails] = useState('');
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [alertOpen, setAlertOpen] = useState(false);
   const [messageAlert, setMessageAlert] = useState('');
-
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
 
   const navigate = useNavigate();
 
   //funcion para abrir el form para hacer edit del bot
   const handleEditButtonClick = async (bot, event) => {
-    console.log(event.target.tagName)
-    if(event.target.tagName !== 'TD' && event.target.tagName !== 'svg' && event.target.tagName !== 'BUTTON') return;
+    if(event.target.tagName !== 'TD' && event.target.tagName !== 'svg' && event.target.tagName !== 'BUTTON' && event.target.tagName !== 'path') return;
     setBotId(bot.id)
     //consultar en la base de datos los datos de ese bot 
     await fetch(`${BACKEND_URL}/getBotData2`, {
@@ -72,13 +65,14 @@ export const Mybots = () => {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      setCurrentId(data[0].currentId ?? '');
+      setCurrentBotName(data[0].bot_name ?? '');
       setCurrentBusinessName(data[0].business_name ?? '');
       setCurrentBusinessUrl(data[0].business_url ?? '');
       setCurrentPhoneNumberId(data[0].whatsapp_phone_id ?? '');
       setCurrentWhatsappApiKey(data[0].whatsapp_api_key ?? '');
       setCurrentTelegramApiKey(data[0].telegram_api_key ?? '');
-      setCurrentBotName(data[0].bot_name ?? '');
+      setCurrentBusinessDescription(data[0].business_description ?? '');
+      setCurrentAdditionalDetails(data[0].additional_details ?? '');
     })
     .catch(err => console.log(err))
     
@@ -295,6 +289,8 @@ export const Mybots = () => {
         currentWhatsappApiKey,
         currentTelegramApiKey,
         currentBotName,
+        currentBusinessDescription,
+        currentAdditionalDetails,
       }),
     })
     .then((res) => res.json())
@@ -428,7 +424,6 @@ export const Mybots = () => {
                   <></>
                 }
                 
-                
                 {/* <StyledTableCell align='center'>{bot.bot_runnning}</StyledTableCell>*/}
               </StyledTableRow>
                 ))}
@@ -451,7 +446,20 @@ export const Mybots = () => {
         </div>
         <DialogTitle fontWeight={"700"} fontSize={"1.5em"} className="myDialogTitle">Edit My Bot</DialogTitle>
         <DialogContent color="black">
-          <DialogContentText color={"black"} paddingY={"10px"}>Please enter the required information.</DialogContentText>
+          <DialogContentText color={"#42A5F6"} fontWeight={"700"} paddingY={"10px"}>Business information.</DialogContentText>
+          <TextField className="myTextField"
+          margin="dense" 
+          id="userTraining1" 
+          label="Bot Name" 
+          type="text" 
+          fullWidth 
+          value={currentBotName}
+          onChange={(e) => {setCurrentBotName(e.target.value)}}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          />
+          
           <TextField className="myTextField"
             margin="dense"
             id="whatsappApiKey"
@@ -463,19 +471,57 @@ export const Mybots = () => {
             InputLabelProps={{
               shrink: true,
             }}
-          />          
+          />   
+
           <TextField className="myTextField"
-          margin="dense" 
-          id="whatsappPhoneNumberId" 
-          label="Busines URL"
-          type="text" 
-          fullWidth 
-          value={currentBusinessUrl}
-          onChange={(e) => setCurrentBusinessUrl(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
+            margin="dense" 
+            id="bussines" 
+            label="Business Description" 
+            type="text" 
+            multiline
+            fullWidth 
+            value={currentBusinessDescription}
+            inputProps={{ maxLength: 300 }}
+            rows={3}
+            rowsMax={5}
+            onChange={(e) => {setCurrentBusinessDescription(e.target.value)}}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
+
+          <TextField className="myTextField"
+            margin="dense" 
+            id="details" 
+            label="Additional Details" 
+            type="text" 
+            fullWidth 
+            value={currentAdditionalDetails}
+            inputProps={{ maxLength: 300 }}
+            rows={3}
+            rowsMax={5}
+            multiline
+            onChange={(e) => {setCurrentAdditionalDetails(e.target.value)}}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+
+          <TextField className="myTextField"
+            margin="dense" 
+            id="whatsappPhoneNumberId" 
+            label="Busines URL"
+            type="text" 
+            fullWidth
+            value={currentBusinessUrl}
+            onChange={(e) => setCurrentBusinessUrl(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+
+          <DialogContentText color={"#42A5F6"} fontWeight={"700"} paddingY={"10px"}>APIs information</DialogContentText>
+
           <TextField className="myTextField"
             margin="dense"
             id="phoneNumberId"
@@ -500,30 +546,32 @@ export const Mybots = () => {
               shrink: true,
             }}
           />
+          
           <TextField className="myTextField"
-          margin="dense" 
-          id="Bussines description" 
-          label="Telegram Api Key" 
-          type="text" 
-          fullWidth 
-          value={currentTelegramApiKey}
-          onChange={(e) => {setCurrentTelegramApiKey(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
+            margin="dense"
+            id="whatsappCallBack"
+            label="Whatsapp Callback URL"
+            type="text"
+            fullWidth
+            value={'url'}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          
+          <TextField className="myTextField"
+            margin="dense" 
+            id="Bussines description" 
+            label="Telegram Api Key" 
+            type="text" 
+            fullWidth 
+            value={currentTelegramApiKey}
+            onChange={(e) => {setCurrentTelegramApiKey(e.target.value)}}
+            InputLabelProps={{
+              shrink: true,
           }}
           />
-          <TextField className="myTextField"
-          margin="dense" 
-          id="userTraining1" 
-          label="Bot Name" 
-          type="text" 
-          fullWidth 
-          value={currentBotName}
-          onChange={(e) => {setCurrentBotName(e.target.value)}}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
+          
           
           
         </DialogContent>
