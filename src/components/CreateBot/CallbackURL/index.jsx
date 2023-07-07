@@ -22,10 +22,6 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
     }
   }
 
-  const openModal = () => {
-    setOpen(true);
-   }
- 
 
 
   useEffect(() => {	
@@ -107,7 +103,7 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
                     </Grid>
                       <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                       <Box my={1}>
-                        <Button variant='contained' color='success' onClick={handleContinue}disabled={!isValidStep}>
+                        <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                           Continue
                         </Button>
                       </Box>

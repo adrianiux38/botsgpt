@@ -31,7 +31,7 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
 
     
     
-  }else if ((e.target.value == '') && !text2) {
+  }else if ((e.target.value == '') && !text1) {
     setText1(false)
     setIsValidStep(false);
 
