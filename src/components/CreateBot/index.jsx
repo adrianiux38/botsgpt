@@ -14,6 +14,7 @@ import PlatformSelect from "./PlatformSelect";
 import { isLoggedIn } from "../../utils/auth";
 import CreateButton from "./CreateButton";
 import { NavBar } from "../NavBar";
+import { BACKEND_URL } from "../../config";
 
 const CreateBot = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const CreateBot = () => {
     return new Promise(async (resolve, reject) => {
       let platforms = {};
       try {
-        const response = await fetch("http://localhost:3001/getPlatforms", {
+        const response = await fetch(`${BACKEND_URL}/getPlatforms`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +77,7 @@ const CreateBot = () => {
   function createBot(botId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch("http://localhost:3001/createPrompt", {
+        const response = await fetch(`${BACKEND_URL}/createPrompt`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -109,7 +110,7 @@ const CreateBot = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
-          "http://localhost:3001/updateBotCreationStatus",
+          `${BACKEND_URL}/updateBotCreationStatus`,
           {
             method: "POST",
             headers: {
@@ -143,7 +144,7 @@ const CreateBot = () => {
     return new Promise(async (resolve, reject) => {
       let botInfo = {};
       try {
-        const response = await fetch("http://localhost:3001/getBotId", {
+        const response = await fetch(`${BACKEND_URL}/getBotId`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -191,7 +192,7 @@ const CreateBot = () => {
 
   const updateStep = async (currentStep, botId) => {
     try {
-      const response = await fetch("http://localhost:3001/updateStep", {
+      const response = await fetch(`${BACKEND_URL}/updateStep`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -224,7 +225,7 @@ const CreateBot = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
-          "http://localhost:3001/createInitialBotRecord",
+          `${BACKEND_URL}/createInitialBotRecord`,
           {
             method: "POST",
             headers: {
@@ -289,7 +290,7 @@ const CreateBot = () => {
       const botIdToUse =
         currentStep === 1 ? (botId === null ? newBotId : botId) : botId;
       try {
-        const response = await fetch("http://localhost:3001/saveBotStep", {
+        const response = await fetch(`${BACKEND_URL}/saveBotStep`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
