@@ -9,16 +9,17 @@ const [isValidStep, setIsValidStep] = useState(false);
 
 const handleChange1 = (e) => {
     handleTextField1Change(e);
-    updateStepData({ businessDescription: e.target.value });
-    if (e.target.value !== '') {
-        setIsValidStep(true);
-    } else {
-        setIsValidStep(false);
+    updateStepData({ additionalDetails: e.target.value });
+    setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
     }
-}
-useEffect(() => {	
-    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
-  }, [textFieldValue1]);  
+    
+    const handleFocus= (e) => {
+        setIsValidStep((e.target.value !== '') && ( e.target.value !== null)); 	
+    }	
+    useEffect(() => {	
+        setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));      	
+    }, [textFieldValue1]);	
+
 return (
     <ThemeProvider theme={userSignTheme}>
     <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>
@@ -65,6 +66,7 @@ return (
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>What does your business do/sell?</p>
                 <TextField
                 fullWidth
+                autoFocus
                 id='custom-input'
                 label='Describe your business'
                 variant='outlined'
@@ -83,9 +85,7 @@ return (
                     justifySelf: 'center',
                     mb: '4%',
                     mt: '4%',
-                    '& .MuiOutlinedInput-input': {
-                        paddingBottom: '20%',
-                    }
+                    
                     }}
                 />
                 <Grid container sx={{display:'flex'}}>

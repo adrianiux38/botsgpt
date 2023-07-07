@@ -61,6 +61,7 @@ return (
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>Write your Business url (if you have one)</p>
                 <TextField
                 fullWidth
+                autoFocus
                 id='custom-input'
                 label='e.g. www.mybusiness.com'
                 variant='outlined'

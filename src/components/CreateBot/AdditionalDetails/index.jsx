@@ -10,25 +10,15 @@ const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStep
 const handleChange1 = (e) => {
 handleTextField1Change(e);
 updateStepData({ additionalDetails: e.target.value });
-if (e.target.value !== '') {
-    setIsValidStep(true);
-  } else {
-    setIsValidStep(false);
-  }
+setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
 }
 
-const handleFocus= (e) => {	
-
-    if (e.target.value !== '') {	
-      setIsValidStep(true);	
-    } else {	
-      setIsValidStep(false);	
-    }   	
-
-  }	
-  useEffect(() => {	
+const handleFocus= (e) => {
+    setIsValidStep((e.target.value !== '') && ( e.target.value !== null)); 	
+}	
+useEffect(() => {	
     setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));      	
-  }, [textFieldValue1]);	
+}, [textFieldValue1]);	
 
 
 return (
@@ -80,6 +70,7 @@ return (
                 id='custom-input'
                 label='Additional Details'
                 variant='outlined'
+                autoFocus
                 placeholder={ textFieldValue1 ? '' : 'e.g. if the client asks for the top selling products, send him the following url: www.topsellingproducts.com'}
                 value={ textFieldValue1 }
                 onChange={(e) => {if(e.target.value.length <= 300) handleChange1(e)}}

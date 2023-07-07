@@ -10,10 +10,10 @@
 }
 
 .imgNav{
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     margin-left: 40px;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
 }
 .logoName{
     width: 60%;
@@ -95,6 +95,7 @@
     background: linear-gradient(160.9deg, #42A5F6 22.2%, rgba(60, 60, 60, 0) 132.84%, #836098 170.67%);
     border-radius: 15px;
     transition: color 0.8s ease;
+    margin-left: 20px;
 }
 
 .footerBtn{

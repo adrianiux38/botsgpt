@@ -17,11 +17,7 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
 
   const changeTelegramKey = (e) => {
     updateStepData({ telegramApiKey: e.target.value });
-    if (e.target.value !== '') {
-      setIsValidStep(true);
-    } else {
-      setIsValidStep(false);
-    }
+    setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
   }
     
   return (

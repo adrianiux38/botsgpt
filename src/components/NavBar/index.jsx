@@ -39,9 +39,9 @@ export const NavBar = () => {
             <Link className="menuItem" to="/my-bots">
               My Bots
             </Link>
-            <Link className="menuItem" to={tutorialUrl}>
+            {/* <Link className="menuItem" to={tutorialUrl}>
               Tutorial
-            </Link>
+            </Link> */}
             <Link className="menuItem" to="/account">
               Account
             </Link>

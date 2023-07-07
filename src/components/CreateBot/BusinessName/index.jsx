@@ -67,6 +67,7 @@ return (
                 <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '1%'}}>Write your Business name</p>
                 <TextField
                 fullWidth
+                autoFocus
                 id='custom-input'
                 label='Your Business Name'
                 placeholder={ textFieldValue1 ? '' : 'Your Business Name'}
