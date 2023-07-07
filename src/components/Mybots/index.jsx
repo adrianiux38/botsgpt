@@ -57,7 +57,9 @@ export const Mybots = () => {
   const navigate = useNavigate();
 
   //funcion para abrir el form para hacer edit del bot
-  const handleEditButtonClick = async (bot) => {
+  const handleEditButtonClick = async (bot, event) => {
+    console.log(event.target.tagName)
+    if(event.target.tagName !== 'TD' && event.target.tagName !== 'svg' && event.target.tagName !== 'BUTTON') return;
     setBotId(bot.id)
     //consultar en la base de datos los datos de ese bot 
     await fetch(`${BACKEND_URL}/getBotData2`, {
@@ -354,7 +356,7 @@ export const Mybots = () => {
         </TableHead>
         <TableBody>
         {bots.map(bot => (
-              <StyledTableRow onClick={() => handleEditButtonClick(bot)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
+              <StyledTableRow onClick={(event) => handleEditButtonClick(bot, event)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
                 <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>
                 <StyledTableCell align='center'>{bot.bot_name}</StyledTableCell>
                 {
@@ -374,7 +376,6 @@ export const Mybots = () => {
                     onChange={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
-                      setEditDialogOpen(false);
                       handleChangeWhatsapp(bot);
                       //handleClickOpen(bot.id);
                     }}
@@ -392,7 +393,6 @@ export const Mybots = () => {
                     onChange={(e)=> {
                       e.stopPropagation();
                       e.preventDefault();
-                      setEditDialogOpen(false);
                       handleChangeTelegram(bot);
                     }}
                     />
@@ -407,7 +407,7 @@ export const Mybots = () => {
                 <StyledTableCell align="center">
                   <Button onClick={(e) => {
                     e.stopPropagation();
-                    handleEditButtonClick(bot);
+                    handleEditButtonClick(bot, e);
                   }}>
                     <FontAwesomeIcon icon={faEdit} />
                   </Button>
@@ -477,7 +477,6 @@ export const Mybots = () => {
           }}
           />
           <TextField className="myTextField"
-            
             margin="dense"
             id="phoneNumberId"
             label="Phone Number Id"
