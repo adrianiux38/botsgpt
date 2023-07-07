@@ -1,15 +1,20 @@
-import React, {useState} from 'react';
+import {React, useState, useEffect } from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 
 const BusinessUrl = ({handleCancel, handleContinue, handleBack, updateStepData, botId}) => {
 const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 4);
+const [isValidStep, setIsValidStep] = useState(false);
 
 const handleChange1 = (e) => {
     handleTextField1Change(e);
     updateStepData({ businessUrl: e.target.value });
+    setIsValidStep(e.target.value.trim() !== '');
 }
+useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
+  }, [textFieldValue1]);  
 return (
     <ThemeProvider theme={userSignTheme}>
     <Grid container sx={{ minHeight: '100vh', background: 'linear-gradient(45deg, #6a1b9a 30%, #42a5f5 90%)' }}>
@@ -77,7 +82,7 @@ return (
                 </Grid>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                     <Box my={1}>
-                    <Button variant='contained' color='success' onClick={handleContinue}>
+                    <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                         Continue
                     </Button>
                     </Box>

@@ -1,15 +1,35 @@
-import React from 'react';
+import {React,useState, useEffect }from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 
-const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStepData, botId}) => {
-const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 6);
+const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStepData, botId })  => {
+    const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 6);	
+    const [isValidStep, setIsValidStep] = useState(false);
 
 const handleChange1 = (e) => {
 handleTextField1Change(e);
 updateStepData({ additionalDetails: e.target.value });
+if (e.target.value !== '') {
+    setIsValidStep(true);
+  } else {
+    setIsValidStep(false);
+  }
 }
+
+const handleFocus= (e) => {	
+
+    if (e.target.value !== '') {	
+      setIsValidStep(true);	
+    } else {	
+      setIsValidStep(false);	
+    }   	
+
+  }	
+  useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));      	
+  }, [textFieldValue1]);	
+
 
 return (
     <ThemeProvider theme={userSignTheme}>
@@ -62,19 +82,20 @@ return (
                 variant='outlined'
                 placeholder={ textFieldValue1 ? '' : 'e.g. if the client asks for the top selling products, send him the following url: www.topsellingproducts.com'}
                 value={ textFieldValue1 }
-                onChange={handleChange1}
+                onChange={(e) => {if(e.target.value.length <= 300) handleChange1(e)}}
                 InputLabelProps={{
                     shrink: true,
                 }}
+                multiline
+                rows={6} // Número de líneas visibles
+                rowsMax={6} // Número máximo de líneas antes de mostrar una barra de desplazamiento
                 sx={{
                     alignSelf: 'center',
                     justifySelf: 'center',
                     mb: '4%',
                     mt: '4%',
-                    '& .MuiOutlinedInput-input': {
-                        paddingBottom: '20%',
-                    }
-                    }}
+                    
+                     }}
                 />
                 <Grid container sx={{display:'flex'}}>
                 <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>
@@ -86,7 +107,7 @@ return (
                 </Grid>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-end'}}>
                     <Box my={1}>
-                    <Button variant='contained' color='success' onClick={handleContinue}>
+                    <Button variant='contained' color='success' onClick={handleContinue} disabled={!isValidStep}>
                         Continue
                     </Button>
                     </Box>

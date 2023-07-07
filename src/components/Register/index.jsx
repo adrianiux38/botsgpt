@@ -80,9 +80,9 @@ const RegisterComponent = () => {
           accessToken: accessToken,
         }),
       })
-        .then((backendResponse) => {
+        .then(async (backendResponse) => {
           if (backendResponse.ok) {
-            return backendResponse.json();
+            return await backendResponse.json();
           } else {
             return backendResponse.json().then((errorData) => {
               throw new Error(errorData.error);
@@ -159,7 +159,7 @@ const RegisterComponent = () => {
             >
               <div>
                 <img src={logo} alt="logo" style={{ width: "40%" }} />
-                <h1 style={{ color: "white", fontSize: "40px" }}>BOTS GPT</h1>
+                <h1 style={{ color: "white", fontSize: "40px" }}>GPT CUSTOM</h1>
               </div>
             </Grid>
             <Grid item xs={6}>

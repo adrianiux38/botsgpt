@@ -7,8 +7,7 @@ import { NavBar } from "../NavBar";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-
-
+import useUser from '../../hooks/useUser.jsx';
 
 import TextField from "@mui/material/TextField";
 import { BottomNavigation, Icon, Box, IconButton } from "@mui/material";
@@ -38,50 +37,75 @@ const Account = () => {
 
   const navigate = useNavigate();
 
+  const [userData, setUserData] = useUser();
+
   const [userName, setUserName] = useState("");
   const [eMail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   
   const isInputValid = () => {
-    return (eMail !== '' && password !== '' && newPassword !== '' && password !== newPassword );
+    let route;
+    let isValid = false;
+    let error;
+
+    if(eMail !== '' && password === '' && newPassword === ''){
+      route = "change-email";
+      isValid = true
+    }
+    else if((eMail === '' && password !== '' && newPassword !== '') || (eMail === localStorage.getItem('email') && password !== '' && newPassword !== '')) {
+      isValid = true;
+      route = "change-password";
+    } else if((eMail !== localStorage.getItem('email') || eMail !== '') && password !== '' && newPassword !== ''){
+      error = "You can only change the password or email at a time.";
+    } else {
+      error = "Passwords do not match.";
+    }
+
+    return ({ route, isValid, error});
   }
 
   const errorMessage = (error) => {
     alert(error)
-};
+  };
+
   const changePassword= async () => {
-    if(isInputValid()){
+    let validation = isInputValid();
+    if(validation.isValid){
       try {
-        const response = await fetch(`${BACKEND_URL}/set-password`, {
+        const response = await fetch(`${BACKEND_URL}/${validation.route}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: eMail,
+            newEmail: eMail,
+            email: localStorage.getItem('email'),
             newPassword: newPassword,
             currentPassword: password
           }),
         });
     
         if (response.ok) {
-          alert("contraseña actualizada")
+          localStorage.setItem('email', eMail);
+          const { message } = await response.json()
+          alert(message)
         } else {
-          errorMessage("Invalid email or password");
+          const { error } = await response.json()
+          errorMessage(error);
         }
       } catch (error) {
-        console.log('Error:', error);
-        errorMessage(error.message);
+        errorMessage(error);
       }
     }
     else{
-      errorMessage("Ingrese contraseñas nuevas y confirmación de la misma.");
+      errorMessage(validation.error);
     }
   };
   
   const logout = () => {
     localStorage.clear();
+    setUserData(null);
     navigate('/login');
   }
 
@@ -111,10 +135,10 @@ const Account = () => {
         <div className="container">
             <h1 className="title3">My Account</h1>
             <div className='row'>
-                <div class="column">
-                    <img class="round-image" src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="Descripción de la imagen"/>
+                <div className="column">
+                    <img className="round-image" src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="Descripción de la imagen"/>
                 </div>
-                <div class="column">
+                <div className="column">
                 
                 {/* <TextField className='myTextField2'
                 fullWidth
@@ -135,6 +159,7 @@ const Account = () => {
                 id='custom-input'
                 label='Email'
                 value={eMail}
+                disabled={userData.loggedWith === 'google'}
                 onChange={(event) => setEmail(event.target.value)}
                 variant='outlined'
                 sx={{marginTop : "10px"}}
@@ -143,33 +168,40 @@ const Account = () => {
                 }}
                 />
 
-                <TextField className='myTextField2'
-                fullWidth
-                id='currentPassword'
-                label='Current Password'
-                type='password'
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                variant='outlined'
-                sx={{marginTop : "10px"}}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                
-                />
-                <TextField className='myTextField2'
-                fullWidth
-                type='password'
-                id='custom-input'
-                label='New Password'
-                value={newPassword}
-                onChange={(event) => setNewPassword(event.target.value)}
-                variant='outlined'
-                sx={{marginTop : "10px"}}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                />
+                {
+                  (userData.loggedWith !== 'google')
+                  ?
+                  <>
+                  <TextField className='myTextField2'
+                  fullWidth
+                  id='currentPassword'
+                  label='Current Password'
+                  type='password'
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  variant='outlined'
+                  sx={{marginTop : "10px"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  
+                  />
+                  <TextField className='myTextField2'
+                  fullWidth
+                  type='password'
+                  label='New Password'
+                  value={newPassword}
+                  onChange={(event) => setNewPassword(event.target.value)}
+                  variant='outlined'
+                  sx={{marginTop : "10px"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  />
+                  </>
+                  :
+                  <></>
+                }
                 </div>                
             </div>
 

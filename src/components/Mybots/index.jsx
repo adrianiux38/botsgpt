@@ -7,7 +7,7 @@ import { NavBar } from '../NavBar'
 import './Mybots.css'
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Table, TableBody, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 import Box from '@mui/material/Box';
@@ -57,15 +57,15 @@ export const Mybots = () => {
   const navigate = useNavigate();
 
   //funcion para abrir el form para hacer edit del bot
-  const handleEditButtonClick = (botId) => {
-    setBotId(botId);
+  const handleEditButtonClick = (bot) => {
+    setBotId(bot.id);
     //consultar en la base de datos los datos de ese bot 
     fetch(`${BACKEND_URL}/getBotData2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({botId}),
+      body: JSON.stringify({botId: bot.id}),
     })
     .then((res) => res.json())
     .then((data) => {
@@ -139,7 +139,8 @@ export const Mybots = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        data = data.map((bot) => ({...bot, isLodingTelegram: false, isLoadingWhatsapp: false}));
+        console.log(data)
         setBots(data);
       })
       .catch(err => console.log(err));
@@ -158,25 +159,36 @@ export const Mybots = () => {
     return null;
   }
 
-  const updateWhatsappEnable = async (whatsapp_enable, botId, callback) => {
-    console.log(botId);
+  const updateWhatsappEnable = async (whatsapp_enable, bot) => {
+    const botIndex = bots.indexOf(bot);
+    let success = false;
+    setBots([
+      ...bots.slice(0, botIndex),
+      { ...bots[botIndex], isLoadingWhatsapp: true },
+      ...bots.slice(botIndex + 1),
+    ]);
     await fetch(`${BACKEND_URL}/updateWhatsappEnable2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({whatsapp_enable, botId}),
+      body: JSON.stringify({whatsapp_enable, botId: bot.id}),
     })
     .then((res) => res.json())
       .then((data) => {
-        callback(data);
+        success = true;
         if(whatsapp_enable == 1){
           showMesage('Whatsapp Enabled')
         } else {
           showMesage('Whatsapp Disabled')
         };
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+      .finally(() => setBots([
+        ...bots.slice(0, botIndex),
+        { ...bots[botIndex], isLoadingWhatsapp: false, whatsapp_enable: (success) ? whatsapp_enable : bot.whatsapp_enable },
+        ...bots.slice(botIndex + 1),
+      ]));
   }
 
   const sendWhatsappNew = async (phoneNumberId, whatsappApiKey) => {
@@ -189,69 +201,52 @@ export const Mybots = () => {
     });
   };
 
-  const updateTelegramEnable = async (telegram_enable, botId, callback) => {
+  const updateTelegramEnable = async (telegram_enable, bot) => {
+    const botIndex = bots.indexOf(bot);
+    let success = false;
+    setBots([
+      ...bots.slice(0, botIndex),
+      { ...bots[botIndex], isLoadingTelegram: true },
+      ...bots.slice(botIndex + 1),
+    ]);
     await fetch(`${BACKEND_URL}/updateTelegramEnable2`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({telegram_enable, botId}),
+      body: JSON.stringify({telegram_enable, botId: bot.id}),
     })
     .then((res) => res.json())
       .then((data) => {
-        callback(data);
+        success = true;
         if(telegram_enable == 1) {
           showMesage('Telegram Enabled');
         } else {
           showMesage('Telegram Disabled');
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+      .finally(() => {
+        setBots([
+          ...bots.slice(0, botIndex),
+          { ...bots[botIndex], isLoadingTelegram: false, telegram_enable: (success) ? telegram_enable : bot.telegram_enable },
+          ...bots.slice(botIndex + 1),
+        ]);
+      });
   }
 
-  const handleChangeTelegram = (botId) => {
-    const targetBot = bots.find((bot) => bot.id == botId);
-    if (targetBot) {
-      updateTelegramEnable(targetBot.telegram_enable == 1 ? 0 : 1, targetBot.id, (result) => {
-        let returnValue = result;
-        if (returnValue.toLowerCase().includes("successfully")) {
-          const updatedBots = bots.map((bot) => {
-            if (bot.id == botId) {
-              // Update the telegram_enable value
-              bot.telegram_enable = bot.telegram_enable == 1 ? 0 : 1;
-            }
-            return bot;
-          });
-          setBots(updatedBots);
-        } else {
-          handleEditButtonClick(botId);
-        }
-      });
-    }
+  const handleChangeTelegram = (bot) => {
+    const telegram_enable = bot.telegram_enable == 1 ? 0 : 1;
+    updateTelegramEnable(telegram_enable, bot);
   };
 
-  const handleChangeWhatsapp = (botId) => {
-    const targetBot = bots.find((bot) => bot.id == botId);
-    if (targetBot) {
-      updateWhatsappEnable(targetBot.whatsapp_enable == 1 ? 0 : 1, targetBot.id, (result) => {
-        let returnValue = result;
-        if (returnValue.toLowerCase().includes("successfully")) {
-          const updatedBots = bots.map((bot) => {
-            if (bot.id === botId) {
-              // Update the whatsapp_enable value
-              bot.whatsapp_enable = bot.whatsapp_enable == 1 ? 0 : 1;
-            }
-            return bot;
-          });
-          setBots(updatedBots);
-        } else {
-          handleEditButtonClick(botId);
-        }
-      });
-    }
+  const handleChangeWhatsapp = (bot) => {
+    const whatsapp_enable = bot.whatsapp_enable == 1 ? 0 : 1;
+    updateWhatsappEnable(whatsapp_enable, bot);
   };
 
-  const handleDeleteButtonClick = () => {
+  const handleDeleteButtonClick = (bot) => {
+    setBotId(bot.id);
     setOpenConfirmationDialog(true);
   };
 
@@ -299,7 +294,7 @@ export const Mybots = () => {
       .then((data) => {
         //alert(data);
         showMesage('Bot updated');
-        const index = bots.findIndex(bot => bot.id == botId);
+        const index = bots.findIndex(bot => bot.id === botId);
         setBots([
           ...bots.slice(0, index),
           {...bots[index], bot_name: currentBotName, business_name: currentBusinessName},
@@ -366,25 +361,39 @@ export const Mybots = () => {
                   <></>
                 }
                 <StyledTableCell align='center'>
-                  <Switch {...label} 
-                  checked={bot.whatsapp_enable == 1 ? true : false}
-                  onChange={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setEditDialogOpen(false);
-                    handleChangeWhatsapp(bot.id);
-                    //handleClickOpen(bot.id);
-                  }}/>
+                  {
+                    (!bot.isLoadingWhatsapp)
+                    ?
+                    <Switch {...label} 
+                    checked={bot.whatsapp_enable == "1" ? true : false}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      setEditDialogOpen(false);
+                      handleChangeWhatsapp(bot);
+                      //handleClickOpen(bot.id);
+                    }}
+                    />
+                    :
+                    <CircularProgress />
+                  }
                 </StyledTableCell>
                 <StyledTableCell align='center'>
-                  <Switch {...label} 
-                  checked={bot.telegram_enable == 1 ? true : false}
-                  onChange={(e)=> {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setEditDialogOpen(false);
-                    handleChangeTelegram(bot.id);
-                    }}/>
+                  {
+                    (!bot.isLoadingTelegram)
+                    ?
+                    <Switch {...label} 
+                    checked={bot.telegram_enable == "1" ? true : false}
+                    onChange={(e)=> {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      setEditDialogOpen(false);
+                      handleChangeTelegram(bot);
+                    }}
+                    />
+                    :
+                    <CircularProgress />
+                  }
                 </StyledTableCell>
 
                 {
@@ -393,7 +402,7 @@ export const Mybots = () => {
                 <StyledTableCell align="center">
                   <Button onClick={(e) => {
                     e.stopPropagation();
-                    handleEditButtonClick(bot.id);
+                    handleEditButtonClick(bot);
                   }}>
                     <FontAwesomeIcon icon={faEdit} />
                   </Button>
@@ -402,7 +411,8 @@ export const Mybots = () => {
                 <StyledTableCell align="center">
                   <Button onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteButtonClick(bot.id)
+                    handleDeleteButtonClick(bot)
+                    
                   }}>
                     <FontAwesomeIcon icon={faTrash} />
                   </Button>
