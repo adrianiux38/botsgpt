@@ -3,6 +3,8 @@ import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 import  Info from './assets/info.svg'
+import ModalVideo from 'react-modal-video';
+import 'react-modal-video/scss/modal-video.scss';
 
 const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
   const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 8);
@@ -10,6 +12,12 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
   const [text1, setText1] = useState(false);
   const [text2, setText2] = useState(false);
   
+  const [isOpen, setOpen] = useState(false);
+  
+  const openModal = () => {
+    setOpen(true);
+   }
+ 
 
   const handleChange1 = (e) => {
     
@@ -126,9 +134,10 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                     }}
                     sx={{ alignSelf: 'center', justifySelf: 'center', mb:'1%', mt:'4%'}}
                   />
-                  <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
-                  <img src={Info} style={{marginRight:'2%'}}/>
-                  <a href='https://youtu.be/NUwN3exDJ6Y' target="_blank"><p style={{display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}}>Watch our video about how to get your Whatsapp Api Key and Phone number Id</p></a>
+                   <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
+                    <img src={Info} style={{marginRight:'2%'}}/>
+                    <p style={{cursor: 'pointer', display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}} onClick={()=> setOpen(true)}>Watch our video about how to get your Whatsapp Api Key and Phone number Id</p>
+                    <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="NUwN3exDJ6Y" onClose={() => setOpen(false)} />
                   </div>
                  <Grid container sx={{display:'flex'}}>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>

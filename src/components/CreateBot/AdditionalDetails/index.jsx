@@ -3,7 +3,7 @@ import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 
-const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {	const AdditionalDetails = ({handleCancel, handleContinue, handleBack}) => {
+const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStepData, botId })  => {
     const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 6);	
     const [isValidStep, setIsValidStep] = useState(false);
 
@@ -87,17 +87,15 @@ return (
                     shrink: true,
                 }}
                 multiline
-                rows={4} // Número de líneas visibles
-                rowsMax={5} // Número máximo de líneas antes de mostrar una barra de desplazamiento
+                rows={6} // Número de líneas visibles
+                rowsMax={6} // Número máximo de líneas antes de mostrar una barra de desplazamiento
                 sx={{
                     alignSelf: 'center',
                     justifySelf: 'center',
                     mb: '4%',
                     mt: '4%',
-                    '& .MuiOutlinedInput-input': {
-                        paddingBottom: '20%',
-                    }
-                    }}
+                    
+                     }}
                 />
                 <Grid container sx={{display:'flex'}}>
                 <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>
@@ -123,5 +121,5 @@ return (
     </ThemeProvider>
 );
 };
-}
+
 export default AdditionalDetails;

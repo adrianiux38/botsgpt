@@ -159,6 +159,7 @@ const Account = () => {
                 id='custom-input'
                 label='Email'
                 value={eMail}
+                disabled={userData.loggedWith === 'google'}
                 onChange={(event) => setEmail(event.target.value)}
                 variant='outlined'
                 sx={{marginTop : "10px"}}

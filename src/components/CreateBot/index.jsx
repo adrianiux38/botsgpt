@@ -350,6 +350,7 @@ const CreateBot = () => {
   };
 
   const loadStepContent = async () => {
+    console.log(currentStep)
     if (currentStep === 7 || currentStep === 8 || currentStep === 9) {
       if (botId !== null) {
         const platforms = await getPlatforms(botId);
@@ -425,10 +426,7 @@ const CreateBot = () => {
         return (
           <NameBot
           handleContinue={handleContinue}
-         // setIsValidStep={setIsValidStep}
-
             handleCancel={handleCancel}
-            
             handleBack={handleBack}
             updateStepData={updateStepData}
             botId={botId}
@@ -437,7 +435,6 @@ const CreateBot = () => {
       case 2:
         return (
           <BusinessName
-         // setIsValidStep={setIsValidStep}
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}
@@ -448,7 +445,6 @@ const CreateBot = () => {
       case 3:
         return (
           <BusinessDescription
-          //setIsValidStep={setIsValidStep}
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}
@@ -459,7 +455,6 @@ const CreateBot = () => {
       case 4:
         return (
           <BusinessUrl
-          //setIsValidStep={setIsValidStep}
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}
@@ -470,7 +465,6 @@ const CreateBot = () => {
       case 5:
         return (
           <PlatformSelect
-
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}
@@ -481,7 +475,6 @@ const CreateBot = () => {
       case 6:
         return (
           <AdditionalDetails
-         // setIsValidStep={setIsValidStep}
             handleCancel={handleCancel}
             handleContinue={handleContinue}
             handleBack={handleBack}

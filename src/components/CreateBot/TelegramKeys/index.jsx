@@ -11,8 +11,8 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
   const [isValidStep, setIsValidStep] = useState(false);
   const [isOpen, setOpen] = useState(false);
 
-  const openModal = () => {
-    setOpen(true);
+ const openModal = () => {
+   setOpen(true);
   }
 
   const changeTelegramKey = (e) => {
@@ -23,9 +23,6 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
       setIsValidStep(false);
     }
   }
-  useEffect(() => {	
-    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
-  }, [textFieldValue1]);  
     
   return (
       <ThemeProvider theme={userSignTheme}>
