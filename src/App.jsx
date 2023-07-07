@@ -7,6 +7,8 @@ import { React, useState } from 'react';
 import LoginComponent from './components/Login';
 import RegisterComponent from './components/Register';
 import UserContex from './context/UserContext';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
 

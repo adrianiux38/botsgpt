@@ -1,32 +1,37 @@
-import {React, useState , useEffect} from 'react';
+import {React, useState , useEffect,useRef} from 'react';
 import { userSignTheme } from '../../../utils/userSignTheme';
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 import  Info from './assets/info.svg'
 import ModalVideo from 'react-modal-video';
 import 'react-modal-video/scss/modal-video.scss';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import {ToastContainer, toast } from 'react-toastify';
 
 const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
-  const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 9);
+  
   const [isValidStep, setIsValidStep] = useState(false);
   
   const [isOpen, setOpen] = useState(false);
 
-  const handleChange1 = (e) => {
-    handleTextField1Change(e);
-    updateStepData({ callbackURL: e.target.value });
-    if (e.target.value !== '') {
-      setIsValidStep(true);
-    } else {
-      setIsValidStep(false);
-    }
+  
+
+
+
+
+  const textRef = useRef(null);
+
+  function handleCopyClick() {
+    const text = textRef.current.innerText;
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        toast.success("Text copied to clipboard!");
+        
+      })
+      .catch(err => {
+        console.error('Error al copiar texto: ', err);
+      });
   }
-
-
-
-  useEffect(() => {	
-    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
-  }, [textFieldValue1]);  
 
  
 
@@ -74,23 +79,19 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
                       </Grid>
                   </Grid>
                   <p style={{display: 'flex', fontFamily:'poppins', fontSize:'1.2em', marginBottom: '0%', color:'#6F3FF8', fontWeight:'bold'}}>Whatsapp Callback URL</p>
-                  <TextField
-                    fullWidth
-                    id='whatsapp-callback'
-                    label='Whatsapp Callback URL'
-                    variant='outlined'
-                    placeholder={ textFieldValue1 ? '' : 'Whatsapp Callback URL'}
-                    value={ textFieldValue1 }
-                    onChange={handleChange1}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    sx={{ alignSelf: 'center', justifySelf: 'center', mb:'4%', mt:'4%'}}
-                  />
+                  <div className="Copy" style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+                    <div style={{padding:"15px", margin: "25px", backgroundColor: '#E0E0E0', borderRadius:"100px",  }}>
+                      <p style={{color:'dark-gray', fontWeight:"700"}}  ref={textRef}>https://whats-node-gpt-AdrianGutierr26.replit.app/chatbot</p>
+                    </div>
+                    <Button variant='contained' color='success' style={{marginBottom:"30px"}} onClick={()=>{handleCopyClick(); setIsValidStep(true)}}>
+                    <FileCopyIcon style={{marginRight:"5px" }} />
+                      Copy CallbackURL</Button>
+                      <ToastContainer position="bottom-left" />
+                  </div>
                                     
-                    <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
+                    <div style={{ display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
                       <img src={Info} style={{marginRight:'2%'}}/>
-                      <p style={{cursor: 'pointer', display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}} onClick={()=> setOpen(true)}>Watch our video about how to get your Whatsapp Api Key and Phone number Id</p>
+                      <p style={{cursor: 'pointer', display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}} onClick={()=> setOpen(true)}>Watch our video about how to use this Callback</p>
                       <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="NUwN3exDJ6Y" onClose={() => setOpen(false)} />
                     </div>
                  <Grid container sx={{display:'flex'}}>

@@ -44,11 +44,11 @@ const useTextFieldData = (botId, step) => {
                       "Error getting the bot id of a bot the user was creating:",
                       data.error
                       );
-                      reject()
+                      reject(data.error)
                   }
               } catch (error) {
                 //alert('hubo un error al obtener los datos de tu bot -- getTextFieldData')   
-                reject()       
+                reject(error.message)       
               }
               setIsLoading(false);	
             });

@@ -28,7 +28,6 @@ const CreateBot = () => {
   const [textField1, setTextField1] = useState(undefined);
   const [textField2, setTextField2] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  
 
   const changeCurrentStep = async (newStep) => {
     setCurrentStep(newStep);
@@ -65,10 +64,10 @@ const CreateBot = () => {
             "Error getting the bot id of a bot the user was creating:",
             data.error
           );
-          reject();
+          reject(data.error);
         }
       } catch (error) {
-        reject();
+        reject(error.message);
       }
       resolve(platforms);
     });
@@ -96,10 +95,10 @@ const CreateBot = () => {
             "Error getting the bot id of a bot the user was creating:",
             data.error
           );
-          reject();
+          reject(data.error);
         }
       } catch (error) {
-        reject();
+        reject(error.message);
       }
       navigate("/my-bots");
       resolve();
@@ -109,16 +108,13 @@ const CreateBot = () => {
   async function updateBotCreationStatus(botId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(
-          `${BACKEND_URL}/updateBotCreationStatus`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ botId }),
-          }
-        );
+        const response = await fetch(`${BACKEND_URL}/updateBotCreationStatus`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ botId }),
+        });
 
         if (!response.ok) {
           throw new Error(`HTTP error ${response.status}`);
@@ -131,10 +127,10 @@ const CreateBot = () => {
             "Error getting the bot id of a bot the user was creating:",
             data.error
           );
-          reject();
+          reject(data.error);
         }
       } catch (error) {
-        reject();
+        reject(error.message);
       }
       resolve();
     });
@@ -163,10 +159,10 @@ const CreateBot = () => {
             "Error getting the bot id of a bot the user was creating:",
             data.error
           );
-          reject();
+          reject(data.error);
         }
       } catch (error) {
-        reject();
+        reject(error.message);
       }
       resolve(botInfo);
     });
@@ -224,16 +220,13 @@ const CreateBot = () => {
   const createInitialBotRecord = async () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(
-          `${BACKEND_URL}/createInitialBotRecord`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userEmail: loggedInUserEmail }),
-          }
-        );
+        const response = await fetch(`${BACKEND_URL}/createInitialBotRecord`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userEmail: loggedInUserEmail }),
+        });
         if (!response.ok) {
           throw new Error(`HTTP error ${response.status}`);
         }
@@ -256,9 +249,7 @@ const CreateBot = () => {
   };
 
   const handleContinue = () => {
-    
-      setShouldContinue(true);    
-              
+    setShouldContinue(true);
   };
 
   useEffect(() => {
@@ -289,6 +280,7 @@ const CreateBot = () => {
 
       const botIdToUse =
         currentStep === 1 ? (botId === null ? newBotId : botId) : botId;
+
       try {
         const response = await fetch(`${BACKEND_URL}/saveBotStep`, {
           method: "POST",
@@ -316,6 +308,7 @@ const CreateBot = () => {
       } catch (error) {
         console.error(`Error storing step ${currentStep} data:`, error.message);
       }
+
       setShouldContinue(false);
     };
 
@@ -351,67 +344,70 @@ const CreateBot = () => {
   };
 
   const loadStepContent = async () => {
-    console.log(currentStep)
-    if (currentStep === 7 || currentStep === 8 || currentStep === 9) {
-      if (botId !== null) {
-        const platforms = await getPlatforms(botId);
-        if (platforms) {
-          if (currentStep === 7 && platforms.telegramSelected == 1) {
-            setStepComponent(
-              <TelegramKeys
-              //setIsValidStep={setIsValidStep}
-                handleCancel={handleCancel}
-                handleContinue={handleContinue}
-                handleBack={handleBack}
-                updateStepData={updateStepData}
-                botId={botId}
-              />
-            );
-          } else if (currentStep === 8 && platforms.whatsappSelected == 1) {
-            setStepComponent(
-              <WhatsappKeys
-             // setIsValidStep={setIsValidStep}
-                handleCancel={handleCancel}
-                handleContinue={handleContinue}
-                handleBack={handleBack}
-                updateStepData={updateStepData}
-                botId={botId}
-              />
-            );
-          } else if (currentStep === 9 && platforms.whatsappSelected == 1) {
-            setStepComponent(
-              <CallbackURL
-              //setIsValidStep={setIsValidStep}
-                handleCancel={handleCancel}
-                handleContinue={handleContinue}
-                handleBack={handleBack}
-                updateStepData={updateStepData}
-                botId={botId}
-              />
-            );
+    try {
+      console.log(currentStep);
+      if (currentStep === 7 || currentStep === 8 || currentStep === 9) {
+        if (botId !== null) {
+          const platforms = await getPlatforms(botId);
+          if (platforms) {
+            if (currentStep === 7 && platforms.telegramSelected == 1) {
+              setStepComponent(
+                <TelegramKeys
+                  handleCancel={handleCancel}
+                  handleContinue={handleContinue}
+                  handleBack={handleBack}
+                  updateStepData={updateStepData}
+                  botId={botId}
+                />
+              );
+            } else if (currentStep === 8 && platforms.whatsappSelected == 1) {
+              setStepComponent(
+                <WhatsappKeys
+                  handleCancel={handleCancel}
+                  handleContinue={handleContinue}
+                  handleBack={handleBack}
+                  updateStepData={updateStepData}
+                  botId={botId}
+                />
+              );
+            } else if (currentStep === 9 && platforms.whatsappSelected == 1) {
+              setStepComponent(
+                <CallbackURL
+                  handleCancel={handleCancel}
+                  handleContinue={handleContinue}
+                  handleBack={handleBack}
+                  updateStepData={() => {}}
+                  botId={botId}
+                />
+              );
+            }
+          } else {
+            alert("Please select a platform to continue!");
+            return;
           }
         } else {
-          alert("Please select a platform to continue!");
-          return;
+          alert(
+            "There is an error in bot creation --- we are working on updating this as soon as possible"
+          );
         }
-      } else {
-        alert(
-          "There is an error in bot creation --- we are working on updating this as soon as possible"
+      } else if (currentStep == 10) {
+        setStepComponent(
+          <CreateButton
+            handleCancel={handleCancel}
+            handleBack={handleBack}
+            createBot={createBot}
+            botId={botId}
+          />
         );
+        //hacemos un update al bot, le ponemos creation_status = 1
+        await updateBotCreationStatus(botId);
+      } else {
+        setStepComponent(normalComponentForStep(currentStep));
       }
-    } else if (currentStep == 10) {
-      setStepComponent(
-        <CreateButton
-          handleCancel={handleCancel}
-          handleBack={handleBack}
-          createBot={createBot}
-          botId={botId}
-        />
-      );
-      //hacemos un update al bot, le ponemos creation_status = 1
-      await updateBotCreationStatus(botId);
-    } else {
-      setStepComponent(normalComponentForStep(currentStep));
+    } catch (error) {
+      console.error(`An error occurred: ${error}`);
+      // Aquí puedes manejar el error como prefieras. Podrías establecer un estado de error,
+      // mostrar un mensaje de error en la interfaz de usuario, etc.
     }
   };
 
@@ -419,14 +415,12 @@ const CreateBot = () => {
     loadStepContent();
   }, [currentStep, botId]);
 
-
-
   const normalComponentForStep = (step) => {
     switch (currentStep) {
       case 1:
         return (
           <NameBot
-          handleContinue={handleContinue}
+            handleContinue={handleContinue}
             handleCancel={handleCancel}
             handleBack={handleBack}
             updateStepData={updateStepData}
