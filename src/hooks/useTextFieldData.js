@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 const useTextFieldData = (botId, step) => {
-    const [textFieldValue1, setTextFieldValue1] = useState(undefined);
-    const [textFieldValue2, setTextFieldValue2] = useState(undefined);
+    const [textFieldValue1, setTextFieldValue1] = useState("");
+    const [textFieldValue2, setTextFieldValue2] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTextField1Change = (event) => {

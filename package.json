@@ -24,6 +24,7 @@
     "google-auth-library": "^8.8.0",
     "http": "0.0.1-security",
     "https": "^1.0.0",
+    "node-sass": "^9.0.0",
     "or": "^0.2.0",
     "papaparse": "^5.4.1",
     "path": "^0.12.7",
