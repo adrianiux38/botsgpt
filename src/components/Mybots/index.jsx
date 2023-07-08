@@ -4,6 +4,7 @@ import { Row, Col, Card, CardHeader, CardBody, CardFooter, Input, CloseButton } 
 import { BottomNavigation, Icon, IconButton, Snackbar, Alert } from "@mui/material";
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { useMediaQuery, useTheme } from '@material-ui/core';
+import {ToastContainer, toast } from 'react-toastify';
 import React, { useState, useEffect } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
@@ -43,9 +44,7 @@ export const Mybots = () => {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [messageAlert, setMessageAlert] = useState('');
+  
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
 
   const navigate = useNavigate();
@@ -174,9 +173,9 @@ export const Mybots = () => {
       .then((data) => {
         success = true;
         if(whatsapp_enable == 1){
-          showMesage('Whatsapp Enabled')
+          toast.success("Whatsapp enable", { hideProgressBar: true, autoClose: 1000 });
         } else {
-          showMesage('Whatsapp Disabled')
+          toast.success("Whatsapp disable", { hideProgressBar: true, autoClose: 1000 });
         };
       })
       .catch(err => console.log(err))
@@ -216,9 +215,9 @@ export const Mybots = () => {
       .then((data) => {
         success = true;
         if(telegram_enable == 1) {
-          showMesage('Telegram Enabled');
+          toast.success("Telegram enabled", { hideProgressBar: true, autoClose: 1000 });
         } else {
-          showMesage('Telegram Disabled');
+          toast.success("Telegram Disable", { hideProgressBar: true, autoClose: 1000 });
         }
       })
       .catch(err => console.log(err))
@@ -267,7 +266,7 @@ export const Mybots = () => {
           if(data.success){
             let newList = bots.filter(bot => bot.id !== botId);
             setBots(newList);
-            showMesage('Bot deleted');
+            toast.success("Bot deleted", { hideProgressBar: true, autoClose: 1000 });
           }
         })
         .catch(err => console.log(err))
@@ -295,8 +294,13 @@ export const Mybots = () => {
     })
     .then((res) => res.json())
       .then((data) => {
-        //alert(data);
-        showMesage('Bot updated');
+
+        console.log(data)
+
+        if(data.success) toast.success(data.message, { hideProgressBar: true, autoClose: 1000 });
+        else if(data.code === 1) toast.warning(data.message, { hideProgressBar: false, autoClose: 5000 });
+        else if(data.code === 2) toast.error(data.message, { hideProgressBar: false, autoClose: 3000 });
+
         const index = bots.findIndex(bot => bot.id === botId);
         setBots([
           ...bots.slice(0, index),
@@ -306,11 +310,6 @@ export const Mybots = () => {
       })
       .catch(err => console.log(err))
 
-  }
-
-  const showMesage = (message) => {
-    setMessageAlert(message)
-    setAlertOpen(true);
   }
 
   return (
@@ -365,6 +364,10 @@ export const Mybots = () => {
                 }
                 <StyledTableCell align='center'>
                   {
+                    (bot.whatsapp_selected != 1)
+                    ?
+                    <></>
+                    :
                     (!bot.isLoadingWhatsapp)
                     ?
                     <Switch {...label} 
@@ -382,6 +385,10 @@ export const Mybots = () => {
                 </StyledTableCell>
                 <StyledTableCell align='center'>
                   {
+                    (bot.telegram_selected != 1)
+                    ?
+                    <></>
+                    :
                     (!bot.isLoadingTelegram)
                     ?
                     <Switch {...label} 
@@ -432,12 +439,6 @@ export const Mybots = () => {
       </StyledTableContainer>
       </div>
 
-      <Snackbar open={alertOpen} autoHideDuration={2500} onClose={() => setAlertOpen(false)}>
-        <Alert onClose={() => setAlertOpen(false)} severity="success" sx={{ width: '90%' }}>
-          {messageAlert}
-        </Alert>
-      </Snackbar>
-
       <Dialog open={editDialogOpen} className="myDialog">
         <div className="closeBtn">
           <IconButton edge="end" color="inherit" onClick={() => setEditDialogOpen(false)}>
@@ -483,7 +484,6 @@ export const Mybots = () => {
             value={currentBusinessDescription}
             inputProps={{ maxLength: 300 }}
             rows={3}
-            rowsMax={5}
             onChange={(e) => {setCurrentBusinessDescription(e.target.value)}}
             InputLabelProps={{
               shrink: true,
@@ -499,7 +499,6 @@ export const Mybots = () => {
             value={currentAdditionalDetails}
             inputProps={{ maxLength: 300 }}
             rows={3}
-            rowsMax={5}
             multiline
             onChange={(e) => {setCurrentAdditionalDetails(e.target.value)}}
             InputLabelProps={{
@@ -608,6 +607,9 @@ export const Mybots = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <ToastContainer position="bottom-left" />
+      
       </div>
   );
 };
