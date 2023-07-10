@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { BACKEND_URL } from '../config';
+
 const useTextFieldData = (botId, step) => {
     const [textFieldValue1, setTextFieldValue1] = useState('');
     const [textFieldValue2, setTextFieldValue2] = useState('');
@@ -17,7 +19,7 @@ const useTextFieldData = (botId, step) => {
         setIsLoading(true);
               let textFieldData = {};
               try {
-                  const response = await fetch("http://localhost:3001/getTextFieldData", {
+                  const response = await fetch(`${BACKEND_URL}/getTextFieldData`, {
                       method: "POST",
                       headers: {
                       "Content-Type": "application/json",
