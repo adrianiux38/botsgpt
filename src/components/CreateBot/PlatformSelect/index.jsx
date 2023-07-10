@@ -109,6 +109,7 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
               alignItems: 'center',
               justifyContent: 'center',
               minHeight: '100vh',
+              
             }}
           >
             <Box
@@ -144,8 +145,9 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
                   display: 'grid',
                   gridTemplateColumns: 'repeat(2, 1fr)',
                   gap: '5%',
-                  width: '65%',
+                  width: '100%',
                   height: '50%',
+                  
                 }}
               >
                   <Card key={1} clicked={selectedDivs.includes(1)} onClick={() => handleClick(1)}>

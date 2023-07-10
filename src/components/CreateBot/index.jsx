@@ -1,5 +1,6 @@
 import { React, useState, useEffect, useRef } from "react";
 import BusinessDescription from "./BusinessDescription";
+import useVirtualKeyboard from '../../utils/keyboard';
 import {ToastContainer, toast } from 'react-toastify';
 import AdditionalDetails from "./AdditionalDetails";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ import { NavBar } from "../NavBar";
 import NameBot from "./NameBot";
 
 const CreateBot = () => {
+  const keyboardOpen = useVirtualKeyboard();
   const navigate = useNavigate();
   const [myBotData, setMyBotData] = useMyBot();
 
@@ -498,7 +500,7 @@ const CreateBot = () => {
   };
   return (
     <div>
-      <NavBar />
+      {!keyboardOpen && <NavBar />}
       {stepComponent}
     </div>
   );

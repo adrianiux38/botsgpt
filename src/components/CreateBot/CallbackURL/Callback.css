@@ -1,0 +1,13 @@
+.linkStyle {
+    display: flex;
+    font-Family: inter;
+    font-Size: 1em;
+    color: #5170D2;
+    font-Weight: bold;
+    cursor: pointer;
+    text-Decoration: underline;
+  }
+  
+  .linkStyle:hover {
+    color: #551A8B; 
+  }

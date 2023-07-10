@@ -42,18 +42,31 @@
     }      
  }
 
- .title3{
+ .title3 {
     text-align: center;
     align-content: center;
     flex: 1;
-    color:#42A5F6
- }
+    color: #42A5F6;
+}
 
- .round-image{
+.round-image {
     height: 200px;
     width: 200px;
     border-radius: 100px;
- }
+}
+
+/* Estilos para pantallas con un ancho máximo de 600px */
+@media screen and (max-width: 600px) {
+    .title3 {
+        font-size: 16px; 
+    }
+
+    .round-image {
+        height: 100px; 
+        width: 100px; 
+    }
+}
+
 
  .row{
     display: flex;
@@ -155,8 +168,8 @@
   }
 
   .cancelSave{
-    width: 40%;
-    justify-content: space-between;
+    width: 50%;
+    justify-content: space-around;
   }
   .cancel{
     background-color: red;

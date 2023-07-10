@@ -210,7 +210,7 @@ const Account = () => {
                         LogOut<Logout sx={{paddingLeft:'5px'}}></Logout>
                     </Button>
                     <div className='cancelSave'>
-                        <Button  sx={{ color: "red" ,margin: "5px" }} className='cancelBtn'>Cancel</Button>
+                        <Button onClick={()=> navigate("/my-bots")} sx={{ color: "red" ,margin: "5px" }}  className='cancelBtn'>Cancel</Button>
                         <Button  onClick={changePassword} className='saveBtn'>Save</Button>
                     </div>
                 </div>
