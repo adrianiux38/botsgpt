@@ -33,6 +33,7 @@ export const Mybots = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   /* CONSTANTES QUE SE MUESTRAN EN EL FORM DE EDIT */
+  const [AdvancedSettings, setAdvancedSettings] = useState(false);
   const [currentBotName, setCurrentBotName] = useState('');
   const [currentBusinessName, setCurrentBusinessName] = useState('');
   const [currentBusinessUrl, setCurrentBusinessUrl] = useState('');
@@ -41,6 +42,7 @@ export const Mybots = () => {
   const [currentTelegramApiKey, setCurrentTelegramApiKey] = useState('');
   const [currentBusinessDescription, setCurrentBusinessDescription] = useState('');
   const [currentAdditionalDetails, setCurrentAdditionalDetails] = useState('');
+  const [currentPrompt, setCurrentPrompt] = useState("");
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -72,6 +74,7 @@ export const Mybots = () => {
       setCurrentTelegramApiKey(data[0].telegram_api_key ?? '');
       setCurrentBusinessDescription(data[0].business_description ?? '');
       setCurrentAdditionalDetails(data[0].additional_details ?? '');
+      setCurrentPrompt(data[0].gpt_prompt ?? '')
     })
     .catch(err => console.log(err))
     
@@ -94,13 +97,30 @@ export const Mybots = () => {
       color: '#059CF1',
       fontSize: 20,
       fontWeight: 'bold',
-      
+      [theme.breakpoints.down('sm')]: {
+        fontSize: 16,
+      },
+      [theme.breakpoints.up('md')]: {
+        fontSize: 20,
+      },
+      [theme.breakpoints.up('lg')]: {
+        fontSize: 24,
+      },
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: 14,
+      [theme.breakpoints.down('sm')]: {
+        fontSize: 12,
+      },
+      [theme.breakpoints.up('md')]: {
+        fontSize: 14,
+      },
+      [theme.breakpoints.up('lg')]: {
+        fontSize: 16,
+      },
     },
-    
   }));
+  
 
   const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     borderBottomLeftRadius: '30px',
@@ -322,10 +342,10 @@ export const Mybots = () => {
     <h2>My bots</h2>
     </div>
     <StyledTableContainer className="tableContainer" component={Paper}>
-      <Table sx={{ minWidth: 400 }} className="table" aria-label="simple table">
+      <Table sx={{ width: "100%"  }} className="table" aria-label="simple table">
         <TableHead className="tableHead" sx={{backgroundColor: 'white'}}>
             <StyledTableRow >
-                <StyledTableCell align="center">Id</StyledTableCell>
+            {!isSmallScreen && <StyledTableCell align="center">Id</StyledTableCell>}
                 <StyledTableCell align="center"> Name&nbsp;</StyledTableCell>
                 {
                   (!isSmallScreen)?
@@ -352,7 +372,7 @@ export const Mybots = () => {
         <TableBody>
         {bots.map(bot => (
               <StyledTableRow onClick={(event) => handleEditButtonClick(bot, event)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
-                <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>
+                 {!isSmallScreen && <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>}
                 <StyledTableCell align='center'>{bot.bot_name}</StyledTableCell>
                 {
                   (!isSmallScreen)?
@@ -570,11 +590,72 @@ export const Mybots = () => {
               shrink: true,
           }}
           />
-          
+
+        <DialogContentText color={"#42A5F6"} fontWeight={"700"} paddingY={"10px"}>Advanced options</DialogContentText>
+
+        <TextField className="myTextField2"
+          margin="dense"
+          id="prompt"
+          label="Bot Prompt"
+          type="text"
+          fontSize="5px"
+          sx={{fontSize:"5px"}}
+          fullWidth
+          disabled={!AdvancedSettings}
+          value={currentPrompt}
+          inputProps={{ maxLength: 500 , style: { fontSize: "12px" }}}
+            rows={10}
+            multiline
+          onChange={(e) => setCurrentPrompt(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+
+        {/*<TextField className="myTextField"
+          margin="dense"
+          id="prompt"
+          label="User Question"
+          type="text"
+          fullWidth
+          disabled={!AdvancedSettings}
+          value={currentPhoneNumberId}
+          inputProps={{ maxLength: 500 }}
+            rows={3}
+            multiline
+          onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+
+        <TextField className="myTextField"
+          margin="dense"
+          id="prompt"
+          label="Bot answer"
+          type="text"
+          fullWidth
+          disabled={!AdvancedSettings}
+          value={currentPhoneNumberId}
+          inputProps={{ maxLength: 500 }}
+            rows={5}
+            multiline
+          onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        */}
           
           
         </DialogContent>
         <DialogActions>
+        <Button onClick={()=>setAdvancedSettings(!AdvancedSettings)}
+          
+          >
+            Advanced options
+          </Button>
+
           <Button onClick={() => {
             handleDeleteButtonClick(botId);
           }}

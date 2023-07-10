@@ -49,6 +49,26 @@
     
  }
 
+ @media (max-width: 600px) {
+    .title2 {
+        /* Aquí puedes ajustar los estilos para adaptarse a la pantalla más pequeña */
+        font-size: 20px;
+        margin-top: 20px;
+        padding: 5px;
+    }
+}
+
+/* Cuando la anchura de la ventana del navegador es 900px o más */
+@media (min-width: 900px) {
+    .title2 {
+        /* Aquí puedes ajustar los estilos para adaptarse a la pantalla más grande */
+        font-size: 30px;
+        margin-top: 70px;
+        padding: 15px;
+    }
+}
+
+
 .marginTop {
     height:100px;
 }
@@ -82,10 +102,16 @@
 
 }
 
+.myDialog {
+    width: 100%;
+    
+}
+
 .myDialog .MuiDialog-paper {
     border-radius: 25px;
     background: white;
-    padding: 20px;
+    
+    
 }
 
 .myDialogDelete .MuiDialog-paper {
@@ -118,6 +144,12 @@
   .myTextField .MuiInputLabel-root {
     font-size: 18px;
   }
+  .myTextField2 .MuiInputLabel-root {
+    font-size: 10px;
+  }
 
+  .myTextField2 .MuiOutlinedInput-root input {
+    font-size: 10px;
+  }
 
   

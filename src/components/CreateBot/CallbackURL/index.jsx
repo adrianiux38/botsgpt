@@ -19,15 +19,39 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
 
   function handleCopyClick() {
     const text = textRef.current.innerText;
-    navigator.clipboard.writeText(text)
-      .then(() => {
+  
+    // Verifica si navigator.clipboard está disponible
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          toast.success("Text copied to clipboard!");
+        })
+        .catch(err => {
+          console.error('Error al copiar texto: ', err);
+        });
+    } else {
+      // Fallback para navegadores que no soportan navigator.clipboard
+      // Crea un elemento <textarea> temporal
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+  
+      // Selecciona el texto
+      textarea.select();
+  
+      try {
+        // Intenta copiar el texto
+        document.execCommand('copy');
         toast.success("Text copied to clipboard!");
-        
-      })
-      .catch(err => {
+      } catch (err) {
         console.error('Error al copiar texto: ', err);
-      });
+      }
+  
+      // Elimina el elemento <textarea> temporal
+      document.body.removeChild(textarea);
+    }
   }
+  
  
     return (
       <ThemeProvider theme={userSignTheme}>
@@ -88,7 +112,7 @@ const CallbackURL= ({handleCancel, handleContinue, handleBack, updateStepData, b
                       <p className="linkStyle" onClick={()=> setOpen(true)}>
                         Watch our video about how to use this Callback
                       </p>
-                      <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="NUwN3exDJ6Y" onClose={() => setOpen(false)} />
+                      <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="zDBEw84Z-98" onClose={() => setOpen(false)} />
                     </div>
                  <Grid container sx={{display:'flex'}}>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>

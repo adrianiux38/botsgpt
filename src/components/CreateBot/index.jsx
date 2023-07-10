@@ -15,8 +15,10 @@ import { isLoggedIn } from "../../utils/auth";
 import CreateButton from "./CreateButton";
 import { NavBar } from "../NavBar";
 import { BACKEND_URL } from "../../config";
+import useVirtualKeyboard from '../../utils/keyboard';
 
 const CreateBot = () => {
+  const keyboardOpen = useVirtualKeyboard();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [stepData, setStepData] = useState({});
@@ -492,7 +494,7 @@ const CreateBot = () => {
   };
   return (
     <div>
-      <NavBar />
+      {!keyboardOpen && <NavBar />}
       {stepComponent}
     </div>
   );

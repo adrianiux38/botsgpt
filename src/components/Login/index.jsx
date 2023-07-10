@@ -230,17 +230,16 @@ import useUser from '../../hooks/useUser.jsx';
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minHeight: '100vh',
+                minHeight: '90vh',
               }}
             >
               
               <div><img src={logo2} alt="logo" style={{width: "30%", paddingBottom:"10px"}}/></div>
-              <div><h1 style={{ fontSize: "40px",paddingBottom:"50px"}} >BOTS GPT</h1></div>
+              <div><h1 style={{ fontSize: "40px",paddingBottom:"30px"}} >GPT CUSTOM</h1></div>
               <Typography variant='h4' component='div'>
                 Login
               </Typography>
-              <Stack spacing={2} mt={2}>
-              
+              <Stack spacing={2} mt={2} alignItems="center">      
 
              
                 
@@ -251,7 +250,7 @@ import useUser from '../../hooks/useUser.jsx';
                   variant='outlined'
                   onChange={(e) => setEmail(e.target.value)}
                   type='email'
-                  sx={{ width: '400px' }}
+                  sx={{ width: '80%' }}
                 />
                 <TextField
                   fullWidth
@@ -260,15 +259,15 @@ import useUser from '../../hooks/useUser.jsx';
                   variant='outlined'
                   type='password'
                   onChange={(e) => setPassword(e.target.value)}
-                  sx={{ width: '400px' }}
+                  sx={{ width: '80%',paddingBottom: "30px" }}
                 />
                  
                 
-                <Button fullWidth variant='contained' color='primary' onClick={handleLogin}>
+                <Button sx={{ width: '70%' ,height: "50px"}} variant='contained' color='primary' onClick={handleLogin}>
                   Login
                 </Button>
                 <Button
-                  fullWidth
+                  sx={{ width: '70%' , height: "50px"}}
                   variant='contained'
                   color='default'
                   onClick={() => login()}
