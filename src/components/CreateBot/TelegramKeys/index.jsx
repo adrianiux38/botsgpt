@@ -5,6 +5,7 @@ import  Info from './assets/info.svg'
 import useTextFieldData from '../../../hooks/useTextFieldData';
 import ModalVideo from 'react-modal-video';
 import 'react-modal-video/scss/modal-video.scss';
+import "./Telegram.css"
 
 const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
   const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 7);
@@ -75,7 +76,10 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                   <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId='NnZ55c2IMlM' onClose={() => setOpen(false)} />
                   <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
                     <img src={Info} style={{marginRight:'2%'}}/>
-                    <p onClick={openModal} style={{display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold', cursor: 'pointer'}}>Watch our video about how to get your Telegram Api Key</p>
+                    <p className="linkStyle" onClick={openModal}>
+                      Watch our video about how to get your Telegram Api Key
+                    </p>
+
                   </div>
                  <Grid container sx={{display:'flex'}}>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>

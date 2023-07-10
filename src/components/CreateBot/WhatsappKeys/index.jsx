@@ -5,6 +5,7 @@ import { Button, TextField, Box, ThemeProvider, Grid } from '@mui/material';
 import  Info from './assets/info.svg'
 import ModalVideo from 'react-modal-video';
 import 'react-modal-video/scss/modal-video.scss';
+import "./whatsapp.css"
 
 const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
   const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 8);
@@ -136,7 +137,10 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                   />
                    <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
                     <img src={Info} style={{marginRight:'2%'}}/>
-                    <p style={{cursor: 'pointer', display: 'flex', fontFamily:'inter', fontSize:'1em', color:'rgba(0, 0, 0, 0.5)', fontWeight:'bold'}} onClick={()=> setOpen(true)}>Watch our video about how to get your Whatsapp Api Key and Phone number Id</p>
+                    <p className="linkStyle" onClick={()=> setOpen(true)}>
+                      Watch our video about how to get your Whatsapp Api Key and Phone number Id
+                    </p>
+
                     <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="NUwN3exDJ6Y" onClose={() => setOpen(false)} />
                   </div>
                  <Grid container sx={{display:'flex'}}>
