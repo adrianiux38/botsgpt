@@ -1,26 +1,30 @@
-import AdditionalDetails from "./AdditionalDetails";
 import { React, useState, useEffect, useRef } from "react";
 import BusinessDescription from "./BusinessDescription";
-import BusinessName from "./BusinessName";
-import CategorySelect from "./CategorySelect";
-import NameBot from "./NameBot";
-import UploadProducts from "./UploadProducts";
+import {ToastContainer, toast } from 'react-toastify';
+import AdditionalDetails from "./AdditionalDetails";
 import { useNavigate } from "react-router-dom";
-import BusinessUrl from "./BusinessUrl";
-import WhatsappKeys from "./WhatsappKeys";
-import TelegramKeys from "./TelegramKeys";
-import CallbackURL from "./CallbackURL";
+import UploadProducts from "./UploadProducts";
+import CategorySelect from "./CategorySelect";
 import PlatformSelect from "./PlatformSelect";
 import { isLoggedIn } from "../../utils/auth";
-import CreateButton from "./CreateButton";
-import { NavBar } from "../NavBar";
+import useMyBot from '../../hooks/useMyBot';
 import { BACKEND_URL } from "../../config";
+import CreateButton from "./CreateButton";
+import WhatsappKeys from "./WhatsappKeys";
+import BusinessName from "./BusinessName";
+import TelegramKeys from "./TelegramKeys";
+import BusinessUrl from "./BusinessUrl";
+import CallbackURL from "./CallbackURL";
+import { NavBar } from "../NavBar";
+import NameBot from "./NameBot";
 
 const CreateBot = () => {
   const navigate = useNavigate();
+  const [myBotData, setMyBotData] = useMyBot();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [stepData, setStepData] = useState({});
-  const [botId, setBotId] = useState(null);
+  const [botId, setBotId] = useState((myBotData !== null) ? myBotData.id : null);
   const loggedInUserEmail = localStorage.getItem("email");
   const [stepComponent, setStepComponent] = useState(null);
   const [shouldContinue, setShouldContinue] = useState(false);
@@ -137,10 +141,6 @@ const CreateBot = () => {
   }
 
   async function getCurrentEditingBotInfo() {
-    /*if (currentStep === 1 && botId === null) {
-      const newBotId = await createInitialBotRecord();
-      setBotId(newBotId);
-    }*/
     return await new Promise(async (resolve, reject) => {
       let botInfo = {};
       try {
@@ -176,17 +176,16 @@ const CreateBot = () => {
   }
 
   useEffect(() => {
+    console.log(myBotData, botId)
     if (isLoggedIn()) {
-      getCurrentEditingBotInfo(loggedInUserEmail).then(async (botInfo) => {
-        if (botInfo.botId && botInfo.currentStep && botInfo.botId !== null) {
-          setBotId(botInfo.botId);
-          const actualStep = parseInt(botInfo.currentStep);
-          changeCurrentStep(actualStep);
-        } else {
-          setBotId(null);
-          changeCurrentStep(1);
-        }
-      });
+      if (myBotData !== null) {
+        setBotId(myBotData.id);
+        const actualStep = (myBotData.current_step !== null) ? parseInt(myBotData.current_step) : 1;
+        changeCurrentStep(actualStep);
+      } else {
+        setBotId(null);
+        changeCurrentStep(1);
+      }
     } else {
       // Redirect user to the login page if not logged in
       navigate("/");
@@ -274,7 +273,7 @@ const CreateBot = () => {
           if (platforms.whatsappSelected == 1) {
             changeCurrentStep(currentStep + 1);
           } else {
-            changeCurrentStep(currentStep + 2);
+            changeCurrentStep(currentStep + 3);
           }
         }
       }
@@ -324,21 +323,28 @@ const CreateBot = () => {
     saveData();
   }, [stepData, shouldContinue]);
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     setStepData({});
-    // Navigate back to the initial step
+    setMyBotData(null)
     changeCurrentStep(1);
     navigate("/my-bots");
   };
 
   const handleBack = async () => {
-    if (currentStep == 8 || currentStep == 9) {
+    console.log(currentStep)
+    if (currentStep == 10 || currentStep == 9 || currentStep == 8) {
       const platforms = await getPlatforms(botId);
-      if (currentStep == 9) {
+      if (currentStep == 10) {
         if (platforms.whatsappSelected == 1) {
           changeCurrentStep(currentStep - 1);
         } else {
-          changeCurrentStep(currentStep - 2);
+          changeCurrentStep(currentStep - 3);
+        }
+      } else if (currentStep == 9) {
+        if (platforms.telegramSelected == 1) {
+          changeCurrentStep(currentStep - 1);
+        } else {
+          changeCurrentStep(currentStep - 1);
         }
       } else if (currentStep == 8) {
         if (platforms.telegramSelected == 1) {

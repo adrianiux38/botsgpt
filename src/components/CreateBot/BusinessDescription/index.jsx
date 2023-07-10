@@ -79,7 +79,6 @@ return (
                 multiline
                 inputProps={{ maxLength: 300 }}
                 rows={5}
-                rowsMax={5} // Número máximo de líneas antes de mostrar una barra de desplazamiento
                 sx={{
                     alignSelf: 'center',
                     justifySelf: 'center',

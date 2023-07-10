@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
 import { blueGrey } from "@mui/material/colors";
 import { styled } from '@mui/material/styles';
+import useMyBot from '../../hooks/useMyBot';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -31,6 +32,8 @@ export const Mybots = () => {
   const [open, setOpen] = useState(false);
   const [botId, setBotId] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+
+  const [myBotData, setMyBotData] = useMyBot();
 
   /* CONSTANTES QUE SE MUESTRAN EN EL FORM DE EDIT */
   const [currentBotName, setCurrentBotName] = useState('');
@@ -351,87 +354,99 @@ export const Mybots = () => {
         </TableHead>
         <TableBody>
         {bots.map(bot => (
-              <StyledTableRow onClick={(event) => handleEditButtonClick(bot, event)} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
+              <StyledTableRow onClick={(event) => {if(bot.creation_status == 1) handleEditButtonClick(bot, event);}} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
                 <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>
                 <StyledTableCell align='center'>{bot.bot_name}</StyledTableCell>
                 {
-                  (!isSmallScreen)?
+                  (bot.creation_status == 1)
+                  ?
                   <>
-                <StyledTableCell align='center'>{bot.business_name}</StyledTableCell>
-                </>
-                  :
-                  <></>
-                }
-                <StyledTableCell align='center'>
                   {
-                    (bot.whatsapp_selected != 1)
-                    ?
-                    <></>
-                    :
-                    (!bot.isLoadingWhatsapp)
-                    ?
-                    <Switch {...label} 
-                    checked={bot.whatsapp_enable == "1" ? true : false}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      handleChangeWhatsapp(bot);
-                      //handleClickOpen(bot.id);
-                    }}
-                    />
-                    :
-                    <CircularProgress />
-                  }
-                </StyledTableCell>
-                <StyledTableCell align='center'>
-                  {
-                    (bot.telegram_selected != 1)
-                    ?
-                    <></>
-                    :
-                    (!bot.isLoadingTelegram)
-                    ?
-                    <Switch {...label} 
-                    checked={bot.telegram_enable == "1" ? true : false}
-                    onChange={(e)=> {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      handleChangeTelegram(bot);
-                    }}
-                    />
-                    :
-                    <CircularProgress />
-                  }
-                </StyledTableCell>
+                    (!isSmallScreen)?
+                    <>
+                      <StyledTableCell align='center'>{bot.business_name}</StyledTableCell>
+                      </>
+                        :
+                        <></>
+                      }
+                      <StyledTableCell align='center'>
+                        {
+                          (bot.whatsapp_selected != 1)
+                          ?
+                          <></>
+                          :
+                          (!bot.isLoadingWhatsapp)
+                          ?
+                          <Switch {...label} 
+                          checked={bot.whatsapp_enable == "1" ? true : false}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            handleChangeWhatsapp(bot);
+                            //handleClickOpen(bot.id);
+                          }}
+                          />
+                          :
+                          <CircularProgress />
+                        }
+                      </StyledTableCell>
+                      <StyledTableCell align='center'>
+                        {
+                          (bot.telegram_selected != 1)
+                          ?
+                          <></>
+                          :
+                          (!bot.isLoadingTelegram)
+                          ?
+                          <Switch {...label} 
+                          checked={bot.telegram_enable == "1" ? true : false}
+                          onChange={(e)=> {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            handleChangeTelegram(bot);
+                          }}
+                          />
+                          :
+                          <CircularProgress />
+                        }
+                      </StyledTableCell>
 
-                {
-                  (!isSmallScreen)?
+                      {
+                        (!isSmallScreen)?
+                        <>
+                      <StyledTableCell align="center">
+                        <Button onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditButtonClick(bot, e);
+                        }}>
+                          <FontAwesomeIcon icon={faEdit} />
+                        </Button>
+                      </StyledTableCell>
+
+                      <StyledTableCell align="center">
+                        <Button onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteButtonClick(bot)
+                        }}>
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                      </StyledTableCell>
+                      </>
+                      
+                        :
+                        <></>
+                      }
+                  </>
+                  :
                   <>
-                <StyledTableCell align="center">
-                  <Button onClick={(e) => {
-                    e.stopPropagation();
-                    handleEditButtonClick(bot, e);
-                  }}>
-                    <FontAwesomeIcon icon={faEdit} />
-                  </Button>
-                </StyledTableCell>
-
-                <StyledTableCell align="center">
-                  <Button onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteButtonClick(bot)
-                    
-                  }}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </Button>
-                </StyledTableCell>
-                </>
-                
-                  :
-                  <></>
+                    <StyledTableCell align='center' colSpan={(isSmallScreen) ? 1 : 2}>
+                      <button onClick={() => {setMyBotData(bot);navigate('/create-bot');}}>Continuar creando</button>
+                    </StyledTableCell>
+                    <StyledTableCell align='center' colSpan={(isSmallScreen) ? 1 : 3}>
+                      <button onClick={() => handleDeleteButtonClick(bot)}>Eliminar</button>
+                    </StyledTableCell>
+                  </>
                 }
-                
-                {/* <StyledTableCell align='center'>{bot.bot_runnning}</StyledTableCell>*/}
               </StyledTableRow>
                 ))}
         </TableBody>
@@ -570,8 +585,6 @@ export const Mybots = () => {
               shrink: true,
           }}
           />
-          
-          
           
         </DialogContent>
         <DialogActions>

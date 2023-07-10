@@ -79,7 +79,6 @@ return (
                 }}
                 multiline
                 rows={6} // Número de líneas visibles
-                rowsMax={6} // Número máximo de líneas antes de mostrar una barra de desplazamiento
                 sx={{
                     alignSelf: 'center',
                     justifySelf: 'center',

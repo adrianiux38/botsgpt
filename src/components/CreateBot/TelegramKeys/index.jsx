@@ -19,6 +19,10 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
     updateStepData({ telegramApiKey: e.target.value });
     setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
   }
+
+  useEffect(() => {	
+    setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));      	
+  }, [textFieldValue1]);
     
   return (
       <ThemeProvider theme={userSignTheme}>
@@ -70,6 +74,7 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                     label='Telegram Api Token'
                     variant='outlined'
                     sx={{ alignSelf: 'center', justifySelf: 'center', mb:'4%', mt:'4%'}}
+                    value={ textFieldValue1 }
                     onChange={changeTelegramKey}
                   />
                   <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId='NnZ55c2IMlM' onClose={() => setOpen(false)} />
