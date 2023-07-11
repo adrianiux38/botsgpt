@@ -21,7 +21,7 @@
 }
 
 .mybots{
-  height: 100vh;
+  height: 100%;
   background: linear-gradient(246.62deg, #42A5F6 7.3%, #6B1A9B 97.22%);
   display: flex;
   flex: 1;
@@ -31,6 +31,7 @@
 }
 .container2{
     width: 90%;
+    margin-bottom: 100px;
 }
  .title2{
     background: white;
