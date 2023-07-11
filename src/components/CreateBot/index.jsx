@@ -96,6 +96,8 @@ const CreateBot = () => {
         const data = await response.json();
         if (data.success) {
           console.log(`Bot creation status updated successfully`);
+          navigate("/my-bots");
+          resolve();
         } else {
           console.error(
             "Error getting the bot id of a bot the user was creating:",
@@ -106,8 +108,6 @@ const CreateBot = () => {
       } catch (error) {
         reject(error.message);
       }
-      navigate("/my-bots");
-      resolve();
     });
   }
 
@@ -142,46 +142,11 @@ const CreateBot = () => {
     });
   }
 
-  async function getCurrentEditingBotInfo() {
-    return await new Promise(async (resolve, reject) => {
-      let botInfo = {};
-      try {
-        const response = await fetch(`${BACKEND_URL}/getBotId`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userEmail: loggedInUserEmail }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          botInfo = { botId: null, currentStep: 1 };
-          resolve(botInfo);
-        }
-
-        if (data.success) {
-          botInfo = { botId: data.botId, currentStep: data.currentStep };
-        } else {
-          console.error(
-            "Error getting the bot id of a bot the user was creating:",
-            data.error
-          );
-          reject(data.error);
-        }
-      } catch (error) {
-        reject(error.message);
-      }
-      resolve(botInfo);
-    });
-  }
-
   useEffect(() => {
-    console.log(myBotData, botId)
     if (isLoggedIn()) {
       if (myBotData !== null) {
         setBotId(myBotData.id);
+        setStepData({...myBotData});
         const actualStep = (myBotData.current_step !== null) ? parseInt(myBotData.current_step) : 1;
         changeCurrentStep(actualStep);
       } else {
@@ -286,10 +251,7 @@ const CreateBot = () => {
         setBotId(newBotId);
       }
 
-      console.log(stepData)
-
-      const botIdToUse =
-        currentStep === 1 ? (botId === null ? newBotId : botId) : botId;
+      const botIdToUse = currentStep === 1 && botId === null ? newBotId : botId;
 
       try {
         const response = await fetch(`${BACKEND_URL}/saveBotStep`, {
@@ -327,13 +289,11 @@ const CreateBot = () => {
 
   const handleCancel = async () => {
     setStepData({});
-    setMyBotData(null)
-    changeCurrentStep(1);
+    setMyBotData(null);
     navigate("/my-bots");
   };
 
   const handleBack = async () => {
-    console.log(currentStep)
     if (currentStep == 10 || currentStep == 9 || currentStep == 8) {
       const platforms = await getPlatforms(botId);
       if (currentStep == 10) {
@@ -362,7 +322,6 @@ const CreateBot = () => {
 
   const loadStepContent = async () => {
     try {
-      console.log(currentStep);
       if (currentStep === 7 || currentStep === 8 || currentStep === 9) {
         if (botId !== null) {
           const platforms = await getPlatforms(botId);

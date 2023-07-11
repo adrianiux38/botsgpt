@@ -89,7 +89,7 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
         console.log('telegramselected: ' + telegramSelected);
         console.log('whatsappSelected: ' + whatsappSelected);
 
-        updateStepData({ telegramSelected, whatsappSelected });
+        updateStepData({ telegram_selected: telegramSelected, whatsapp_selected: whatsappSelected });
         handleContinue();
       }
     };

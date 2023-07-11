@@ -6,15 +6,16 @@ const useTextFieldData = (botId, step) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTextField1Change = (event) => {
-    setTextFieldValue1(event.target.value);
+    if(event.target.value !== null) setTextFieldValue1(event.target.value);
   };
+
   const handleTextField2Change = (event) => {
-    setTextFieldValue2(event.target.value);
+    if(event.target.value !== null) setTextFieldValue2(event.target.value);
   };
 
   useEffect(() => {
     const getTextFieldData = async (botId, step) => {
-        return new Promise(async (resolve, reject) => {
+        return await new Promise(async (resolve, reject) => {
         setIsLoading(true);
               let textFieldData = {};
               try {

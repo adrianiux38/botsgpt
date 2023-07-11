@@ -8,7 +8,7 @@ import 'react-modal-video/scss/modal-video.scss';
 import "./Telegram.css"
 
 const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData, botId }) => {
-  const { textFieldValue1, textFieldValue2, handleTextField1Change, handleTextField2Change, isLoading } = useTextFieldData(botId, 7);
+  const { textFieldValue1, handleTextField1Change } = useTextFieldData(botId, 7);
   const [isValidStep, setIsValidStep] = useState(false);
   const [isOpen, setOpen] = useState(false);
 
@@ -17,7 +17,8 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
   }
 
   const changeTelegramKey = (e) => {
-    updateStepData({ telegramApiKey: e.target.value });
+    handleTextField1Change(e)
+    updateStepData({ telegram_api_key: e.target.value });
     setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
   }
 
@@ -73,6 +74,7 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                     fullWidth
                     id='custom-input'
                     label='Telegram Api Token'
+                    focused={true}
                     variant='outlined'
                     sx={{ alignSelf: 'center', justifySelf: 'center', mb:'4%', mt:'4%'}}
                     value={ textFieldValue1 }
@@ -80,7 +82,7 @@ const TelegramKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
                   />
                   <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId='NnZ55c2IMlM' onClose={() => setOpen(false)} />
                   <div style={{display:"flex", flexDirection:'row', justifyContent:"center", alignContent:"center", justifyItems:"center", marginBottom:'3%'}}>
-                    <img src={Info} style={{marginRight:'2%'}}/>
+                    <img src={Info} style={{marginRight:'2%'}} alt='info' />
                     <p className="linkStyle" onClick={openModal}>
                       Watch our video about how to get your Telegram Api Key
                     </p>
