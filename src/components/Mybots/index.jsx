@@ -32,7 +32,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-
+import Slider from "@material-ui/core/Slider";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { useMediaQuery, useTheme } from "@material-ui/core";
@@ -86,6 +86,7 @@ export const Mybots = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+  const [value, setValue] = useState(0.5);  // Valor inicial
 
   const navigate = useNavigate();
 
@@ -414,6 +415,14 @@ export const Mybots = () => {
       .catch((err) => console.log(err));
   };
 
+  
+    
+  
+    const handleSliderChange = (event, newValue) => {
+      setValue(newValue);
+    };
+    
+
   return (
     <div className="mybots">
       <NavBar />
@@ -561,17 +570,21 @@ export const Mybots = () => {
                           <Button
                             variant="contained"
                             color="success"
-                            
-                            
                             onClick={() => {
                               setMyBotData(bot);
                               navigate("/create-bot");
                             }}
-                            
                           >
-
-                          {isSmallScreen ? <ArrowLeft style={{fontSize:"30px" , height: "25px"}}/> :<> <ArrowLeft />  {"Continuar creando"} </>}
-                          
+                            {isSmallScreen ? (
+                              <ArrowLeft
+                                style={{ fontSize: "30px", height: "25px" }}
+                              />
+                            ) : (
+                              <>
+                                {" "}
+                                <ArrowLeft /> {"Continuar creando"}{" "}
+                              </>
+                            )}
                           </Button>
                         </StyledTableCell>
                         <StyledTableCell
@@ -582,10 +595,11 @@ export const Mybots = () => {
                             variant="contained"
                             color="error"
                             onClick={() => handleDeleteButtonClick(bot)}
-                            
                           >
                             {isSmallScreen ? "" : "Delete Bot"}
-                            <DeleteIcon style={{fontSize:"17px" , height: "25px"}} />
+                            <DeleteIcon
+                              style={{ fontSize: "17px", height: "25px" }}
+                            />
                           </Button>
                         </StyledTableCell>
                       </ThemeProvider>
@@ -736,6 +750,28 @@ export const Mybots = () => {
                   shrink: true,
                 }}
               />
+
+              <div className="sliderDiv">
+              <p className="sliderP">Bot's imagination: {value}</p>
+              <p className="sliderP2">Ability to invent information </p>
+                
+                <Slider  className="slider"
+                  value={value}
+                  min={0} // Valor mínimo
+                  max={1} // Valor máximo
+                  step={0.01} // Incremento mínimo
+                  
+                  onChange={handleSliderChange}
+                  classes={{ 
+                    root: 'roots', 
+                    thumb: 'thumb', 
+                    track: 'track', 
+                    rail: 'rail' 
+                  }}
+                />
+                
+                
+              </div>
             </>
           )}
 
