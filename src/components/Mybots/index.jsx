@@ -759,7 +759,7 @@ export const Mybots = () => {
                   value={value}
                   min={0} // Valor mínimo
                   max={1} // Valor máximo
-                  step={0.01} // Incremento mínimo
+                  step={0.1} // Incremento mínimo
                   
                   onChange={handleSliderChange}
                   classes={{ 
