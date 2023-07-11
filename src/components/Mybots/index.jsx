@@ -305,14 +305,25 @@ export const Mybots = () => {
       },
       body: JSON.stringify({
         botId,
-        currentBusinessName,
-        currentBusinessUrl,
-        currentPhoneNumberId,
-        currentWhatsappApiKey,
-        currentTelegramApiKey,
-        currentBotName,
-        currentBusinessDescription,
-        currentAdditionalDetails,
+        isAdvanced: AdvancedSettings,
+        values: (AdvancedSettings) ?
+        {
+          currentPrompt,
+          currentPhoneNumberId,
+          currentWhatsappApiKey,
+          currentTelegramApiKey,
+        }
+        :
+        {
+          currentBusinessName,
+          currentBusinessUrl,
+          currentPhoneNumberId,
+          currentWhatsappApiKey,
+          currentTelegramApiKey,
+          currentBotName,
+          currentBusinessDescription,
+          currentAdditionalDetails,
+        }
       }),
     })
     .then((res) => res.json())
@@ -460,10 +471,10 @@ export const Mybots = () => {
                   :
                   <>
                     <StyledTableCell align='center' colSpan={(isSmallScreen) ? 1 : 2}>
-                      <button onClick={() => {setMyBotData(bot);navigate('/create-bot');}}>Continuar creando</button>
+                      <button className="tableButton" onClick={() => {setMyBotData(bot);navigate('/create-bot');}}>Continuar creando</button>
                     </StyledTableCell>
                     <StyledTableCell align='center' colSpan={(isSmallScreen) ? 1 : 3}>
-                      <button onClick={() => handleDeleteButtonClick(bot)}>Eliminar</button>
+                      <button className="tableButton deleteButton" onClick={() => handleDeleteButtonClick(bot)}>Eliminar</button>
                     </StyledTableCell>
                   </>
                 }
@@ -482,14 +493,52 @@ export const Mybots = () => {
         </div>
         <DialogTitle fontWeight={"700"} fontSize={"1.5em"} className="myDialogTitle">Edit My Bot</DialogTitle>
         <DialogContent color="black">
-          <DialogContentText color={"#42A5F6"} fontWeight={"700"} paddingY={"10px"}>Business information.</DialogContentText>
+
+          {
+            (!AdvancedSettings) ?
+            <></>
+            :
+            <>
+            <DialogContentText color={"#42A5F6"} fontWeight={"700"} paddingY={"10px"}>Advanced options</DialogContentText>
+
+            <TextField className="myTextField2"
+              margin="dense"
+              id="prompt"
+              label="Bot Prompt"
+              type="text"
+              fontSize="5px"
+              sx={{fontSize:"5px"}}
+              fullWidth
+              disabled={!AdvancedSettings}
+              value={currentPrompt}
+              inputProps={{ maxLength: 3072 , style: { fontSize: "12px" }}}
+              rows={10}
+              multiline
+              onChange={(e) => setCurrentPrompt(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            </>
+          }
+          
+          {
+            (!AdvancedSettings)
+            ?
+            <DialogContentText color={"#42A5F6"} fontWeight={"700"} paddingY={"10px"}>Business information.</DialogContentText>
+            :
+            <></>
+          }
+          
           <TextField className="myTextField"
           margin="dense" 
-          id="userTraining1" 
+          id="Bot name"
           label="Bot Name" 
-          type="text" 
+          type="text"
           fullWidth 
           value={currentBotName}
+          disabled={AdvancedSettings}
+          style={(AdvancedSettings) ? { display: 'none' } : {} }
           onChange={(e) => {setCurrentBotName(e.target.value)}}
           InputLabelProps={{
             shrink: true,
@@ -498,11 +547,13 @@ export const Mybots = () => {
           
           <TextField className="myTextField"
             margin="dense"
-            id="whatsappApiKey"
+            id="Business Name"
             label="Business Name"
             type="text"
             fullWidth
             value={currentBusinessName}
+            disabled={AdvancedSettings}
+            style={(AdvancedSettings) ? { display: 'none' } : {} }
             onChange={(e) => setCurrentBusinessName(e.target.value)}
             InputLabelProps={{
               shrink: true,
@@ -518,6 +569,8 @@ export const Mybots = () => {
             fullWidth 
             value={currentBusinessDescription}
             inputProps={{ maxLength: 300 }}
+            disabled={AdvancedSettings}
+            style={(AdvancedSettings) ? { display: 'none' } : {} }
             rows={3}
             onChange={(e) => {setCurrentBusinessDescription(e.target.value)}}
             InputLabelProps={{
@@ -533,6 +586,8 @@ export const Mybots = () => {
             fullWidth 
             value={currentAdditionalDetails}
             inputProps={{ maxLength: 300 }}
+            disabled={AdvancedSettings}
+            style={(AdvancedSettings) ? { display: 'none' } : {} }
             rows={3}
             multiline
             onChange={(e) => {setCurrentAdditionalDetails(e.target.value)}}
@@ -543,10 +598,12 @@ export const Mybots = () => {
 
           <TextField className="myTextField"
             margin="dense" 
-            id="whatsappPhoneNumberId" 
+            id="Bussiness URL"
             label="Busines URL"
             type="text" 
             fullWidth
+            disabled={AdvancedSettings}
+            style={(AdvancedSettings) ? { display: 'none' } : {} }
             value={currentBusinessUrl}
             onChange={(e) => setCurrentBusinessUrl(e.target.value)}
             InputLabelProps={{
@@ -595,80 +652,21 @@ export const Mybots = () => {
           
           <TextField className="myTextField"
             margin="dense" 
-            id="Bussines description" 
+            id="Telegram Api Key" 
             label="Telegram Api Key" 
-            type="text" 
-            fullWidth 
+            type="text"
+            fullWidth
             value={currentTelegramApiKey}
             onChange={(e) => {setCurrentTelegramApiKey(e.target.value)}}
             InputLabelProps={{
               shrink: true,
           }}
           />
-
-        <DialogContentText color={"#42A5F6"} fontWeight={"700"} paddingY={"10px"}>Advanced options</DialogContentText>
-
-        <TextField className="myTextField2"
-          margin="dense"
-          id="prompt"
-          label="Bot Prompt"
-          type="text"
-          fontSize="5px"
-          sx={{fontSize:"5px"}}
-          fullWidth
-          disabled={!AdvancedSettings}
-          value={currentPrompt}
-          inputProps={{ maxLength: 500 , style: { fontSize: "12px" }}}
-            rows={10}
-            multiline
-          onChange={(e) => setCurrentPrompt(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-
-        {/*<TextField className="myTextField"
-          margin="dense"
-          id="prompt"
-          label="User Question"
-          type="text"
-          fullWidth
-          disabled={!AdvancedSettings}
-          value={currentPhoneNumberId}
-          inputProps={{ maxLength: 500 }}
-            rows={3}
-            multiline
-          onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-
-        <TextField className="myTextField"
-          margin="dense"
-          id="prompt"
-          label="Bot answer"
-          type="text"
-          fullWidth
-          disabled={!AdvancedSettings}
-          value={currentPhoneNumberId}
-          inputProps={{ maxLength: 500 }}
-            rows={5}
-            multiline
-          onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        */}
-          
           
         </DialogContent>
         <DialogActions>
-        <Button onClick={()=>setAdvancedSettings(!AdvancedSettings)}
-          
-          >
-            Advanced options
+          <Button onClick={()=>setAdvancedSettings(!AdvancedSettings)}>
+            {(!AdvancedSettings) ? 'Advanced options' : 'Simplified options'}
           </Button>
 
           <Button onClick={() => {
