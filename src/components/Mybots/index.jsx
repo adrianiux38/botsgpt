@@ -24,7 +24,7 @@ import {
   Input,
   CloseButton,
 } from "reactstrap";
-import { ArrowForward } from "@mui/icons-material";
+import { ArrowLeft, Height } from "@mui/icons-material";
 import {
   BottomNavigation,
   Icon,
@@ -561,13 +561,17 @@ export const Mybots = () => {
                           <Button
                             variant="contained"
                             color="success"
-                            endIcon={<ArrowForward />}
+                            
+                            
                             onClick={() => {
                               setMyBotData(bot);
                               navigate("/create-bot");
                             }}
+                            
                           >
-                            Continuar creando
+
+                          {isSmallScreen ? <ArrowLeft style={{fontSize:"30px" , height: "25px"}}/> :<> <ArrowLeft />  {"Continuar creando"} </>}
+                          
                           </Button>
                         </StyledTableCell>
                         <StyledTableCell
@@ -578,9 +582,10 @@ export const Mybots = () => {
                             variant="contained"
                             color="error"
                             onClick={() => handleDeleteButtonClick(bot)}
-                            endIcon={<DeleteIcon />}
+                            
                           >
-                            Eliminar
+                            {isSmallScreen ? "" : "Delete Bot"}
+                            <DeleteIcon style={{fontSize:"17px" , height: "25px"}} />
                           </Button>
                         </StyledTableCell>
                       </ThemeProvider>
