@@ -8,9 +8,9 @@ const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStep
     const [isValidStep, setIsValidStep] = useState(false);
 
 const handleChange1 = (e) => {
-handleTextField1Change(e);
-updateStepData({ additional_details: e.target.value });
-setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
+    handleTextField1Change(e);
+    updateStepData({ additional_details: e.target.value });
+    setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
 }
 
 const handleFocus= (e) => {
