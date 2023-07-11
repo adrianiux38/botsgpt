@@ -1,53 +1,21 @@
-import {
-  Table,
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  CircularProgress,
-} from "@mui/material";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Input,
-  CloseButton,
-} from "reactstrap";
-import { ArrowLeft, Height } from "@mui/icons-material";
-import {
-  BottomNavigation,
-  Icon,
-  IconButton,
-  Snackbar,
-  Alert,
-} from "@mui/material";
-import Slider from "@material-ui/core/Slider";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Table, TableBody, TableContainer, TableHead, TableRow, Paper, CircularProgress } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { useMediaQuery, useTheme } from "@material-ui/core";
+import { userSignTheme } from "../../utils/userSignTheme";
+import { ArrowLeft } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
+import { ThemeProvider, Grid } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useState, useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
-import { blueGrey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
+import Slider from "@material-ui/core/Slider";
 import useMyBot from "../../hooks/useMyBot";
+import { IconButton } from "@mui/material";
 import Switch from "@mui/material/Switch";
 import Button from "@mui/material/Button";
-import { ThemeProvider, Grid } from "@mui/material";
-import { userSignTheme } from "../../utils/userSignTheme";
-import Box from "@mui/material/Box";
 import { NavBar } from "../NavBar";
 import "./Mybots.css";
 
@@ -77,16 +45,18 @@ export const Mybots = () => {
   const [currentPhoneNumberId, setCurrentPhoneNumberId] = useState("");
   const [currentWhatsappApiKey, setCurrentWhatsappApiKey] = useState("");
   const [currentTelegramApiKey, setCurrentTelegramApiKey] = useState("");
-  const [currentBusinessDescription, setCurrentBusinessDescription] =
-    useState("");
+  const [currentBusinessDescription, setCurrentBusinessDescription] = useState("");
   const [currentAdditionalDetails, setCurrentAdditionalDetails] = useState("");
   const [currentPrompt, setCurrentPrompt] = useState("");
+
+  const [telegramSelected, setTelegramSelected] = useState(0);
+  const [whatsappSelected, setWhatsappSelected] = useState(0);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
-  const [value, setValue] = useState(0.5);  // Valor inicial
+  const [currentTop_p, setCurrentTop_p] = useState(0.5);  // Valor inicial
 
   const navigate = useNavigate();
 
@@ -97,9 +67,12 @@ export const Mybots = () => {
       event.target.tagName !== "svg" &&
       event.target.tagName !== "BUTTON" &&
       event.target.tagName !== "path"
-    )
+    ) {
       return;
+    }
     setBotId(bot.id);
+    setTelegramSelected(bot.telegram_selected);
+    setWhatsappSelected(bot.whatsapp_selected);
     //consultar en la base de datos los datos de ese bot
     await fetch(`${BACKEND_URL}/getBotData2`, {
       method: "POST",
@@ -120,6 +93,7 @@ export const Mybots = () => {
         setCurrentBusinessDescription(data[0].business_description ?? "");
         setCurrentAdditionalDetails(data[0].additional_details ?? "");
         setCurrentPrompt(data[0].gpt_prompt ?? "");
+        setCurrentTop_p(data[0].top_p ?? 0.9);
       })
       .catch((err) => console.log(err));
 
@@ -379,6 +353,7 @@ export const Mybots = () => {
               currentBusinessDescription,
               currentAdditionalDetails,
             },
+        currentTop_p,
       }),
     })
       .then((res) => res.json())
@@ -415,13 +390,9 @@ export const Mybots = () => {
       .catch((err) => console.log(err));
   };
 
-  
-    
-  
-    const handleSliderChange = (event, newValue) => {
-      setValue(newValue);
-    };
-    
+  const handleSliderChange = (event, newValue) => {
+    setCurrentTop_p(newValue);
+  };
 
   return (
     <div className="mybots">
@@ -750,28 +721,6 @@ export const Mybots = () => {
                   shrink: true,
                 }}
               />
-
-              <div className="sliderDiv">
-              <p className="sliderP">Bot's imagination: {value}</p>
-              <p className="sliderP2">Ability to invent information </p>
-                
-                <Slider  className="slider"
-                  value={value}
-                  min={0} // Valor mínimo
-                  max={1} // Valor máximo
-                  step={0.1} // Incremento mínimo
-                  
-                  onChange={handleSliderChange}
-                  classes={{ 
-                    root: 'roots', 
-                    thumb: 'thumb', 
-                    track: 'track', 
-                    rail: 'rail' 
-                  }}
-                />
-                
-                
-              </div>
             </>
           )}
 
@@ -780,35 +729,35 @@ export const Mybots = () => {
             fontWeight={"700"}
             paddingY={"10px"}
           >
-            APIs information
+            Parameters
           </DialogContentText>
 
-          <TextField
-            className="myTextField"
-            margin="dense"
-            id="phoneNumberId"
-            label="Phone Number Id"
-            type="text"
-            fullWidth
-            value={currentPhoneNumberId}
-            onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            className="myTextField"
-            margin="dense"
-            id="whatsappApiKey"
-            label="Whatsapp Api Key"
-            type="text"
-            fullWidth
-            value={currentWhatsappApiKey}
-            onChange={(e) => setCurrentWhatsappApiKey(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+          <div className="sliderDiv">
+            <p className="sliderP">Bot's imagination: {currentTop_p}</p>
+            <p className="sliderP2">Ability to invent information </p>
+            <Slider  className="slider"
+              value={currentTop_p}
+              min={0} // Valor mínimo
+              max={1} // Valor máximo
+              step={0.05} // Incremento mínimo
+              
+              onChange={handleSliderChange}
+              classes={{
+                root: 'roots', 
+                thumb: 'thumb', 
+                track: 'track', 
+                rail: 'rail' 
+              }}
+            />
+          </div>
+
+          <DialogContentText
+            color={"#42A5F6"}
+            fontWeight={"700"}
+            paddingY={"10px"}
+          >
+            APIs information
+          </DialogContentText>
 
           <TextField
             className="myTextField"
@@ -823,21 +772,61 @@ export const Mybots = () => {
             }}
           />
 
-          <TextField
-            className="myTextField"
-            margin="dense"
-            id="Bussines description"
-            label="Telegram Api Key"
-            type="text"
-            fullWidth
-            value={currentTelegramApiKey}
-            onChange={(e) => {
-              setCurrentTelegramApiKey(e.target.value);
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+          {
+            (whatsappSelected == 1)
+            ?
+            <>
+            <TextField
+              className="myTextField"
+              margin="dense"
+              id="phoneNumberId"
+              label="Phone Number Id"
+              type="text"
+              fullWidth
+              value={currentPhoneNumberId}
+              onChange={(e) => setCurrentPhoneNumberId(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              className="myTextField"
+              margin="dense"
+              id="whatsappApiKey"
+              label="Whatsapp Api Key"
+              type="text"
+              fullWidth
+              value={currentWhatsappApiKey}
+              onChange={(e) => setCurrentWhatsappApiKey(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            </>
+            :<></>
+          }
+
+          {
+            (telegramSelected == 1)
+            ?
+            <TextField
+              className="myTextField"
+              margin="dense"
+              id="Bussines description"
+              label="Telegram Api Key"
+              type="text"
+              fullWidth
+              value={currentTelegramApiKey}
+              onChange={(e) => {
+                setCurrentTelegramApiKey(e.target.value);
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            :
+            <></>
+          }
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAdvancedSettings(!AdvancedSettings)}>
