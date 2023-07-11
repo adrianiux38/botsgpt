@@ -1,9 +1,39 @@
-import { Table, TableBody, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, } from '@mui/material';
-import { Row, Col, Card, CardHeader, CardBody, CardFooter, Input, CloseButton } from "reactstrap";
-import { ArrowForward } from '@mui/icons-material';
-import { BottomNavigation, Icon, IconButton, Snackbar, Alert } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
+} from "@mui/material";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import {
+  Row,
+  Col,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Input,
+  CloseButton,
+} from "reactstrap";
+import { ArrowForward } from "@mui/icons-material";
+import {
+  BottomNavigation,
+  Icon,
+  IconButton,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+
+import DeleteIcon from "@mui/icons-material/Delete";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import { ToastContainer, toast } from "react-toastify";
@@ -331,24 +361,23 @@ export const Mybots = () => {
       body: JSON.stringify({
         botId,
         isAdvanced: AdvancedSettings,
-        values: (AdvancedSettings) ?
-        {
-          currentPrompt,
-          currentPhoneNumberId,
-          currentWhatsappApiKey,
-          currentTelegramApiKey,
-        }
-        :
-        {
-          currentBusinessName,
-          currentBusinessUrl,
-          currentPhoneNumberId,
-          currentWhatsappApiKey,
-          currentTelegramApiKey,
-          currentBotName,
-          currentBusinessDescription,
-          currentAdditionalDetails,
-        }
+        values: AdvancedSettings
+          ? {
+              currentPrompt,
+              currentPhoneNumberId,
+              currentWhatsappApiKey,
+              currentTelegramApiKey,
+            }
+          : {
+              currentBusinessName,
+              currentBusinessUrl,
+              currentPhoneNumberId,
+              currentWhatsappApiKey,
+              currentTelegramApiKey,
+              currentBotName,
+              currentBusinessDescription,
+              currentAdditionalDetails,
+            },
       }),
     })
       .then((res) => res.json())
@@ -395,133 +424,173 @@ export const Mybots = () => {
         </div>
 
         <StyledTableContainer className="tableContainer" component={Paper}>
-      <Table sx={{ width: "100%"  }} className="table" aria-label="simple table">
-        <TableHead className="tableHead" sx={{backgroundColor: 'white'}}>
-            <StyledTableRow >
-            {!isSmallScreen && <StyledTableCell align="center">Id</StyledTableCell>}
+          <Table
+            sx={{ width: "100%" }}
+            className="table"
+            aria-label="simple table"
+          >
+            <TableHead className="tableHead" sx={{ backgroundColor: "white" }}>
+              <StyledTableRow>
+                {!isSmallScreen && (
+                  <StyledTableCell align="center">Id</StyledTableCell>
+                )}
                 <StyledTableCell align="center"> Name&nbsp;</StyledTableCell>
-                {
-                  (!isSmallScreen)?
+                {!isSmallScreen ? (
                   <>
-                  <StyledTableCell align="center">Business Name&nbsp;</StyledTableCell>
-                  
+                    <StyledTableCell align="center">
+                      Business Name&nbsp;
+                    </StyledTableCell>
                   </>
-                  :
+                ) : (
                   <></>
-                }
+                )}
                 <StyledTableCell align="center">Whatsapp&nbsp;</StyledTableCell>
                 <StyledTableCell align="center">Telegram&nbsp;</StyledTableCell>
-                {
-                  (!isSmallScreen)?
+                {!isSmallScreen ? (
                   <>
-                <StyledTableCell align="center">Edit&nbsp;</StyledTableCell>
-                <StyledTableCell align="center">Delete&nbsp;</StyledTableCell>
-                </>
-                  :
+                    <StyledTableCell align="center">Edit&nbsp;</StyledTableCell>
+                    <StyledTableCell align="center">
+                      Delete&nbsp;
+                    </StyledTableCell>
+                  </>
+                ) : (
                   <></>
-                }
-            </StyledTableRow>
-        </TableHead>
-        <TableBody>
-        {bots.map(bot => (
-              <StyledTableRow onClick={(event) => {if(bot.creation_status == 1) handleEditButtonClick(bot, event);}} key={bot.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}>
-                {!isSmallScreen && <StyledTableCell align='center' component="th" scope='row'>{bot.id}</StyledTableCell>}
-                <StyledTableCell align='center'>{bot.bot_name}</StyledTableCell>
-                {
-                  (bot.creation_status == 1)
-                  ?
-                  <>
-                  {
-                    (!isSmallScreen)?
-                    <>
-                      <StyledTableCell align='center'>{bot.business_name}</StyledTableCell>
-                      </>
-                        :
-                        <></>
-                      }
-                      <StyledTableCell align='center'>
-                        {
-                          (bot.whatsapp_selected != 1)
-                          ?
-                          <></>
-                          :
-                          (!bot.isLoadingWhatsapp)
-                          ?
-                          <Switch {...label} 
-                          checked={bot.whatsapp_enable == "1" ? true : false}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            handleChangeWhatsapp(bot);
-                            //handleClickOpen(bot.id);
-                          }}
-                          />
-                          :
-                          <CircularProgress />
-                        }
-                      </StyledTableCell>
-                      <StyledTableCell align='center'>
-                        {
-                          (bot.telegram_selected != 1)
-                          ?
-                          <></>
-                          :
-                          (!bot.isLoadingTelegram)
-                          ?
-                          <Switch {...label} 
-                          checked={bot.telegram_enable == "1" ? true : false}
-                          onChange={(e)=> {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            handleChangeTelegram(bot);
-                          }}
-                          />
-                          :
-                          <CircularProgress />
-                        }
-                      </StyledTableCell>
-
-                      {
-                        (!isSmallScreen)?
-                        <>
-                      <StyledTableCell align="center">
-                        <Button onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditButtonClick(bot, e);
-                        }}>
-                          <FontAwesomeIcon icon={faEdit} />
-                        </Button>
-                      </StyledTableCell>
-
-                      <StyledTableCell align="center">
-                        <Button onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteButtonClick(bot)
-                        }}>
-                          <FontAwesomeIcon icon={faTrash} />
-                        </Button>
-                      </StyledTableCell>
-                      </>
-                      
-                        :
-                        <></>
-                      }
-                  </>
-                  :
-                  <>
-                    <StyledTableCell align='center' colSpan={(isSmallScreen) ? 1 : 2}>
-                      <button className="tableButton" onClick={() => {setMyBotData(bot);navigate('/create-bot');}}>Continuar creando</button>
-                    </StyledTableCell>
-                    <StyledTableCell align='center' colSpan={(isSmallScreen) ? 1 : 3}>
-                      <button className="tableButton deleteButton" onClick={() => handleDeleteButtonClick(bot)}>Eliminar</button>
-                    </StyledTableCell>
-                  </>
-                }
+                )}
               </StyledTableRow>
-                ))}
-        </TableBody>
-      </Table>
-      </StyledTableContainer>
+            </TableHead>
+            <TableBody>
+              {bots.map((bot) => (
+                <StyledTableRow
+                  onClick={(event) => {
+                    if (bot.creation_status == 1)
+                      handleEditButtonClick(bot, event);
+                  }}
+                  key={bot.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  {!isSmallScreen && (
+                    <StyledTableCell align="center" component="th" scope="row">
+                      {bot.id}
+                    </StyledTableCell>
+                  )}
+                  <StyledTableCell align="center">
+                    {bot.bot_name}
+                  </StyledTableCell>
+                  {bot.creation_status == 1 ? (
+                    <>
+                      {!isSmallScreen ? (
+                        <>
+                          <StyledTableCell align="center">
+                            {bot.business_name}
+                          </StyledTableCell>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                      <StyledTableCell align="center">
+                        {bot.whatsapp_selected != 1 ? (
+                          <></>
+                        ) : !bot.isLoadingWhatsapp ? (
+                          <Switch
+                            {...label}
+                            checked={bot.whatsapp_enable == "1" ? true : false}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              handleChangeWhatsapp(bot);
+                              //handleClickOpen(bot.id);
+                            }}
+                          />
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {bot.telegram_selected != 1 ? (
+                          <></>
+                        ) : !bot.isLoadingTelegram ? (
+                          <Switch
+                            {...label}
+                            checked={bot.telegram_enable == "1" ? true : false}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              handleChangeTelegram(bot);
+                            }}
+                          />
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </StyledTableCell>
+
+                      {!isSmallScreen ? (
+                        <>
+                          <StyledTableCell align="center">
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditButtonClick(bot, e);
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faEdit} />
+                            </Button>
+                          </StyledTableCell>
+
+                          <StyledTableCell align="center">
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteButtonClick(bot);
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faTrash} />
+                            </Button>
+                          </StyledTableCell>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <ThemeProvider theme={userSignTheme}>
+                        <StyledTableCell
+                          align="center"
+                          colSpan={isSmallScreen ? 1 : 2}
+                        >
+                          <Button
+                            variant="contained"
+                            color="success"
+                            endIcon={<ArrowForward />}
+                            onClick={() => {
+                              setMyBotData(bot);
+                              navigate("/create-bot");
+                            }}
+                          >
+                            Continuar creando
+                          </Button>
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          colSpan={isSmallScreen ? 1 : 3}
+                        >
+                          <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() => handleDeleteButtonClick(bot)}
+                            endIcon={<DeleteIcon />}
+                          >
+                            Eliminar
+                          </Button>
+                        </StyledTableCell>
+                      </ThemeProvider>
+                    </>
+                  )}
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </StyledTableContainer>
       </div>
 
       <Dialog open={editDialogOpen} className="myDialog">
@@ -542,123 +611,128 @@ export const Mybots = () => {
           Edit My Bot
         </DialogTitle>
         <DialogContent color="black">
-
-        {
-            (!AdvancedSettings) ?
+          {!AdvancedSettings ? (
             <>
-            <DialogContentText
-            color={"#42A5F6"}
-            fontWeight={"700"}
-            paddingY={"10px"}
-          >
-            Business information.
-          </DialogContentText>
-          <TextField
-            className="myTextField"
-            margin="dense"
-            id="userTraining1"
-            label="Bot Name"
-            type="text"
-            fullWidth
-            value={currentBotName}
-            onChange={(e) => {
-              setCurrentBotName(e.target.value);
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+              <DialogContentText
+                color={"#42A5F6"}
+                fontWeight={"700"}
+                paddingY={"10px"}
+              >
+                Business information.
+              </DialogContentText>
+              <TextField
+                className="myTextField"
+                margin="dense"
+                id="userTraining1"
+                label="Bot Name"
+                type="text"
+                fullWidth
+                value={currentBotName}
+                onChange={(e) => {
+                  setCurrentBotName(e.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
-          <TextField
-            className="myTextField"
-            margin="dense"
-            id="whatsappApiKey"
-            label="Business Name"
-            type="text"
-            fullWidth
-            value={currentBusinessName}
-            onChange={(e) => setCurrentBusinessName(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+              <TextField
+                className="myTextField"
+                margin="dense"
+                id="whatsappApiKey"
+                label="Business Name"
+                type="text"
+                fullWidth
+                value={currentBusinessName}
+                onChange={(e) => setCurrentBusinessName(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
-          <TextField
-            className="myTextField"
-            margin="dense"
-            id="bussines"
-            label="Business Description"
-            type="text"
-            multiline
-            fullWidth
-            value={currentBusinessDescription}
-            inputProps={{ maxLength: 300 }}
-            rows={3}
-            onChange={(e) => {
-              setCurrentBusinessDescription(e.target.value);
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+              <TextField
+                className="myTextField"
+                margin="dense"
+                id="bussines"
+                label="Business Description"
+                type="text"
+                multiline
+                fullWidth
+                value={currentBusinessDescription}
+                inputProps={{ maxLength: 300 }}
+                rows={3}
+                onChange={(e) => {
+                  setCurrentBusinessDescription(e.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
-          <TextField
-            className="myTextField"
-            margin="dense"
-            id="details"
-            label="Additional Details"
-            type="text"
-            fullWidth
-            value={currentAdditionalDetails}
-            inputProps={{ maxLength: 300 }}
-            rows={3}
-            multiline
-            onChange={(e) => {
-              setCurrentAdditionalDetails(e.target.value);
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+              <TextField
+                className="myTextField"
+                margin="dense"
+                id="details"
+                label="Additional Details"
+                type="text"
+                fullWidth
+                value={currentAdditionalDetails}
+                inputProps={{ maxLength: 300 }}
+                rows={3}
+                multiline
+                onChange={(e) => {
+                  setCurrentAdditionalDetails(e.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
-          <TextField
-            className="myTextField"
-            margin="dense"
-            id="whatsappPhoneNumberId"
-            label="Busines URL"
-            type="text"
-            fullWidth
-            value={currentBusinessUrl}
-            onChange={(e) => setCurrentBusinessUrl(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+              <TextField
+                className="myTextField"
+                margin="dense"
+                id="whatsappPhoneNumberId"
+                label="Busines URL"
+                type="text"
+                fullWidth
+                value={currentBusinessUrl}
+                onChange={(e) => setCurrentBusinessUrl(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </>
-            :
+          ) : (
             <>
-            <DialogContentText color={"#42A5F6"} fontWeight={"700"} paddingY={"10px"}>Advanced options</DialogContentText>
+              <DialogContentText
+                color={"#42A5F6"}
+                fontWeight={"700"}
+                paddingY={"10px"}
+              >
+                Advanced options
+              </DialogContentText>
 
-            <TextField className="myTextField2"
-              margin="dense"
-              id="prompt"
-              label="Bot Prompt"
-              type="text"
-              fontSize="5px"
-              sx={{fontSize:"5px"}}
-              fullWidth
-              disabled={!AdvancedSettings}
-              value={currentPrompt}
-              inputProps={{ maxLength: 3072 , style: { fontSize: "12px" }}}
-              rows={10}
-              multiline
-              onChange={(e) => setCurrentPrompt(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+              <TextField
+                className="myTextField2"
+                margin="dense"
+                id="prompt"
+                label="Bot Prompt"
+                type="text"
+                fontSize="5px"
+                sx={{ fontSize: "5px" }}
+                fullWidth
+                disabled={!AdvancedSettings}
+                value={currentPrompt}
+                inputProps={{ maxLength: 3072, style: { fontSize: "12px" } }}
+                rows={10}
+                multiline
+                onChange={(e) => setCurrentPrompt(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </>
-          }
+          )}
 
           <DialogContentText
             color={"#42A5F6"}
@@ -723,11 +797,10 @@ export const Mybots = () => {
               shrink: true,
             }}
           />
-
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>setAdvancedSettings(!AdvancedSettings)}>
-            {(!AdvancedSettings) ? 'Advanced options' : 'Simplified options'}
+          <Button onClick={() => setAdvancedSettings(!AdvancedSettings)}>
+            {!AdvancedSettings ? "Advanced options" : "Simplified options"}
           </Button>
 
           <Button
