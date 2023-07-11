@@ -9,7 +9,7 @@ const AdditionalDetails = ({handleCancel, handleContinue, handleBack, updateStep
 
 const handleChange1 = (e) => {
 handleTextField1Change(e);
-updateStepData({ additionalDetails: e.target.value });
+updateStepData({ additional_details: e.target.value });
 setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
 }
 

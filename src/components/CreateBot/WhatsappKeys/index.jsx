@@ -23,7 +23,7 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
   const handleChange1 = (e) => {
     
     handleTextField1Change(e);
-    updateStepData({ whatsappApiKey: e.target.value });
+    updateStepData({ whatsapp_api_key: e.target.value });
     if ((e.target.value !== '') && text2) {
       setIsValidStep(true);
 
@@ -43,7 +43,7 @@ const WhatsappKeys = ({handleCancel, handleContinue, handleBack, updateStepData,
 
   const handleChange2 = (e) => {
     handleTextField2Change(e);
-    updateStepData({ whatsappPhoneId: e.target.value });
+    updateStepData({ whatsapp_phone_id: e.target.value });
     
     if ((e.target.value !== '') && text1) {
       setIsValidStep(true);

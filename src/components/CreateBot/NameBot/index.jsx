@@ -9,12 +9,14 @@ const NameBot = ({handleCancel, handleContinue, handleBack, updateStepData, botI
  
   const handleChange1 = (e) => {
     handleTextField1Change(e);
-    updateStepData({ botName: e.target.value });
+    updateStepData({ bot_name: e.target.value });
     setIsValidStep((e.target.value !== '') && ( e.target.value !== null));
   }
   useEffect(() => {	
     setIsValidStep((textFieldValue1 !== '') && ( textFieldValue1 !== null));   	
-  }, [textFieldValue1]);  
+  }, [textFieldValue1]);
+
+  useEffect(()=> console.log(textFieldValue1),[])
 
     return (
       <ThemeProvider theme={userSignTheme}>
