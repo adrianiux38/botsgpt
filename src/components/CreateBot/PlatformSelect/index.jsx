@@ -115,6 +115,7 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
             <Box
               sx={{
                 p: 4,
+                maxHeight: '60vh',
                 borderRadius: '20px',
                 bgcolor: 'white',
                 position: 'relative',
@@ -139,7 +140,7 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
                     </Box>
                 </Grid>
             </Grid>
-            <p style={{fontFamily:'poppins', fontSize:'1.6em', marginBottom: '5%', marginTop:'1%'}}>Where do you want to interact with your custom ChatGPT?</p>
+            <p className='text-style'>Where do you want to interact with your custom ChatGPT?</p>
               <Box
                 sx={{
                   display: 'grid',
@@ -147,11 +148,10 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
                   gap: '5%',
                   width: '100%',
                   height: '50%',
-                  
                 }}
               >
-                  <Card key={1} clicked={selectedDivs.includes(1)} onClick={() => handleClick(1)}>
-                    <img src={Whalogo} style={{maxWidth:'150px', marginTop: '5%'}}/>
+                  <div className='platform-card' key={1} clicked={selectedDivs.includes(1)} onClick={() => handleClick(1)}>
+                    <img src={Whalogo} className='img-style' />
                     <p style={{ fontFamily: 'Poppins', textAlign: 'center' }}>
                       Whatsapp
                     </p>
@@ -160,9 +160,9 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
                     ) : (
                         <CheckCircleOutline color="disabled" style={{marginBottom:'6%'}}/>
                     )}
-                  </Card>
-                  <Card key={2} clicked={selectedDivs.includes(2)} onClick={() => handleClick(2)}>
-                    <img src={Telegramlogo} style={{maxWidth:'150px', marginTop: '5%'}}/>
+                  </div>
+                  <div className='platform-card' key={2} clicked={selectedDivs.includes(2)} onClick={() => handleClick(2)}>
+                    <img src={Telegramlogo} className='img-style' />
                     <p style={{ fontFamily: 'Poppins', textAlign: 'center' }}>
                       Telegram
                     </p>
@@ -171,7 +171,7 @@ const PlatformSelect = ({ handleCancel, handleContinue, handleBack, updateStepDa
                     ) : (
                         <CheckCircleOutline color="disabled" style={{marginBottom:'6%'}}/>
                     )}
-                  </Card>
+                  </div>
               </Box>
               <Grid container sx={{display:'flex', marginTop: '5%'}}>
                     <Grid item xs sx={{display:'flex', flex: 0.5, justifyContent:'flex-start'}}>

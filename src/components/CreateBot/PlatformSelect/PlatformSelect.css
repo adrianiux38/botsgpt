@@ -1,19 +1,41 @@
-.botcategory {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add this line for shadow */
-    border: 2px solid transparent;
+.text-style {
+    font-family: 'poppins';
+    font-size: 1.6rem;
+    margin-bottom: 5%;
+    margin-top: 1%;
 }
 
-.botcategory-selected {
+.platform-card {
+    cursor: pointer;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.platform-card:hover {
     border: 2px solid rgb(164, 163, 233);
 }
 
-.botcategory:hover {
-    border: 2px solid rgb(164, 163, 233);
+.img-style {
+    max-width: 150px;
+    margin-top: 5%;
+}
+
+@media (max-width: 768px) {
+    .text-style {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-style {
+        font-size: 1rem;
+    }
+    .platform-card {
+        max-height: 230px;
+    }
+    .img-style {
+        max-width: 120px;
+        margin-top: 5%;
+    }
 }
