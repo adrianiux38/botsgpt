@@ -1,15 +1,14 @@
+import { Box, TextField, Button, Typography, Grid, Stack, ThemeProvider } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
-import { Box, TextField, Button, Typography, Grid, Snackbar, Stack, ThemeProvider, Alert } from '@mui/material';
+import { userSignTheme } from '../../utils/userSignTheme.js';
 import { useMediaQuery, useTheme } from '@material-ui/core';
+import FormHelperText from '@mui/material/FormHelperText';
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import { BACKEND_URL } from '../../config.js';
-import GoogleIcon from '@mui/icons-material/Google';
-import { userSignTheme } from '../../utils/userSignTheme.js'
 import { isLoggedIn } from '../../utils/auth.js'
 import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
 import logo from "../../img/logoB.png"
 import logo2 from "../../img/LOGO.png"
 import useUser from '../../hooks/useUser.jsx';
@@ -32,19 +31,33 @@ import useUser from '../../hooks/useUser.jsx';
       setOpen(false);
     };
 
-    
-
-    
-
-    
-
     const isInputValid = () => {
       return (email !== '' );
     }
-  
-    
 
-   
+    const forgotPassword = () => {
+      console.log(email)
+      fetch(`${BACKEND_URL}/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+      .then(res => res.json())
+      .then(async data => {
+        toast.success(data.message, {
+          hideProgressBar: true,
+          autoClose: 3000,
+        });
+        navigate('/login');
+      }).catch((error) => {
+        toast.success(error.message, {
+          hideProgressBar: true,
+          autoClose: 3000,
+        });
+      });
+    };
   
     return (
       <ThemeProvider theme={userSignTheme}>
@@ -96,13 +109,9 @@ import useUser from '../../hooks/useUser.jsx';
                 {open && <FormHelperText>Missing Email </FormHelperText>}
               </FormControl>
 
-              
-
-                <Button fullWidth variant='contained' color='primary' >
+                <Button fullWidth variant='contained' color='primary' onClick={forgotPassword}>
                   Reset password
                 </Button>
-                
-                
                 
               </Stack>
             </Box>
@@ -129,41 +138,29 @@ import useUser from '../../hooks/useUser.jsx';
               </Typography>
               <Stack spacing={2} mt={2} alignItems="center">      
 
-             
-                
                 <TextField
                   fullWidth
                   id='email'
                   label='Email'
                   variant='outlined'
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type='email'
                   sx={{ width: '80%' }}
                 />
                
-                 
-                
-                <Button sx={{ width: '70%' ,height: "50px"}} variant='contained' color='primary' >
+                <Button sx={{ width: '70%' ,height: "50px"}} variant='contained' color='primary' onClick={forgotPassword}>
                   Reset password
                 </Button>
                 
-                
-                
               </Stack>
-              
             </Box>
-            
           </Grid>
           </>
 
   }
         </Grid>
-        
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="warning" sx={{ width: "90%" }}>
-            Missing email or password
-          </Alert>
-        </Snackbar>
+        <ToastContainer position="bottom-left" />
       </ThemeProvider>
     );
   };
