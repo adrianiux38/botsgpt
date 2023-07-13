@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import { BACKEND_URL } from '../../config.js';
 import GoogleIcon from '@mui/icons-material/Google';
-import { userSignTheme } from '../../utils/userSignTheme'
-import { isLoggedIn } from '../../utils/auth'
+import { userSignTheme } from '../../utils/userSignTheme.js'
+import { isLoggedIn } from '../../utils/auth.js'
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import logo from "../../img/logoB.png"
@@ -216,7 +216,7 @@ import useUser from '../../hooks/useUser.jsx';
                   Sign in with Google
                 </Button>
                 <div style={{display:'flex', justifyContent:'space-evenly'}}>
-                <Button onClick={() => navigate('/forgot')} style={{marginTop: '2%'}}>
+                <Button onClick={() => navigate('/set-password')} style={{marginTop: '2%'}}>
                   Forgot password?
                 </Button>
                 <Button onClick={() => navigate('/set-password')} style={{marginTop: '3%'}}>
@@ -282,14 +282,9 @@ import useUser from '../../hooks/useUser.jsx';
                 >
                   Sign in with Google
                 </Button>
-                <div style={{display:'flex', justifyContent:'space-evenly'}}>
-                <Button onClick={() => navigate('/forgot')} style={{marginTop: '2%'}}>
-                  Forgot password?
-                </Button>
                 <Button onClick={() => navigate('/set-password')} style={{marginTop: '3%'}}>
                   Register
                 </Button>
-                </div>
                 
               </Stack>
               

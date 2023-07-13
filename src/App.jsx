@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Mybots } from './components/Mybots';
 import CreateBot from './components/CreateBot';
 import Account from './components/Account';
+import Forgot from './components/Forgot';
 import { React, useState } from 'react';
 import LoginComponent from './components/Login';
 import RegisterComponent from './components/Register';
@@ -33,6 +34,7 @@ function App() {
               <Route path="/set-password" element={<RegisterComponent />} />
               <Route path="/create-bot/" element={<CreateBot />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/forgot" element={<Forgot />} />
             </Routes>
           </Router>
         </div>
