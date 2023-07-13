@@ -863,7 +863,7 @@ export const Mybots = () => {
             color="error"
             style={{ fontSize: "72px", width: "100%" }}
           />
-          <DialogContentText style={{ color: "#42A5F6" }}>
+          <DialogContentText style={{ color: "#42A5F6", textAlign: 'center' }}>
             Are you sure you want to delete this bot?
           </DialogContentText>
           <hr style={{ borderColor: "#059CF1", borderWidth: "0.2px" }} />

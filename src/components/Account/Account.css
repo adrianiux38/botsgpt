@@ -22,10 +22,8 @@
     flex-wrap: wrap;
     align-items: center;
     align-content: center;
-    
-    
-
 }
+
  @media  (min-width: 400px){
     .container{
         width: 80%; 
